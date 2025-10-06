@@ -104,8 +104,9 @@ ul li {
   transition: all 0.3s ease;;
 }
 
-ul li a {
+ul li p {
   padding: 10px;
+  margin-bottom: 20px;
 }
 
 nav {
