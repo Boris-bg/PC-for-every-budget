@@ -11,8 +11,5 @@ export class App {
 
   protected search() {
     console.log(this.itemForSearching);
-    this.demo = this.itemForSearching;
   }
-
-  protected demo: String = "";
 }

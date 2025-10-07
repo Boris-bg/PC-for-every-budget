@@ -1,12 +1,14 @@
 import {RouterModule, Routes} from '@angular/router';
 import {Contacts} from './contacts/contacts';
 import {NgModule} from '@angular/core';
+import {AboutUs} from './about-us/about-us';
+import {Home} from './home/home';
 
 export const routes: Routes = [
-  // {
-  //   path: "",
-  //   component: TODO
-  // },
+  {
+    path: "",
+    component: Home
+  },
   // {
   //   path: "products",
   //   component: TODO
@@ -15,10 +17,10 @@ export const routes: Routes = [
   //   path: "discounts",
   //   component: TODO
   // },
-  // {
-  //   path: "about-us",
-  //   component: TODO
-  // },
+  {
+    path: "about-us",
+    component: AboutUs
+  },
   {
     path: "contacts",
     component: Contacts
