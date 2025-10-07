@@ -1,1 +1,10 @@
-<p>home works!</p>
+<p-carousel [value]="images" [numVisible]="1" [numScroll]="1" [circular]="true"
+            [responsiveOptions]="responsiveOptions" autoplayInterval="5000" [showIndicators]="true">
+  <ng-template let-img pTemplate="item">
+    <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
+      <div class="mb-4">
+        <img [src]="img" alt="Image not found" class="w-full rounded-border"/>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>

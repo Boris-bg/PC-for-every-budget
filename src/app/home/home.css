@@ -1,22 +1,44 @@
-/*
-.image-container {
+img {
   width: 100%;
-  height: 300px;
-  overflow: hidden;
-}
-
-.slide-wrapper {
-  position: relative;
-  width: 100%;
-  height: 300px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.slide-wrapper img {
-  object-fit: cover;
+  height: 320px;
   border-radius: 10px;
 }
-*/
+
+p-carousel {
+  width: 60%;
+  margin: 50px auto;
+}
+
+/* Style the indicator container */
+::ng-deep .p-carousel .p-carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 1rem 0;
+}
+
+/* Style each indicator button to look like a line */
+::ng-deep .p-carousel .p-carousel-indicator button {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: #d1d5db;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Selector for active state */
+:host ::ng-deep .p-carousel .p-carousel-indicators button.p-link:focus,
+:host ::ng-deep .p-carousel .p-carousel-indicators .p-highlight button {
+  background-color: #000000 !important;
+  width: 50px !important;
+  height: 5px !important;
+}
+
+/* Style the active/selected indicator - BLACK and LARGER */
+:host ::ng-deep .p-carousel-indicator.p-highlight .p-carousel-indicator-button {
+  background-color: #000000 !important;
+  width: 50px !important;
+  height: 5px !important;
+}
