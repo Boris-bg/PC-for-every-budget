@@ -1,18 +1,38 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
+  import { NgModule } from '@angular/core';
+  import { BrowserModule } from '@angular/platform-browser';
+  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+  import { CommonModule } from '@angular/common';
+  import { FormsModule } from '@angular/forms';
+  import { MatToolbarModule } from '@angular/material/toolbar';
+  import { MatSidenavModule } from '@angular/material/sidenav';
+  import { MatListModule } from '@angular/material/list';
+  import { MatIconModule } from '@angular/material/icon';
+  import { MatButtonModule } from '@angular/material/button';
+  import { MatInputModule } from '@angular/material/input';
+  import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { App } from './app';
+  import { AppRoutingModule } from './app.routes';
+  import { App } from './app';
 
-bootstrapApplication(App, {
-  providers: [
-    provideRouter([]),
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule
-  ]
-}).catch(err => console.error(err));
+  @NgModule({
+    declarations: [
+      App
+    ],
+    imports: [
+      BrowserModule,
+      CommonModule,
+      FormsModule,
+      BrowserAnimationsModule,
+      AppRoutingModule,
+      MatToolbarModule,
+      MatSidenavModule,
+      MatListModule,
+      MatIconModule,
+      MatButtonModule,
+      MatInputModule,
+      MatFormFieldModule
+    ],
+    providers: [],
+    bootstrap: [App]
+  })
+  export class AppModule { }
