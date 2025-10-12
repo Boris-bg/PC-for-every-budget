@@ -38,7 +38,7 @@
 
         <div>
           <mat-form-field appearance="fill">
-            <mat-label>Search</mat-label>
+            <mat-label>What are you looking for?</mat-label>
             <input [(ngModel)]="itemForSearching" matInput placeholder=""/>
           </mat-form-field>
           <button (click)="search()">Search</button>
@@ -70,11 +70,22 @@
         </ul>
       </nav>
 
-      <footer>
-
-      </footer>
-
       <router-outlet></router-outlet>
+
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <img src="logo.jpg" alt="Logo" width="50" height="50" />
+            <span>© 2025 PC for every budget</span>
+          </div>
+
+          <div class="footer-links">
+            <a routerLink="/about-us">About us</a>
+            <a routerLink="/contacts">Contacts</a>
+            <a href="https://github.com/your-repo" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </footer>
 
     </mat-sidenav-content>
   </mat-sidenav-container>

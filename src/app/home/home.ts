@@ -12,12 +12,11 @@ import {Carousel, CarouselModule, CarouselResponsiveOptions} from 'primeng/carou
 })
 export class Home {
   images = [
-    'https://sanjayv.github.io/ng-image-slider/contents/assets/img/slider/5.jpg',
-    'https://sanjayv.github.io/ng-image-slider/contents/assets/img/slider/9.jpg',
-    'https://sanjayv.github.io/ng-image-slider/contents/assets/img/slider/4.jpg',
-    'https://sanjayv.github.io/ng-image-slider/contents/assets/img/slider/7.jpg',
-    'https://sanjayv.github.io/ng-image-slider/contents/assets/img/slider/1.jpg',
-    'https://sanjayv.github.io/ng-image-slider/contents/assets/img/slider/2.jpg'
+    'img_slider/image1.jpg',
+    'img_slider/image2.jpg',
+    'img_slider/image3.jpg',
+    'img_slider/image4.jpg',
+    'img_slider/image5.jpg'
   ];
   responsiveOptions: CarouselResponsiveOptions[] | undefined;
 }
