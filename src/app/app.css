@@ -15,6 +15,7 @@ mat-sidenav-container {
   display: flex;
   flex-direction: column;
   height: 100%;
+  left: 0;
 }
 
 mat-sidenav-content {
@@ -52,11 +53,10 @@ header {
   left: 0;
   top: 0;
   width: 100%;
-  background-color: #e1e1e1;
+  background-color: #ebebeb;
   z-index: 100;
   display: flex;
   flex-direction: row;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: adds depth */
   padding: 20px 0;
 }
 
@@ -211,4 +211,17 @@ nav {
 
 .footer-links a:hover {
   color: #fff;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+/* Align mat-list-item content to the left */
+.sidenav a {
+  padding-left: 16px !important;
+}
+
+.sidenav ::ng-deep .mdc-list-item__content {
+  justify-content: flex-start !important;
 }
