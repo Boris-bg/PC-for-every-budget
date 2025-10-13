@@ -6,18 +6,30 @@ html, body {
 .content {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* makes page fill screen height */
+  min-height: 100vh;
 }
 
-mat-sidenav-container,
-mat-sidenav-content {
+/* Let sidenav container stretch with the content wrapper */
+mat-sidenav-container {
   flex: 1;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-bottom: 100px; /* Must be taller than footer height to prevent overlap */
+  padding-top: 70px; /* Must be taller than footer height to prevent overlap */
+
+}
+
+/* Make router-outlet take remaining space */
 router-outlet {
-  flex: 1; /* pushes footer down */
+  flex: 1 0 auto;
+  display: block;
 }
 
 h1 {
@@ -36,15 +48,34 @@ h1 {
 }
 
 header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: #e1e1e1;
+  z-index: 100;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: adds depth */
+  padding: 20px 0;
 }
 
 header div {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+header * {
+  height: 48px;
+}
+
+div mat-form-field ::ng-deep .mat-mdc-text-field-wrapper {
+  height: 48px;
+}
+
+div mat-form-field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
 }
 
 div button {
@@ -67,7 +98,7 @@ div button {
   padding-left: 16px;
   padding-right: 16px;
   position: relative;
-  text-align: left;
+  text-align: center;
   text-decoration: none;
   transition: box-shadow .15s, transform .15s;
   user-select: none;
@@ -76,6 +107,14 @@ div button {
   white-space: nowrap;
   will-change: box-shadow, transform;
   font-size: 18px;
+}
+
+button mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 div button:focus {
@@ -130,12 +169,17 @@ nav {
 }
 
 .footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   background-color: #1e1e1e;
   color: #fff;
-  padding: 10px 20px;
   text-align: center;
   font-size: 14px;
   border-top: 2px solid #444;
+  padding: 5px 0;
+  z-index: 100;
 }
 
 .footer-content {
@@ -145,6 +189,7 @@ nav {
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .footer-left {
