@@ -15,7 +15,6 @@ mat-sidenav-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  left: 0;
 }
 
 mat-sidenav-content {
@@ -213,15 +212,6 @@ nav {
   color: #fff;
 }
 
-.sidenav {
-  width: 250px;
-}
-
-/* Align mat-list-item content to the left */
-.sidenav a {
-  padding-left: 16px !important;
-}
-
-.sidenav ::ng-deep .mdc-list-item__content {
-  justify-content: flex-start !important;
+header mat-form-field ::ng-deep input.mat-mdc-input-element {
+  transform: translateY(-12px);
 }
