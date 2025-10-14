@@ -1,0 +1,165 @@
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #e6ebf2, #f8fafc);
+  margin: 0;
+  padding: 0;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 60px auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+  animation: fadeIn 1s ease;
+}
+
+header {
+  text-align: center;
+  background: linear-gradient(90deg, #0077ff, #00aaff);
+  color: white;
+  padding: 40px 20px;
+}
+
+header img {
+  width: 120px;
+  margin-bottom: 15px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+}
+
+.content {
+  padding: 40px 60px;
+}
+
+.founder {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.founder img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.founder img:hover {
+  transform: scale(1.05);
+}
+
+.founder h2 {
+  margin-top: 15px;
+  font-size: 1.4rem;
+  color: #0f172a;
+}
+
+.story {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #334155;
+  text-align: justify;
+  padding: 20px 0;
+}
+
+.story h3 {
+  font-size: 2rem;
+  color: #0066ff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 3px solid #007bff;
+  display: inline-block;
+  margin-bottom: 25px;
+}
+
+.story .dropcap {
+  float: left;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: bold;
+  color: #007bff;
+  margin-right: 10px;
+}
+
+.story .highlight {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.story .blue {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.story blockquote {
+  border-left: 4px solid #007bff;
+  padding-left: 15px;
+  margin: 25px 0;
+  font-style: italic;
+  background: rgba(0, 123, 255, 0.05);
+  border-radius: 8px;
+  color: #1e293b;
+}
+
+.story ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 20px 0;
+}
+
+.story ul li {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.story .center {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.story .accent {
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.story .accent span {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.story .separator {
+  border: none;
+  border-top: 2px dashed #007bff;
+  margin: 40px auto;
+  width: 60%;
+}
+
+.story .motto {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+.story .motto .blue {
+  color: #007bff;
+}
+
+/* Smooth fade animation */
+.story {
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
