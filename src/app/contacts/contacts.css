@@ -6,7 +6,6 @@ body {
 }
 
 .contact-container {
-  max-width: 1000px;
   margin: 60px auto;
   padding: 0 20px;
   animation: fadeIn 1s ease;
@@ -34,10 +33,10 @@ header p {
 }
 
 .contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 25px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 25px;
 }
 
 .contact-card {
@@ -47,6 +46,9 @@ header p {
   text-align: center;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 230px; /* minimum width per card */
+  max-width: 250px; /* prevents oversized stretch */
+  box-sizing: border-box;
 }
 
 .contact-card:hover {
@@ -93,3 +95,11 @@ header p {
     transform: translateY(0);
   }
 }
+
+/*.contact-container {*/
+/*  width: 100%;*/
+/*}*/
+
+/*.app-contacts {*/
+/*  padding: 0;*/
+/*}*/
