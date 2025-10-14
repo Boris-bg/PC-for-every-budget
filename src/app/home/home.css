@@ -42,3 +42,9 @@ p-carousel {
   width: 50px !important;
   height: 5px !important;
 }
+
+@media screen and (max-width: 1200px) {
+  p-carousel {
+    width: 85%;
+  }
+}
