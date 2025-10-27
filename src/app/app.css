@@ -25,6 +25,10 @@ mat-sidenav-content {
 
 }
 
+mat-nav-list span {
+  font-size: 22px ;
+}
+
 /* Make router-outlet take remaining space */
 router-outlet {
   flex: 1 0 auto;
@@ -159,11 +163,19 @@ nav {
 
 .special-button p {
   background: darkorange;
-  border-radius: 20px
+  border-radius: 20px;
+  height: 95%;
+  align-content: center;
+  margin-top: 18px;
 }
 
 .special-button:hover {
   background: darkorange;
+}
+
+li button {
+  height: 60px;
+  font-size: 22px;
 }
 
 .footer {
@@ -174,7 +186,7 @@ nav {
   background-color: #1e1e1e;
   color: #fff;
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
   border-top: 2px solid #444;
   padding: 5px 0;
   z-index: 100;

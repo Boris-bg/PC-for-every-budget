@@ -3,24 +3,19 @@
     <mat-sidenav #sidenav mode="over" class="sidenav" [fixedInViewport]="true">
       <mat-nav-list>
         <a mat-list-item routerLink="/" (click)="sidenav.close()">
-<!--          <mat-icon>home</mat-icon>-->
-          <span>Home</span>
+          <span><img src="home.png" alt="Начална страница" width="40px" height="40px"></span>
         </a>
         <a mat-list-item routerLink="/products" (click)="sidenav.close()">
-<!--          <mat-icon>products</mat-icon>-->
-          <span>Products</span>
+          <span>Продукти</span>
         </a>
         <a mat-list-item routerLink="/discounts" (click)="sidenav.close()">
-<!--          <mat-icon>discounts</mat-icon>-->
-          <span>Discounts</span>
+          <span>Промоции</span>
         </a>
         <a mat-list-item routerLink="/about-us" (click)="sidenav.close()">
-<!--          <mat-icon>about us</mat-icon>-->
-          <span>About us</span>
+          <span>За нас</span>
         </a>
         <a mat-list-item routerLink="/contacts" (click)="sidenav.close()">
-<!--          <mat-icon>contacts</mat-icon>-->
-          <span>Contacts</span>
+          <span>Контакти</span>
         </a>
       </mat-nav-list>
     </mat-sidenav>
@@ -31,19 +26,19 @@
           <button mat-icon-button (click)="sidenav.toggle()" aria-label="Toggle menu">
             <mat-icon>☰</mat-icon>
           </button>
-          <h1>PC for every budget</h1>
+          <h1>PC за всеки бюджет</h1>
         </div>
 
         <div>
           <mat-form-field appearance="outline" style="width: 300px; height: 48px">
-            <mat-label>What are you looking for?</mat-label>
+            <mat-label>Какво търсите днес?</mat-label>
             <input [(ngModel)]="itemForSearching" matInput placeholder=""/>
           </mat-form-field>
-          <button (click)="search()">Search</button>
+          <button (click)="search()">Търси</button>
         </div>
 
         <div style="flex: 1; justify-content: flex-end;">
-          <button>Log in</button>
+          <button>Вход</button>
         </div>
 
       </header>
@@ -51,19 +46,19 @@
       <nav>
         <ul>
           <li>
-            <button class="special-button" routerLink="/"><p>Home</p></button>
+            <button class="special-button" style="font-size: 20px" routerLink="/"><p>Начална<br> страница</p></button>
           </li>
           <li>
-            <button class="special-button" routerLink="/products"><p>Products</p></button>
+            <button class="special-button" routerLink="/products"><p>Продукти</p></button>
           </li>
           <li>
-            <button routerLink="/discounts">Discounts</button>
+            <button routerLink="/discounts">Промоции</button>
           </li>
           <li>
-            <button routerLink="/about-us">About us</button>
+            <button routerLink="/about-us">За нас</button>
           </li>
           <li>
-            <button routerLink="/contacts">Contacts</button>
+            <button routerLink="/contacts">Контакти</button>
           </li>
         </ul>
       </nav>
@@ -74,12 +69,12 @@
         <div class="footer-content">
           <div class="footer-left">
             <img src="logo.jpg" alt="Logo" width="50" height="50" />
-            <span>© 2025 PC for every budget — All rights reserved.</span>
+            <span>© 2025 PC за всеки бюджет — Всички права запазени.</span>
           </div>
 
           <div class="footer-links">
-            <a routerLink="/about-us">About us</a>
-            <a routerLink="/contacts">Contacts</a>
+            <a routerLink="/about-us">За нас</a>
+            <a routerLink="/contacts">Контакти</a>
             <a href="https://github.com/Boris-bg/PC-for-every-budget.git" target="_blank">GitHub</a>
           </div>
         </div>
