@@ -23,7 +23,7 @@
     <mat-sidenav-content color="primary">
       <header>
         <div style="flex: 1; justify-content: flex-start">
-          <button mat-icon-button (click)="sidenav.toggle()" aria-label="Toggle menu">
+          <button mat-icon-button (click)="sidenav.toggle()" (mouseenter)="sidenav.open()" aria-label="Toggle menu">
             <mat-icon>☰</mat-icon>
           </button>
           <h1>PC за всеки бюджет</h1>
