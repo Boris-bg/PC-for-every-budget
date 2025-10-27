@@ -25,8 +25,13 @@ mat-sidenav-content {
 
 }
 
-mat-nav-list span {
+mat-nav-list .options {
   font-size: 22px ;
+}
+
+mat-nav-list .products {
+  font-size: 16px;
+  margin-left: 8px;
 }
 
 /* Make router-outlet take remaining space */
@@ -60,6 +65,7 @@ header {
   display: flex;
   flex-direction: row;
   padding: 20px 10px;
+  box-sizing: border-box;
 }
 
 header div {
@@ -164,9 +170,7 @@ nav {
 .special-button p {
   background: darkorange;
   border-radius: 20px;
-  height: 95%;
   align-content: center;
-  margin-top: 18px;
 }
 
 .special-button:hover {

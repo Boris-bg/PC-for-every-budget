@@ -3,19 +3,43 @@
     <mat-sidenav #sidenav mode="over" class="sidenav" [fixedInViewport]="true">
       <mat-nav-list>
         <a mat-list-item routerLink="/" (click)="sidenav.close()">
-          <span><img src="home.png" alt="Начална страница" width="40px" height="40px"></span>
+          <span class="options"><img src="home.png" alt="Начална страница" width="40px" height="40px"></span>
         </a>
         <a mat-list-item routerLink="/products" (click)="sidenav.close()">
-          <span>Продукти</span>
+          <span class="options">Продукти</span>
+        </a>
+        <a mat-list-item routerLink="/products/cpu" (click)="sidenav.close()">
+          <span class="products">Процесори</span>
+        </a>
+        <a mat-list-item routerLink="/products/cpu-coolers" (click)="sidenav.close()">
+          <span class="products">Охлаждане</span>
+        </a>
+        <a mat-list-item routerLink="/products/motherboard" (click)="sidenav.close()">
+          <span class="products">Дънни платки</span>
+        </a>
+        <a mat-list-item routerLink="/products/ram" (click)="sidenav.close()">
+          <span class="products">Оперативна памет</span>
+        </a>
+        <a mat-list-item routerLink="/products/rom" (click)="sidenav.close()">
+          <span class="products">Постоянна памет</span>
+        </a>
+        <a mat-list-item routerLink="/products/gpu" (click)="sidenav.close()">
+          <span class="products">Видеокарти</span>
+        </a>
+        <a mat-list-item routerLink="/products/psu" (click)="sidenav.close()">
+          <span class="products">Захранвания</span>
+        </a>
+        <a mat-list-item routerLink="/products/boxes" (click)="sidenav.close()">
+          <span class="products">Кутии</span>
         </a>
         <a mat-list-item routerLink="/discounts" (click)="sidenav.close()">
-          <span>Промоции</span>
+          <span class="options">Промоции</span>
         </a>
         <a mat-list-item routerLink="/about-us" (click)="sidenav.close()">
-          <span>За нас</span>
+          <span class="options">За нас</span>
         </a>
         <a mat-list-item routerLink="/contacts" (click)="sidenav.close()">
-          <span>Контакти</span>
+          <span class="options">Контакти</span>
         </a>
       </mat-nav-list>
     </mat-sidenav>
@@ -46,7 +70,7 @@
       <nav>
         <ul>
           <li>
-            <button class="special-button" style="font-size: 20px" routerLink="/"><p>Начална<br> страница</p></button>
+            <button class="special-button" style="font-size: 18px" routerLink="/"><p>Начална<br> страница</p></button>
           </li>
           <li>
             <button class="special-button" routerLink="/products"><p>Продукти</p></button>
