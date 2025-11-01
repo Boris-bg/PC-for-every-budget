@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class App {
   protected isProductsOpen = false;
+  protected isSidenavExpanded = false;
   private closeTimeout: any;
   protected itemForSearching: String = "";
 
@@ -20,6 +21,14 @@ export class App {
     this.closeTimeout = setTimeout(() => {
       this.isProductsOpen = false;
     }, 200);
+  }
+
+  protected expandSidenav() {
+    this.isSidenavExpanded = true;
+  }
+
+  protected collapseSidenav() {
+    this.isSidenavExpanded = false;
   }
 
   protected search() {
