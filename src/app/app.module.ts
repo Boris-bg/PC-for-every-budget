@@ -13,25 +13,29 @@
 
   import { AppRoutingModule } from './app.routes';
   import { App } from './app';
+  import {MatExpansionPanel} from "@angular/material/expansion";
+  import { MatExpansionModule } from '@angular/material/expansion';
 
   @NgModule({
     declarations: [
       App
     ],
-    imports: [
-      BrowserModule,
-      CommonModule,
-      FormsModule,
-      BrowserAnimationsModule,
-      AppRoutingModule,
-      MatToolbarModule,
-      MatSidenavModule,
-      MatListModule,
-      MatIconModule,
-      MatButtonModule,
-      MatInputModule,
-      MatFormFieldModule
-    ],
+      imports: [
+          BrowserModule,
+          CommonModule,
+          FormsModule,
+          BrowserAnimationsModule,
+          AppRoutingModule,
+          MatToolbarModule,
+          MatSidenavModule,
+          MatListModule,
+          MatIconModule,
+          MatButtonModule,
+          MatInputModule,
+          MatFormFieldModule,
+          MatExpansionPanel,
+          MatExpansionModule
+      ],
     providers: [],
     bootstrap: [App]
   })

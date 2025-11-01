@@ -5,60 +5,44 @@
         <a mat-list-item routerLink="/" (click)="sidenav.close()">
           <span class="options"><img src="home.png" alt="Начална страница" width="40px" height="40px"></span>
         </a>
-        <a mat-list-item routerLink="/products" (click)="sidenav.close()">
-          <span class="options">Продукти</span>
-        </a>
-        <a mat-list-item routerLink="/products/pc-assembler" (click)="sidenav.close()">
-          <span class="products">Компютърен асемблер</span>
-        </a>
-        <a mat-list-item routerLink="/products/cpu" (click)="sidenav.close()">
-          <span class="products">Процесори</span>
-        </a>
-        <a mat-list-item routerLink="/products/cpu-coolers" (click)="sidenav.close()">
-          <span class="products">Охлаждане</span>
-        </a>
-        <a mat-list-item routerLink="/products/motherboard" (click)="sidenav.close()">
-          <span class="products">Дънни платки</span>
-        </a>
-        <a mat-list-item routerLink="/products/ram" (click)="sidenav.close()">
-          <span class="products">Оперативна памет</span>
-        </a>
-        <a mat-list-item routerLink="/products/rom" (click)="sidenav.close()">
-          <span class="products">Постоянна памет</span>
-        </a>
-        <a mat-list-item routerLink="/products/gpu" (click)="sidenav.close()">
-          <span class="products">Видеокарти</span>
-        </a>
-        <a mat-list-item routerLink="/products/psu" (click)="sidenav.close()">
-          <span class="products">Захранвания</span>
-        </a>
-        <a mat-list-item routerLink="/products/boxes" (click)="sidenav.close()">
-          <span class="products">Кутии</span>
-        </a>
-        <a mat-list-item routerLink="/products/accessories" (click)="sidenav.close()">
-          <span class="products">Аксесоари</span>
-        </a>
-        <a mat-list-item routerLink="/products/keyboards" (click)="sidenav.close()">
-          <span class="products">Клавиатури</span>
-        </a>
-        <a mat-list-item routerLink="/products/mouses" (click)="sidenav.close()">
-          <span class="products">Мишки</span>
-        </a>
-        <a mat-list-item routerLink="/products/monitors" (click)="sidenav.close()">
-          <span class="products">Монитори</span>
-        </a>
-        <a mat-list-item routerLink="/products/audio" (click)="sidenav.close()">
-          <span class="products">Аудио</span>
-        </a>
-        <a mat-list-item routerLink="/products/accessories" (click)="sidenav.close()">
-          <span class="products">Аксесоари</span>
-        </a>
+
+        <mat-expansion-panel
+          class="submenu-panel"
+          [expanded]="isProductsOpen"
+          (mouseenter)="openProducts()"
+          (mouseleave)="closeProducts()"
+          hideToggle
+        >
+          <mat-expansion-panel-header>
+            <span class="options">Продукти</span>
+          </mat-expansion-panel-header>
+
+          <div class="submenu">
+            <a mat-list-item routerLink="/products/pc-assembler" (click)="sidenav.close()">Компютърен асемблер</a>
+            <a mat-list-item routerLink="/products/cpu" (click)="sidenav.close()">Процесори</a>
+            <a mat-list-item routerLink="/products/cpu-coolers" (click)="sidenav.close()">Охлаждане</a>
+            <a mat-list-item routerLink="/products/motherboard" (click)="sidenav.close()">Дънни платки</a>
+            <a mat-list-item routerLink="/products/ram" (click)="sidenav.close()">Оперативна памет</a>
+            <a mat-list-item routerLink="/products/rom" (click)="sidenav.close()">Постоянна памет</a>
+            <a mat-list-item routerLink="/products/gpu" (click)="sidenav.close()">Видеокарти</a>
+            <a mat-list-item routerLink="/products/psu" (click)="sidenav.close()">Захранвания</a>
+            <a mat-list-item routerLink="/products/boxes" (click)="sidenav.close()">Кутии</a>
+            <a mat-list-item routerLink="/products/accessories" (click)="sidenav.close()">Аксесоари</a>
+            <a mat-list-item routerLink="/products/keyboards" (click)="sidenav.close()">Клавиатури</a>
+            <a mat-list-item routerLink="/products/mouses" (click)="sidenav.close()">Мишки</a>
+            <a mat-list-item routerLink="/products/monitors" (click)="sidenav.close()">Монитори</a>
+            <a mat-list-item routerLink="/products/audio" (click)="sidenav.close()">Аудио</a>
+          </div>
+        </mat-expansion-panel>
+
         <a mat-list-item routerLink="/discounts" (click)="sidenav.close()">
           <span class="options">Промоции</span>
         </a>
+
         <a mat-list-item routerLink="/about-us" (click)="sidenav.close()">
           <span class="options">За нас</span>
         </a>
+
         <a mat-list-item routerLink="/contacts" (click)="sidenav.close()">
           <span class="options">Контакти</span>
         </a>

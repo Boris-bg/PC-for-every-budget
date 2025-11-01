@@ -231,6 +231,52 @@ header mat-form-field ::ng-deep input.mat-mdc-input-element {
   transform: translateY(-12px);
 }
 
+.submenu-panel {
+  background: transparent;
+  box-shadow: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.submenu-panel.mat-expanded {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.submenu {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.submenu a {
+  font-size: 16px;
+  margin: 3px 0;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.submenu a:hover {
+  color: #3c4fe0;
+  text-decoration: underline;
+}
+
+mat-expansion-panel-header {
+  cursor: pointer;
+  background: none !important;
+  border-radius: 6px;
+}
+
+mat-expansion-panel-header:hover {
+  background-color: #f0f0f0 !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media screen and (max-width: 1370px) {
   h1 {
     font-size: 2.5rem;
