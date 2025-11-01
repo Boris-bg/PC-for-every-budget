@@ -300,6 +300,9 @@ mat-expansion-panel-header:hover {
   flex-direction: column;
   animation: fadeIn 0.2s ease-in-out;
   z-index: 200;
+  max-height: calc(100vh - 68px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .flyout-submenu a {
@@ -309,11 +312,31 @@ mat-expansion-panel-header:hover {
   padding: 6px 10px;
   border-radius: 4px;
   transition: background-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+  min-height: 32px;
 }
 
 .flyout-submenu a:hover {
   background-color: #f0f0f0;
   color: #3c4fe0;
+}
+
+.flyout-submenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.flyout-submenu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.flyout-submenu::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.flyout-submenu::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .menu-item > a {
