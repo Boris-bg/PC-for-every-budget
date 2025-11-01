@@ -6,6 +6,7 @@
       class="sidenav"
       [class.expanded]="isSidenavExpanded"
       [fixedInViewport]="true"
+      (mouseleave)="sidenav.close()"
     >
       <mat-nav-list>
         <a mat-list-item routerLink="/" (click)="sidenav.close()">
