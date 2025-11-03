@@ -11,7 +11,6 @@
   font-family: Inter, system-ui, Arial, sans-serif;
   color: #e6eef6;
   padding: 20px;
-  background: linear-gradient(180deg,#07101a 0%, #081420 100%); /*page's background*/
   min-height: 100vh;
 }
 
@@ -41,7 +40,8 @@
   color: var(--muted);
   padding: 8px 12px;
   border-radius: 10px;
-  min-width: 220px;
+  min-width: 200px;
+  width: 365px;
 }
 
 .select {

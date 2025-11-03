@@ -1,22 +1,31 @@
 <section class="ram-page">
   <header class="toolbar">
-    <h1>RAM Modules</h1>
-    <div class="controls">
-      <input type="search" class="search" placeholder="Search RAM by name or spec" />
+    <h1>Оперативна памет</h1>
 
-      <select class="select">
-        <option value="popular">Sort: Popular</option>
-        <option value="price-asc">Price: Low → High</option>
-        <option value="price-desc">Price: High → Low</option>
+    <div class="controls">
+      <label for="sort-by">Сортирай по:</label>
+      <select class="select" id="sort-by">
+        <option value="popular">Най-купувани</option>
+        <option value="popular">Най-високо оценени</option>
+        <option value="price-asc">Цена: възходящо</option>
+        <option value="price-desc">Цена: низходящо</option>
+      </select>
+
+      <label for="show-by">Покажи по:</label>
+      <select class="select" id="show-by">
+        <option value="15">15</option>
+        <option value="30">30</option>
+        <option value="45">45</option>
+        <option value="60">60</option>
       </select>
     </div>
   </header>
 
   <main class="content">
     <aside class="filters">
-      <h2>Filters</h2>
+      <h2>Филтри</h2>
       <div class="filter-group">
-        <label>Memory size</label>
+        <label>Обем</label>
         <div class="chips">
           <button class="chip">4 GB</button>
           <button class="chip">8 GB</button>
@@ -27,7 +36,7 @@
       </div>
 
       <div class="filter-group">
-        <label>Type</label>
+        <label>Тип</label>
         <div class="chips">
           <button class="chip">DDR3</button>
           <button class="chip">DDR4</button>
@@ -36,7 +45,7 @@
       </div>
 
       <div class="filter-group">
-        <label>Speed</label>
+        <label>Честота</label>
         <div class="chips">
           <button class="chip">3200 MHz</button>
           <button class="chip">3600 MHz</button>
@@ -46,7 +55,7 @@
 
 <!--      TODO think about selecting the brands from db-->
       <div class="filter-group">
-        <label>Brand</label>
+        <label>Производител</label>
         <div class="chips">
           <button class="chip">Kingston</button>
           <button class="chip">Crucial</button>
@@ -55,12 +64,12 @@
       </div>
 
       <div class="filter-group">
-        <label>Price range</label>
+        <label>Цена</label>
         <input type="range" min="10" max="500" />
       </div>
 
       <div class="filter-group small">
-        <label><input type="checkbox" /> KIT</label>
+        <label><input type="checkbox" /> KIT </label>
         <label><input type="checkbox" /> RGB</label>
       </div>
     </aside>
@@ -91,7 +100,7 @@
                 <input type="number" value="1" min="1" />
                 <button class="qty-btn">+</button>
               </div>
-              <button class="buy">Add to cart</button>
+              <button class="buy">Добави в количката</button>
             </div>
           </div>
         </article>
