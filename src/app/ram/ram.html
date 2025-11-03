@@ -1,1 +1,101 @@
-<p>ram works!</p>
+<section class="ram-page">
+  <header class="toolbar">
+    <h1>RAM Modules</h1>
+    <div class="controls">
+      <input type="search" class="search" placeholder="Search RAM by name or spec" />
+
+      <select class="select">
+        <option value="popular">Sort: Popular</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="content">
+    <aside class="filters">
+      <h2>Filters</h2>
+      <div class="filter-group">
+        <label>Memory size</label>
+        <div class="chips">
+          <button class="chip">4 GB</button>
+          <button class="chip">8 GB</button>
+          <button class="chip">16 GB</button>
+          <button class="chip">32 GB</button>
+          <button class="chip">64 GB</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Type</label>
+        <div class="chips">
+          <button class="chip">DDR3</button>
+          <button class="chip">DDR4</button>
+          <button class="chip">DDR5</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Speed</label>
+        <div class="chips">
+          <button class="chip">3200 MHz</button>
+          <button class="chip">3600 MHz</button>
+          <button class="chip">4800 MHz</button>
+        </div>
+      </div>
+
+<!--      TODO think about selecting the brands from db-->
+      <div class="filter-group">
+        <label>Brand</label>
+        <div class="chips">
+          <button class="chip">Kingston</button>
+          <button class="chip">Crucial</button>
+          <button class="chip">Corsair</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Price range</label>
+        <input type="range" min="10" max="500" />
+      </div>
+
+      <div class="filter-group small">
+        <label><input type="checkbox" /> KIT</label>
+        <label><input type="checkbox" /> RGB</label>
+      </div>
+    </aside>
+
+    <section class="product-grid" aria-live="polite">
+      @for(ram of rams; track ram.id) {
+        <article class="product-card">
+          <div class="media">
+            <img [src]=ram?.imageUrl [alt]=ram?.imageAltText loading="lazy" />
+<!--            <span class="badge">Best seller</span>-->
+          </div>
+
+          <div class="body">
+            <h3 class="title">{{ram.name}}</h3>
+            <div class="meta">
+              <span class="price">{{ram.price}} €</span>
+              <span class="rating">⭐ {{ram.rating}}</span>
+            </div>
+
+            <ul class="specs">
+              <li>{{ram.memorySizeGB}}</li>
+              <li>{{ram.type}} · {{ram.speedMHz}} MHz</li>
+            </ul>
+
+            <div class="actions">
+              <div class="qty">
+                <button class="qty-btn">−</button>
+                <input type="number" value="1" min="1" />
+                <button class="qty-btn">+</button>
+              </div>
+              <button class="buy">Add to cart</button>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  </main>
+</section>

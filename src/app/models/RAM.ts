@@ -5,4 +5,5 @@ export interface RAM extends Product {
   type: string;
   speedMHz: number;
   isKIT: boolean;
+  isRGB: boolean;
 }

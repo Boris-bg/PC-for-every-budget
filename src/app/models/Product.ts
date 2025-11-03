@@ -3,8 +3,11 @@ export interface Product {
   name: string;
   price: number;
   brand: string;
-  warrantyPeriod: number; // in years
-  category: string;
+  warrantyPeriod: number; // in months
+  // category: string;  // TODO think about categories later
   availability: number;
   additionalDetails: string;
+  rating: number; // average user rating from 1 to 5
+  imageUrl?: string;
+  imageAltText?: string;
 }
