@@ -37,7 +37,7 @@ mat-sidenav-content {
   flex: 1;
   padding-bottom: 100px; /* Must be taller than footer height to prevent overlap */
   padding-top: 70px; /* Must be taller than header height to prevent overlap */
-  background: linear-gradient(180deg,#07101a 0%, #081420 100%); /*page's background*/
+  background: linear-gradient(180deg, #0a1622 0%, #0c1c2b 100%); /*page's background*/
 }
 
 mat-nav-list .options {
@@ -76,7 +76,7 @@ header {
   top: 0;
   width: 100%;
   /*background-color: #ebebeb;*/
-  background: linear-gradient(180deg, #141e2d 0%, #142332 100%); /*page's background*/
+  background: linear-gradient(180deg, #192639 0%, #192b3e 100%); /*page's background*/
   z-index: 100;
   display: flex;
   flex-direction: row;
@@ -105,10 +105,10 @@ div mat-form-field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
 div button {
   align-items: center;
   appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+  background-image: radial-gradient(100% 100% at 100% 0, #3b82f6 0, #1d4ed8 100%);
   border: 0;
   border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+  box-shadow: rgba(59, 130, 246, .4) 0 2px 4px, rgba(59, 130, 246, .3) 0 7px 13px -3px, rgba(29, 78, 216, .5) 0 -3px 0 inset;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
@@ -133,26 +133,26 @@ div button {
   font-size: 18px;
 }
 
+div button:focus {
+  box-shadow: #1d4ed8 0 0 0 1.5px inset, rgba(59, 130, 246, .4) 0 2px 4px, rgba(59, 130, 246, .3) 0 7px 13px -3px, #1d4ed8 0 -3px 0 inset;
+}
+
+div button:hover {
+  box-shadow: rgba(59, 130, 246, .4) 0 4px 8px, rgba(59, 130, 246, .3) 0 7px 13px -3px, #1d4ed8 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+div button:active {
+  box-shadow: #1d4ed8 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
 button mat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-}
-
-div button:focus {
-  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-}
-
-div button:hover {
-  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-  transform: translateY(-2px);
-}
-
-div button:active {
-  box-shadow: #3c4fe0 0 3px 7px inset;
-  transform: translateY(2px);
 }
 
 ul {
@@ -176,7 +176,7 @@ ul li p {
 }
 
 nav {
-  background: rgb(0, 102, 255);
+  background: rgb(33, 122, 255);
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0, rgba(0, 0, 0, 0.06) 0 1px 2px 0;
   padding: 5px;
@@ -189,7 +189,7 @@ li button {
 }
 
 li button:hover {
-  background: darkorange;
+  background: #e88202;
 }
 
 .footer {
