@@ -105,7 +105,7 @@ div mat-form-field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
 div button {
   align-items: center;
   appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #3b82f6 0, #1d4ed8 100%);
+  background-image: radial-gradient(100% 100% at 100% 0, #3974e3 0, #1d4ed8 100%);
   border: 0;
   border-radius: 6px;
   box-shadow: rgba(59, 130, 246, .4) 0 2px 4px, rgba(59, 130, 246, .3) 0 7px 13px -3px, rgba(29, 78, 216, .5) 0 -3px 0 inset;
