@@ -1,10 +1,29 @@
 import { Component } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    FormsModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.css',
-  standalone: false
+  styleUrl: './app.css'
 })
 export class App {
   protected isProductsOpen = false;
