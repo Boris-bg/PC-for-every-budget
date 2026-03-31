@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RAM} from '../models/RAM';
+import {RamService} from '../services/ram.service';
 
 @Component({
   selector: 'app-ram',
@@ -7,58 +8,14 @@ import {RAM} from '../models/RAM';
   templateUrl: './ram.html',
   styleUrl: './ram.css'
 })
-export class Ram {
-  protected rams: RAM[] = [
-    {
-      id: 1,
-      name: 'Corsair Vengeance LPX 16GB (2 x 8GB) DDR4-3200',
-      price: 79.99,
-      brand: 'Corsair',
-      warrantyPeriod: 60,
-      availability: 25,
-      additionalDetails: 'Нископрофилен дизайн за по-добра съвместимост с големи охладители за процесор.',
-      rating: 4.5,
-      imageUrl: '',
-      imageAltText: 'Corsair Vengeance LPX RAM modules',
-      memorySizeGB: 16,
-      type: 'DDR4',
-      speedMHz: 3200,
-      isKIT: true,
-      isRGB: false
-    },
-    {
-      id: 2,
-      name: 'G.Skill Trident Z RGB 32GB (2 x 16GB) DDR4-3600',
-      price: 159.99,
-      brand: 'G.Skill',
-      warrantyPeriod: 60,
-      availability: 15,
-      additionalDetails: 'Ярко RGB осветление с персонализируеми ефекти.',
-      rating: 4.8,
-      imageUrl: '',
-      imageAltText: 'G.Skill Trident Z RGB RAM modules',
-      memorySizeGB: 32,
-      type: 'DDR4',
-      speedMHz: 3600,
-      isKIT: true,
-      isRGB: true
-    },
-    {
-      id: 3,
-      name: 'Kingston HyperX Fury 8GB DDR4-2400',
-      price: 39.99,
-      brand: 'Kingston',
-      warrantyPeriod: 36,
-      availability: 40,
-      additionalDetails: 'Достъпна производителност за ежедневните компютърни нужди.',
-      rating: 4.2,
-      imageUrl: '',
-      imageAltText: 'Kingston HyperX Fury RAM module',
-      memorySizeGB: 8,
-      type: 'DDR4',
-      speedMHz: 2400,
-      isKIT: false,
-      isRGB: false
-    }
-  ];
+export class Ram implements OnInit {
+  protected rams: RAM[] = [];
+
+  constructor(private ramService: RamService) {}
+
+  ngOnInit() {
+    this.ramService.getAll().subscribe(data => {
+      this.rams = data;
+    });
+  }
 }
