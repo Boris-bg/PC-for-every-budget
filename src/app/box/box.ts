@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-box',
-  imports: [],
+  standalone: false,
   templateUrl: './box.html',
   styleUrl: './box.css'
 })

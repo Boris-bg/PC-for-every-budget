@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {RAM} from '../models/RAM';
-import {RamService} from '../services/ram.service';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';  // ← за @for
+import { RAM } from '../models/RAM';
+import { RamService } from '../services/ram.service';
 
 @Component({
   selector: 'app-ram',
-  imports: [],
+  standalone: false,        // ← смени на false
   templateUrl: './ram.html',
   styleUrl: './ram.css'
 })

@@ -16,9 +16,15 @@
   import {MatExpansionPanel} from "@angular/material/expansion";
   import { MatExpansionModule } from '@angular/material/expansion';
 
+  import { Ram } from './ram/ram';         // ← добави import
+  import { Box } from './box/box';         // ← добави import
+  import { HttpClientModule } from '@angular/common/http'; // ← добави
+
   @NgModule({
     declarations: [
-      App
+      App,
+      Box,
+      Ram
     ],
       imports: [
           BrowserModule,
@@ -34,7 +40,8 @@
           MatInputModule,
           MatFormFieldModule,
           MatExpansionPanel,
-          MatExpansionModule
+          MatExpansionModule,
+          HttpClientModule
       ],
     providers: [],
     bootstrap: [App]
