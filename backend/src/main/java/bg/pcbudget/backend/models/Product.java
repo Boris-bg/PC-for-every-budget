@@ -1,0 +1,33 @@
+package bg.pcbudget.backend.models;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "products")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
+@NoArgsConstructor
+public abstract class Product {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false)
+  private String name;
+
+  @Column(nullable = false)
+  private Double price;
+
+  private String brand;
+  private Integer warrantyPeriod;
+  private Integer availability;
+  private String additionalDetails;
+  private Double rating;
+  private String imageUrl;
+  private String imageAltText;
+}
