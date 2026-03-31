@@ -15,9 +15,12 @@ public class SecurityConfig {
     http
       .csrf(csrf -> csrf.disable())
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/products/**").permitAll() // публични
-        .anyRequest().authenticated()                    // останалото изисква вход
-      );
+        .requestMatchers("/api/**").permitAll()  // API-то е публично засега
+        .anyRequest().permitAll()                // всичко друго също
+      )
+      .formLogin(form -> form.disable())           // изключва login формата
+      .httpBasic(basic -> basic.disable());        // изключва basic auth
+
     return http.build();
   }
 }
