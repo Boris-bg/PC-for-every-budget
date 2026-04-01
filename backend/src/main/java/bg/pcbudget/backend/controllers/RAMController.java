@@ -38,5 +38,4 @@ public class RAMController {
     ramService.delete(id);
     return ResponseEntity.noContent().build();
   }
-
 }
