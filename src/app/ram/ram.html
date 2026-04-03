@@ -4,19 +4,21 @@
 
     <div class="controls">
       <label for="sort-by">Сортирай по:</label>
-      <select class="select" id="sort-by">
-        <option value="popular">Най-купувани</option>
-        <option value="popular">Най-високо оценени</option>
+      <select class="select" id="sort-by"
+              [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+        <option value="rating">Най-високо оценени</option>
         <option value="price-asc">Цена: възходящо</option>
         <option value="price-desc">Цена: низходящо</option>
+        <option value="name">По азбучен ред</option>
       </select>
 
       <label for="show-by">Покажи по:</label>
-      <select class="select" id="show-by">
-        <option value="15">15</option>
-        <option value="30">30</option>
-        <option value="45">45</option>
-        <option value="60">60</option>
+      <select class="select" id="show-by"
+              [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+        <option [ngValue]="15">15</option>
+        <option [ngValue]="30">30</option>
+        <option [ngValue]="45">45</option>
+        <option [ngValue]="60">60</option>
       </select>
     </div>
   </header>
@@ -24,87 +26,129 @@
   <main class="content">
     <aside class="filters">
       <h2>Филтри</h2>
+
       <div class="filter-group">
         <label>Обем</label>
         <div class="chips">
-          <button class="chip">4 GB</button>
-          <button class="chip">8 GB</button>
-          <button class="chip">16 GB</button>
-          <button class="chip">32 GB</button>
-          <button class="chip">64 GB</button>
+          @for (size of availableSizes; track size) {
+            <button class="chip" [class.active]="isSelected(selectedSizes, size)"
+                    (click)="toggleSize(size)">
+              {{ size }} GB
+            </button>
+          }
         </div>
       </div>
 
       <div class="filter-group">
         <label>Тип</label>
         <div class="chips">
-          <button class="chip">DDR3</button>
-          <button class="chip">DDR4</button>
-          <button class="chip">DDR5</button>
+          @for (type of availableTypes; track type) {
+            <button class="chip" [class.active]="isSelected(selectedTypes, type)"
+                    (click)="toggleType(type)">
+              {{ type }}
+            </button>
+          }
         </div>
       </div>
 
       <div class="filter-group">
         <label>Честота</label>
         <div class="chips">
-          <button class="chip">3200 MHz</button>
-          <button class="chip">3600 MHz</button>
-          <button class="chip">4800 MHz</button>
+          @for (speed of availableSpeeds; track speed) {
+            <button class="chip" [class.active]="isSelected(selectedSpeeds, speed)"
+                    (click)="toggleSpeed(speed)">
+              {{ speed }} MHz
+            </button>
+          }
         </div>
       </div>
 
-<!--      TODO think about selecting the brands from db-->
       <div class="filter-group">
         <label>Производител</label>
         <div class="chips">
-          <button class="chip">Kingston</button>
-          <button class="chip">Crucial</button>
-          <button class="chip">Corsair</button>
+          @for (brand of availableBrands; track brand) {
+            <button class="chip" [class.active]="isSelected(selectedBrands, brand)"
+                    (click)="toggleBrand(brand)">
+              {{ brand }}
+            </button>
+          }
         </div>
       </div>
 
       <div class="filter-group">
-        <label>Цена</label>
-        <input type="range" min="10" max="500" />
+        <label>Цена до {{ currentMaxPrice }} €</label>
+        <input type="range" [min]="0" [max]="maxPrice" step="5"
+               [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
       </div>
 
       <div class="filter-group small">
-        <label><input type="checkbox" /> KIT </label>
-        <label><input type="checkbox" /> RGB</label>
+        <button class="chip" [class.active]="filterKit === true"
+                [class.inactive]="filterKit === false"
+                (click)="toggleKit()">
+          KIT {{ filterKit === true ? '✓' : filterKit === false ? '✗' : '' }}
+        </button>
+        <button class="chip" [class.active]="filterRgb === true"
+                [class.inactive]="filterRgb === false"
+                (click)="toggleRgb()">
+          RGB {{ filterRgb === true ? '✓' : filterRgb === false ? '✗' : '' }}
+        </button>
       </div>
     </aside>
 
-    <section class="product-grid" aria-live="polite">
-      @for(ram of rams; track ram.id) {
-        <article class="product-card">
-          <div class="media">
-            <img [src]=ram?.imageUrl [alt]=ram?.imageAltText loading="lazy" />
-<!--            <span class="badge">Best seller</span>-->
-          </div>
-
-          <div class="body">
-            <h3 class="title">{{ram.name}}</h3>
-            <div class="meta">
-              <span class="price">{{ram.price}} €</span>
-              <span class="rating">⭐ {{ram.rating}}</span>
+    <div>
+      <section class="product-grid" aria-live="polite">
+        @if (displayedRams.length === 0) {
+          <p style="color: var(--muted); grid-column: 1/-1; text-align: center; padding: 40px;">
+            Няма намерени продукти по избраните филтри.
+          </p>
+        }
+        @for (ram of displayedRams; track ram.id) {
+          <article class="product-card">
+            <div class="media">
+              <img [src]="ram?.imageUrl" [alt]="ram?.imageAltText" loading="lazy" />
             </div>
-
-            <ul class="specs">
-              <li>{{ram.memorySizeGB}}</li>
-              <li>{{ram.type}} · {{ram.speedMHz}} MHz</li>
-            </ul>
-
-            <div class="actions">
-              <div class="qty">
-                <button class="qty-btn">−</button>
-                <input type="number" value="1" min="1" />
-                <button class="qty-btn">+</button>
+            <div class="body">
+              <h3 class="title">{{ ram.name }}</h3>
+              <div class="meta">
+                <span class="price">{{ ram.price }} €</span>
+                <span class="rating">⭐ {{ ram.rating }}</span>
               </div>
-              <button class="buy">Добави в количката</button>
+              <ul class="specs">
+                <li>{{ ram.memorySizeGB }} GB</li>
+                <li>{{ ram.type }} · {{ ram.speedMHz }} MHz</li>
+                @if (ram.isKIT) { <li>KIT</li> }
+                @if (ram.isRGB) { <li>RGB</li> }
+              </ul>
+              <div class="actions">
+                <div class="qty">
+                  <button class="qty-btn">−</button>
+                  <input type="number" value="1" min="1" />
+                  <button class="qty-btn">+</button>
+                </div>
+                <button class="buy">Добави в количката</button>
+              </div>
             </div>
-          </div>
-        </article>
+          </article>
+        }
+      </section>
+
+      <!-- Pagination -->
+      @if (totalPages > 1) {
+        <nav class="pagination">
+          <button class="page-btn" [disabled]="currentPage === 1"
+                  (click)="goToPage(currentPage - 1)">‹</button>
+
+          @for (page of pages; track page) {
+            <button class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          }
+
+          <button class="page-btn" [disabled]="currentPage === totalPages"
+                  (click)="goToPage(currentPage + 1)">›</button>
+        </nav>
       }
-    </section>
+    </div>
   </main>
 </section>

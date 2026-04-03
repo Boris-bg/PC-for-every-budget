@@ -45,8 +45,8 @@
 }
 
 .select {
-  background: transparent;
-  color: var(--muted);
+  background: #0b1220;
+  color: #36eef6;
   border-radius: 10px;
   padding: 8px 10px;
   border: 1px solid rgba(255, 255, 255, 0.03);
@@ -88,7 +88,7 @@
 
 .chip {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--muted);
   padding: 6px 8px;
   border-radius: 999px;
@@ -279,4 +279,52 @@
     display: flex;
     gap: 8px;
   }
+}
+
+.chip.active {
+  background: var(--accent);
+  color: #042023;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.chip.inactive {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+  padding: 8px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page-btn.active {
+  background: var(--accent);
+  color: #042023;
+  font-weight: 700;
+  border-color: var(--accent);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
