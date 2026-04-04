@@ -8,10 +8,10 @@ import {RamService} from '../services/ram.service';
   selector: 'app-ram',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './ram.html',
-  styleUrl: './ram.css'
+  templateUrl: './ram.component.html',
+  styleUrl: './ram.component.css'
 })
-export class Ram implements OnInit {
+export class RamComponent implements OnInit {
 
   private allRams: RAM[] = [];
   protected displayedRams: RAM[] = [];
@@ -83,12 +83,12 @@ export class Ram implements OnInit {
   }
 
   protected toggleKit(): void {
-    this.filterKit = this.filterKit === null ? true : this.filterKit === true ? false : null;
+    this.filterKit = this.filterKit === null ? true : this.filterKit ? false : null;
     this.applyAll();
   }
 
   protected toggleRgb(): void {
-    this.filterRgb = this.filterRgb === null ? true : this.filterRgb === true ? false : null;
+    this.filterRgb = this.filterRgb === null ? true : this.filterRgb ? false : null;
     this.applyAll();
   }
 

@@ -1,12 +1,10 @@
-import {Product} from './Product';
+import { Product } from './Product';
 
 export interface Box extends Product {
-  motherboardFormFactor: string;
-  boxFormFactor: string;
+  motherboardFormFactor: string;  // ATX, mATX, ITX
+  boxFormFactor: string;          // Mid Tower, Full Tower, Mini Tower
   color: string;
-
-  // TODO think about keeping them or not
   maxGPULengthMM: number;
   maxCPUCoolerHeightMM: number;
-  psuType: string;
+  psuType: string;                // ATX, SFX
 }

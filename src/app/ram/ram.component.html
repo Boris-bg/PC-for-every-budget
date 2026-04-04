@@ -1,4 +1,4 @@
-<section class="ram-page">
+<section class="product-page">
 
   <header class="toolbar">
     <h1>Оперативна памет</h1>
@@ -26,7 +26,7 @@
 
   <main class="content">
 
-    <aside class="filters">
+    <aside class="filters-header">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <h2 style="margin:0;">Филтри</h2>
         @if (hasActiveFilters) {
@@ -120,7 +120,7 @@
     </aside>
 
     <div>
-      <p style="color:var(--muted); font-size:0.85rem; margin:0 0 12px 0;">
+      <p class="results-count">
         {{ totalItems }} продукта
       </p>
 

@@ -5,8 +5,8 @@ import {AboutUs} from './about-us/about-us';
 import {Home} from './home/home';
 import {Products} from './products/products';
 import {Discounts} from './discounts/discounts';
-import {Ram} from './ram/ram';
-import {Box} from './box/box';
+import {RamComponent} from './ram/ram.component';
+import {BoxComponent} from './box/box.component'
 
 export const routes: Routes = [
   {
@@ -31,11 +31,11 @@ export const routes: Routes = [
   },
   {
     path: "products/ram",
-    component: Ram
+    component: RamComponent
   },
   {
     path: "products/boxes",
-    component: Box
+    component: BoxComponent
   }
 ];
 

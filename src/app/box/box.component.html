@@ -1,0 +1,175 @@
+<section class="product-page">
+
+  <header class="toolbar">
+    <h1>Компютърни кутии</h1>
+    <div class="controls">
+      <label for="sort-by">Сортирай по:</label>
+      <select class="select" id="sort-by"
+              [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+        <option value="rating">Най-високо оценени</option>
+        <option value="price-asc">Цена: възходящо</option>
+        <option value="price-desc">Цена: низходящо</option>
+        <option value="name">По азбучен ред</option>
+      </select>
+
+      <label for="show-by">Покажи по:</label>
+      <select class="select" id="show-by"
+              [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+        <option [ngValue]="15">15</option>
+        <option [ngValue]="30">30</option>
+        <option [ngValue]="45">45</option>
+        <option [ngValue]="60">60</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <aside class="filters-header">
+      <div class="filters-header">
+        <h2>Филтри</h2>
+        @if (hasActiveFilters) {
+          <button class="chip clear-btn" (click)="clearFilters()">✕ Изчисти</button>
+        }
+      </div>
+
+      <div class="filter-group">
+        <label>Форм фактор на кутията</label>
+        <div class="chips">
+          @for (ff of availableFormFactors; track ff) {
+            <button class="chip" [class.active]="isSelected(selectedFormFactors, ff)"
+                    (click)="toggleFormFactor(ff)">{{ ff }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Форм фактор на дънна платка</label>
+        <div class="chips">
+          @for (mb of availableMBFormFactors; track mb) {
+            <button class="chip" [class.active]="isSelected(selectedMBFormFactors, mb)"
+                    (click)="toggleMBFormFactor(mb)">{{ mb }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Цвят</label>
+        <div class="chips">
+          @for (color of availableColors; track color) {
+            <button class="chip color-chip" [class.active]="isSelected(selectedColors, color)"
+                    (click)="toggleColor(color)">
+              <span class="color-dot" [style.background]="colorHex(color)"></span>
+              {{ color }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Захранване (PSU тип)</label>
+        <div class="chips">
+          @for (psu of availablePsuTypes; track psu) {
+            <button class="chip" [class.active]="isSelected(selectedPsuTypes, psu)"
+                    (click)="togglePsuType(psu)">{{ psu }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Производител</label>
+        <div class="chips">
+          @for (brand of availableBrands; track brand) {
+            <button class="chip" [class.active]="isSelected(selectedBrands, brand)"
+                    (click)="toggleBrand(brand)">{{ brand }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Цена</label>
+        <div class="price-range-slider">
+          <div class="slider-track">
+            <input type="range" class="range-min" [min]="minPrice" [max]="maxPrice" step="5"
+                   [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+            <input type="range" class="range-max" [min]="minPrice" [max]="maxPrice" step="5"
+                   [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+          </div>
+        </div>
+        <div class="price-inputs">
+          <div class="price-input-group">
+            <span class="price-label">От</span>
+            <input type="number" class="price-text" [min]="minPrice" [max]="currentMaxPrice"
+                   [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+            <span class="price-currency">€</span>
+          </div>
+          <span class="price-separator">—</span>
+          <div class="price-input-group">
+            <span class="price-label">До</span>
+            <input type="number" class="price-text" [min]="currentMinPrice" [max]="maxPrice"
+                   [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+            <span class="price-currency">€</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div>
+      <p class="results-count">{{ totalItems }} продукта</p>
+
+      <section class="product-grid" aria-live="polite">
+        @if (displayedItems.length === 0) {
+          <p class="no-results">Няма намерени продукти по избраните филтри.</p>
+        }
+
+        @for (box of displayedItems; track box.id) {
+          <article class="product-card">
+            <div class="media">
+              <img [src]="box.imageUrl" [alt]="box.imageAltText" loading="lazy" />
+            </div>
+            <div class="body">
+              <h3 class="title">{{ box.name }}</h3>
+              <div class="meta">
+                <span class="price">{{ box.price }} €</span>
+                <span class="rating">⭐ {{ box.rating }}</span>
+              </div>
+              <ul class="specs">
+                <li>{{ box.boxFormFactor }}</li>
+                <li>{{ box.motherboardFormFactor }}</li>
+                <li>{{ box.color }}</li>
+                <li>GPU до {{ box.maxGPULengthMM }} mm</li>
+                <li>CPU до {{ box.maxCPUCoolerHeightMM }} mm</li>
+                <li>PSU: {{ box.psuType }}</li>
+              </ul>
+              <div class="actions">
+                <div class="qty">
+                  <button class="qty-btn"
+                          (click)="changeQty(box.id, -1, box.availability)">−</button>
+                  <input type="number" [value]="getQty(box.id)" min="1" readonly />
+                  <button class="qty-btn"
+                          (click)="changeQty(box.id, +1, box.availability)">+</button>
+                </div>
+                <button class="buy" [disabled]="box.availability === 0">
+                  {{ box.availability > 0 ? 'Добави в количката' : 'Изчерпан' }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </section>
+
+      @if (totalPages > 1) {
+        <nav class="pagination">
+          <button class="page-btn" [disabled]="currentPage === 1"
+                  (click)="goToPage(currentPage - 1)">‹</button>
+          @for (page of pages; track page) {
+            <button class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)">{{ page }}</button>
+          }
+          <button class="page-btn" [disabled]="currentPage === totalPages"
+                  (click)="goToPage(currentPage + 1)">›</button>
+        </nav>
+      }
+    </div>
+  </main>
+</section>
