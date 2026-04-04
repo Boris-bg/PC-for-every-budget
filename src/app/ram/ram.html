@@ -1,4 +1,5 @@
 <section class="ram-page">
+
   <header class="toolbar">
     <h1>Оперативна памет</h1>
 
@@ -10,6 +11,7 @@
         <option value="price-asc">Цена: възходящо</option>
         <option value="price-desc">Цена: низходящо</option>
         <option value="name">По азбучен ред</option>
+        <option value="availability">Наличност</option>
       </select>
 
       <label for="show-by">Покажи по:</label>
@@ -24,17 +26,22 @@
   </header>
 
   <main class="content">
+
     <aside class="filters">
-      <h2>Филтри</h2>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h2 style="margin:0;">Филтри</h2>
+        @if (hasActiveFilters) {
+          <button class="chip" style="font-size:0.75rem; padding:4px 10px;"
+                  (click)="clearFilters()">✕ Изчисти</button>
+        }
+      </div>
 
       <div class="filter-group">
         <label>Обем</label>
         <div class="chips">
           @for (size of availableSizes; track size) {
             <button class="chip" [class.active]="isSelected(selectedSizes, size)"
-                    (click)="toggleSize(size)">
-              {{ size }} GB
-            </button>
+                    (click)="toggleSize(size)">{{ size }} GB</button>
           }
         </div>
       </div>
@@ -44,9 +51,7 @@
         <div class="chips">
           @for (type of availableTypes; track type) {
             <button class="chip" [class.active]="isSelected(selectedTypes, type)"
-                    (click)="toggleType(type)">
-              {{ type }}
-            </button>
+                    (click)="toggleType(type)">{{ type }}</button>
           }
         </div>
       </div>
@@ -56,9 +61,7 @@
         <div class="chips">
           @for (speed of availableSpeeds; track speed) {
             <button class="chip" [class.active]="isSelected(selectedSpeeds, speed)"
-                    (click)="toggleSpeed(speed)">
-              {{ speed }} MHz
-            </button>
+                    (click)="toggleSpeed(speed)">{{ speed }} MHz</button>
           }
         </div>
       </div>
@@ -68,26 +71,29 @@
         <div class="chips">
           @for (brand of availableBrands; track brand) {
             <button class="chip" [class.active]="isSelected(selectedBrands, brand)"
-                    (click)="toggleBrand(brand)">
-              {{ brand }}
-            </button>
+                    (click)="toggleBrand(brand)">{{ brand }}</button>
           }
         </div>
       </div>
 
       <div class="filter-group">
-        <label>Цена до {{ currentMaxPrice }} €</label>
-        <input type="range" [min]="0" [max]="maxPrice" step="5"
+        <label>Цена: {{ currentMinPrice }} € – {{ currentMaxPrice }} €</label>
+        <input type="range" [min]="minPrice" [max]="maxPrice" step="5"
+               [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+        <input type="range" [min]="minPrice" [max]="maxPrice" step="5"
                [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
       </div>
 
       <div class="filter-group small">
-        <button class="chip" [class.active]="filterKit === true"
+        <label style="margin:0; font-size:0.8rem;">Само:</label>
+        <button class="chip"
+                [class.active]="filterKit === true"
                 [class.inactive]="filterKit === false"
                 (click)="toggleKit()">
           KIT {{ filterKit === true ? '✓' : filterKit === false ? '✗' : '' }}
         </button>
-        <button class="chip" [class.active]="filterRgb === true"
+        <button class="chip"
+                [class.active]="filterRgb === true"
                 [class.inactive]="filterRgb === false"
                 (click)="toggleRgb()">
           RGB {{ filterRgb === true ? '✓' : filterRgb === false ? '✗' : '' }}
@@ -96,59 +102,65 @@
     </aside>
 
     <div>
+      <p style="color:var(--muted); font-size:0.85rem; margin:0 0 12px 0;">
+        {{ totalItems }} продукта
+      </p>
+
       <section class="product-grid" aria-live="polite">
         @if (displayedRams.length === 0) {
-          <p style="color: var(--muted); grid-column: 1/-1; text-align: center; padding: 40px;">
-            Няма намерени продукти по избраните филтри.
-          </p>
+          <p class="no-results">Няма намерени продукти по избраните филтри.</p>
         }
+
         @for (ram of displayedRams; track ram.id) {
           <article class="product-card">
             <div class="media">
               <img [src]="ram?.imageUrl" [alt]="ram?.imageAltText" loading="lazy" />
             </div>
+
             <div class="body">
               <h3 class="title">{{ ram.name }}</h3>
+
               <div class="meta">
                 <span class="price">{{ ram.price }} €</span>
                 <span class="rating">⭐ {{ ram.rating }}</span>
               </div>
+
               <ul class="specs">
                 <li>{{ ram.memorySizeGB }} GB</li>
                 <li>{{ ram.type }} · {{ ram.speedMHz }} MHz</li>
                 @if (ram.isKIT) { <li>KIT</li> }
                 @if (ram.isRGB) { <li>RGB</li> }
+                <li>{{ ram.availability > 0 ? ram.availability + ' бр.' : 'Изчерпан' }}</li>
               </ul>
+
               <div class="actions">
                 <div class="qty">
                   <button class="qty-btn">−</button>
                   <input type="number" value="1" min="1" />
                   <button class="qty-btn">+</button>
                 </div>
-                <button class="buy">Добави в количката</button>
+                <button class="buy" [disabled]="ram.availability === 0">
+                  {{ ram.availability > 0 ? 'Добави в количката' : 'Изчерпан' }}
+                </button>
               </div>
             </div>
           </article>
         }
       </section>
 
-      <!-- Pagination -->
       @if (totalPages > 1) {
         <nav class="pagination">
           <button class="page-btn" [disabled]="currentPage === 1"
                   (click)="goToPage(currentPage - 1)">‹</button>
-
           @for (page of pages; track page) {
             <button class="page-btn" [class.active]="page === currentPage"
-                    (click)="goToPage(page)">
-              {{ page }}
-            </button>
+                    (click)="goToPage(page)">{{ page }}</button>
           }
-
           <button class="page-btn" [disabled]="currentPage === totalPages"
                   (click)="goToPage(currentPage + 1)">›</button>
         </nav>
       }
     </div>
+
   </main>
 </section>
