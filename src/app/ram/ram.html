@@ -11,7 +11,6 @@
         <option value="price-asc">Цена: възходящо</option>
         <option value="price-desc">Цена: низходящо</option>
         <option value="name">По азбучен ред</option>
-        <option value="availability">Наличност</option>
       </select>
 
       <label for="show-by">Покажи по:</label>
@@ -77,11 +76,30 @@
       </div>
 
       <div class="filter-group">
-        <label>Цена: {{ currentMinPrice }} € – {{ currentMaxPrice }} €</label>
-        <input type="range" [min]="minPrice" [max]="maxPrice" step="5"
-               [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
-        <input type="range" [min]="minPrice" [max]="maxPrice" step="5"
-               [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+        <label>Цена</label>
+        <div class="price-range-slider">
+          <div class="slider-track">
+            <input type="range" class="range-min" [min]="minPrice" [max]="maxPrice" step="5"
+                   [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+            <input type="range" class="range-max" [min]="minPrice" [max]="maxPrice" step="5"
+                   [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+          </div>
+        </div>
+        <div class="price-inputs">
+          <div class="price-input-group">
+            <span class="price-label">От</span>
+            <input type="number" class="price-text" [min]="minPrice" [max]="currentMaxPrice"
+                   [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+            <span class="price-currency">€</span>
+          </div>
+          <span class="price-separator">—</span>
+          <div class="price-input-group">
+            <span class="price-label">До</span>
+            <input type="number" class="price-text" [min]="currentMinPrice" [max]="maxPrice"
+                   [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+            <span class="price-currency">€</span>
+          </div>
+        </div>
       </div>
 
       <div class="filter-group small">
@@ -135,9 +153,12 @@
 
               <div class="actions">
                 <div class="qty">
-                  <button class="qty-btn">−</button>
-                  <input type="number" value="1" min="1" />
-                  <button class="qty-btn">+</button>
+                  <button class="qty-btn"
+                          (click)="changeQty(ram.id, -1, ram.availability)">−</button>
+                  <input type="number" [value]="getQty(ram.id)" min="1"
+                         [max]="ram.availability" readonly />
+                  <button class="qty-btn"
+                          (click)="changeQty(ram.id, +1, ram.availability)">+</button>
                 </div>
                 <button class="buy" [disabled]="ram.availability === 0">
                   {{ ram.availability > 0 ? 'Добави в количката' : 'Изчерпан' }}
