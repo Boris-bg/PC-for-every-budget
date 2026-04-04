@@ -15,4 +15,5 @@ export const routes: Routes = [
   {path: 'contacts', loadComponent: () => import('./contacts/contacts').then(m => m.Contacts)},
   {path: 'products/ram', loadComponent: () => import('./ram/ram.component').then(m => m.RamComponent)},
   {path: 'products/boxes', loadComponent: () => import('./box/box.component').then(m => m.BoxComponent)},
+  {path: 'products/cpu', loadComponent: () => import('./cpu/cpu.component').then(m => m.CpuComponent)},
 ];

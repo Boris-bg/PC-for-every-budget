@@ -1,0 +1,169 @@
+<section class="product-page">
+
+  <header class="toolbar">
+    <h1>{{ title }}</h1>
+    <div class="controls">
+      <label for="sort-by">Сортирай по:</label>
+      <select class="select" id="sort-by"
+              [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+        <option value="rating">Най-високо оценени</option>
+        <option value="price-asc">Цена: възходящо</option>
+        <option value="price-desc">Цена: низходящо</option>
+        <option value="name">По азбучен ред</option>
+      </select>
+
+      <label for="show-by">Покажи по:</label>
+      <select class="select" id="show-by"
+              [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+        <option [ngValue]="15">15</option>
+        <option [ngValue]="30">30</option>
+        <option [ngValue]="45">45</option>
+        <option [ngValue]="60">60</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- ── FILTERS ────────────────────────────── -->
+    <aside class="filters">
+      <div class="filters-header">
+        <h2>Филтри</h2>
+        @if (hasActiveFilters) {
+          <button class="chip clear-btn" (click)="clearFilters()">✕ Изчисти</button>
+        }
+      </div>
+
+      @for (cfg of filterConfig; track cfg.field) {
+
+        <!-- Price range -->
+        @if (cfg.type === 'price-range') {
+          <div class="filter-group">
+            <label>Цена</label>
+            <div class="price-range-slider">
+              <div class="slider-track">
+                <input type="range" class="range-min"
+                       [min]="minPrice" [max]="maxPrice" step="5"
+                       [(ngModel)]="currentMinPrice"
+                       (ngModelChange)="onPriceChange()" />
+                <input type="range" class="range-max"
+                       [min]="minPrice" [max]="maxPrice" step="5"
+                       [(ngModel)]="currentMaxPrice"
+                       (ngModelChange)="onPriceChange()" />
+              </div>
+            </div>
+            <div class="price-inputs">
+              <div class="price-input-group">
+                <span class="price-label">От</span>
+                <input type="number" class="price-text"
+                       [min]="minPrice" [max]="currentMaxPrice"
+                       [(ngModel)]="currentMinPrice"
+                       (ngModelChange)="onPriceChange()" />
+                <span class="price-currency">€</span>
+              </div>
+              <span class="price-separator">—</span>
+              <div class="price-input-group">
+                <span class="price-label">До</span>
+                <input type="number" class="price-text"
+                       [min]="currentMinPrice" [max]="maxPrice"
+                       [(ngModel)]="currentMaxPrice"
+                       (ngModelChange)="onPriceChange()" />
+                <span class="price-currency">€</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Boolean toggle (isKIT, isRGB, hasWifi...) -->
+        @if (cfg.type === 'chips-boolean') {
+          <div class="filter-group">
+            <div class="chips">
+              <button class="chip"
+                      [class.active]="getBooleanState(cfg.field) === true"
+                      [class.inactive]="getBooleanState(cfg.field) === false"
+                      (click)="toggleBoolean(cfg.field)">
+                {{ cfg.label }}
+                {{ getBooleanState(cfg.field) === true ? ' ✓' : getBooleanState(cfg.field) === false ? ' ✗' : '' }}
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- String / Number chips -->
+        @if (cfg.type === 'chips-string' || cfg.type === 'chips-number') {
+          <div class="filter-group">
+            <label>{{ cfg.label }}</label>
+            <div class="chips">
+              @for (opt of dynamicOptions.get(cfg.field) ?? []; track opt) {
+                <button class="chip"
+                        [class.active]="isChipSelected(cfg.field, opt)"
+                        (click)="toggleChip(cfg.field, opt)">
+                  {{ opt }}{{ cfg.suffix ?? '' }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+      }
+    </aside>
+
+    <!-- ── PRODUCTS ────────────────────────────── -->
+    <div>
+      <p class="results-count">{{ totalItems }} продукта</p>
+
+      <section class="product-grid" aria-live="polite">
+        @if (displayedItems.length === 0) {
+          <p class="no-results">Няма намерени продукти по избраните филтри.</p>
+        }
+
+        @for (item of displayedItems; track item.id) {
+          <article class="product-card">
+            <div class="media">
+              <img [src]="item.imageUrl" [alt]="item.imageAltText" loading="lazy" />
+            </div>
+            <div class="body">
+              <h3 class="title">{{ item.name }}</h3>
+              <div class="meta">
+                <span class="price">{{ item.price }} €</span>
+                <span class="rating">⭐ {{ item.rating }}</span>
+              </div>
+              <ul class="specs">
+                @for (spec of getSpecs(item); track spec) {
+                  <li>{{ spec }}</li>
+                }
+                <li>{{ item.availability > 0 ? item.availability + ' бр.' : 'Изчерпан' }}</li>
+              </ul>
+              <div class="actions">
+                <div class="qty">
+                  <button class="qty-btn"
+                          (click)="changeQty(item.id, -1, item.availability)">−</button>
+                  <input type="number" [value]="getQty(item.id)" min="1" readonly />
+                  <button class="qty-btn"
+                          (click)="changeQty(item.id, +1, item.availability)">+</button>
+                </div>
+                <button class="buy" [disabled]="item.availability === 0">
+                  {{ item.availability > 0 ? 'Добави в количката' : 'Изчерпан' }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </section>
+
+      @if (totalPages > 1) {
+        <nav class="pagination">
+          <button class="page-btn" [disabled]="currentPage === 1"
+                  (click)="goToPage(currentPage - 1)">‹</button>
+          @for (page of pages; track page) {
+            <button class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)">{{ page }}</button>
+          }
+          <button class="page-btn" [disabled]="currentPage === totalPages"
+                  (click)="goToPage(currentPage + 1)">›</button>
+        </nav>
+      }
+    </div>
+
+  </main>
+</section>
