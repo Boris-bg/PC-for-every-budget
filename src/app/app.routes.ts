@@ -1,18 +1,18 @@
-import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { Products } from './products/products';
-import { Discounts } from './discounts/discounts';
-import { AboutUs } from './about-us/about-us';
-import { Contacts } from './contacts/contacts';
-import { RamComponent } from './ram/ram.component';
-import { BoxComponent } from './box/box.component';
+import {Routes} from '@angular/router';
+import {Home} from './home/home';  // ← само Home се импортира директно
 
 export const routes: Routes = [
-  { path: '',                component: Home },
-  { path: 'products',        component: Products },
-  { path: 'discounts',       component: Discounts },
-  { path: 'about-us',        component: AboutUs },
-  { path: 'contacts',        component: Contacts },
-  { path: 'products/ram',    component: RamComponent },
-  { path: 'products/boxes',  component: BoxComponent },
+  // Начална страница — зарежда се веднага
+  {
+    path: '',
+    component: Home
+  },
+
+  // Всичко останало — зарежда се само при навигация
+  {path: 'products', loadComponent: () => import('./products/products').then(m => m.Products)},
+  {path: 'discounts', loadComponent: () => import('./discounts/discounts').then(m => m.Discounts)},
+  {path: 'about-us', loadComponent: () => import('./about-us/about-us').then(m => m.AboutUs)},
+  {path: 'contacts', loadComponent: () => import('./contacts/contacts').then(m => m.Contacts)},
+  {path: 'products/ram', loadComponent: () => import('./ram/ram.component').then(m => m.RamComponent)},
+  {path: 'products/boxes', loadComponent: () => import('./box/box.component').then(m => m.BoxComponent)},
 ];
