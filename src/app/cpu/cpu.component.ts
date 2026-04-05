@@ -21,7 +21,7 @@ export class CpuComponent implements OnInit {
   items: CPU[] = [];
 
   filters: FilterConfig[] = [
-    { type: 'chips-string',  label: 'Сокет',           field: 'socket' },
+    { type: 'chips-string',  label: 'Сокет',           field: 'socket.name' },
     { type: 'chips-number',  label: 'Ядра',             field: 'cores',         suffix: ' cores' },
     { type: 'chips-number',  label: 'Нишки',            field: 'threads',       suffix: ' threads' },
     { type: 'chips-number',  label: 'Честота',          field: 'frequencyGHz',  suffix: ' GHz' },

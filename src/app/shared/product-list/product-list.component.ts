@@ -62,7 +62,7 @@ export class ProductListComponent implements OnChanges {
         // Extract unique values from items
         const vals = [...new Set(
           this.items
-            .map(item => (item as any)[cfg.field])
+            .map(item => this.getFieldValue(item, cfg.field))
             .filter(v => v !== null && v !== undefined)
         )].sort((a, b) =>
           typeof a === 'number' && typeof b === 'number' ? a - b : String(a).localeCompare(String(b))
@@ -89,6 +89,10 @@ export class ProductListComponent implements OnChanges {
     this.currentMaxPrice = this.maxPrice;
   }
 
+  private getFieldValue(item: any, field: string): any {
+    return field.split('.').reduce((obj, key) => obj?.[key], item);
+  }
+
   // ── Toggle helpers ─────────────────────────────────
   protected toggleChip(field: string, value: string | number): void {
     const arr = this.activeChips.get(field) ?? [];
@@ -100,7 +104,7 @@ export class ProductListComponent implements OnChanges {
 
   protected toggleBoolean(field: string): void {
     const cur = this.activeBooleans.get(field) ?? null;
-    const next = cur === null ? true : cur === true ? false : null;
+    const next = cur === null ? true : cur ? false : null;
     this.activeBooleans.set(field, next);
     this.applyAll();
   }
@@ -154,13 +158,13 @@ export class ProductListComponent implements OnChanges {
     // Apply chip filters
     this.activeChips.forEach((selected, field) => {
       if (selected.length)
-        result = result.filter(item => selected.includes((item as any)[field]));
+        result = result.filter(item => selected.includes(this.getFieldValue(item, field)));
     });
 
     // Apply boolean filters
     this.activeBooleans.forEach((value, field) => {
       if (value !== null)
-        result = result.filter(item => (item as any)[field] === value);
+        result = result.filter(item => this.getFieldValue(item, field) === value);
     });
 
     // Apply price filter
@@ -206,7 +210,7 @@ export class ProductListComponent implements OnChanges {
     const specs: string[] = [];
     for (const cfg of this.filterConfig) {
       if (cfg.type === 'price-range') continue;
-      const val = (item as any)[cfg.field];
+      const val = this.getFieldValue(item, cfg.field);
       if (val === null || val === undefined) continue;
       if (cfg.type === 'chips-boolean') {
         if (val === true) specs.push(cfg.label);
