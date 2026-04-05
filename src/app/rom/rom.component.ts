@@ -23,7 +23,7 @@ export class RomComponent implements OnInit {
     { type: 'chips-string', label: 'Тип',           field: 'storageType' },
     { type: 'chips-number', label: 'Капацитет',     field: 'memorySizeGB',  suffix: ' GB' },
     { type: 'chips-string', label: 'Форм фактор',   field: 'formFactor' },
-    { type: 'chips-string', label: 'Интерфейс',     field: 'interfaceType' },
+    { type: 'chips-string', label: 'Интерфейс',     field: 'interfaceType.name' },
     { type: 'chips-string', label: 'Производител',  field: 'brand' },
     { type: 'price-range',  label: 'Цена',          field: 'price' },
   ];

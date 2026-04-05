@@ -3,6 +3,8 @@ package bg.pcbudget.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity @Table(name = "motherboards")
 @Getter @Setter @NoArgsConstructor
 public class Motherboard extends Product {
@@ -17,6 +19,14 @@ public class Motherboard extends Product {
     private String formFactor;
     private Boolean hasBuiltInWifi;
     private Boolean hasBuiltInBluetooth;
-    private String interfaces;
+
+    @ManyToMany
+    @JoinTable(
+      name = "motherboard_interfaces",
+      joinColumns        = @JoinColumn(name = "motherboard_id"),
+      inverseJoinColumns = @JoinColumn(name = "interface_id")
+    )
+    private List<ItemInterface> interfaces;
+
     private String ports;
 }

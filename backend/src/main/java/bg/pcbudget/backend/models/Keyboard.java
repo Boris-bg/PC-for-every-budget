@@ -7,7 +7,10 @@ import lombok.*;
 @Getter @Setter @NoArgsConstructor
 public class Keyboard extends Product {
 
-    private String interfaceType;
+    @ManyToOne
+    @JoinColumn(name = "interface_id")
+    private ItemInterface interfaceType;
+
     private String connectionType;
     private Boolean hasBulgarianLayout;
     private String keyboardType;

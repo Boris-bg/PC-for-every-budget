@@ -9,7 +9,11 @@ public class Mouse extends Product {
 
     private String connectionType;
     private Integer maxDpi;
-    private String interfaceType;
+
+    @ManyToOne
+    @JoinColumn(name = "interface_id")
+    private ItemInterface interfaceType;
+
     private String color;
     private Boolean suitableForLeftHand;
 }

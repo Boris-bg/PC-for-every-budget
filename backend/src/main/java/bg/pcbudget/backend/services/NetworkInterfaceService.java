@@ -1,6 +1,6 @@
 package bg.pcbudget.backend.services;
 
-import bg.pcbudget.backend.models.NetworkInterface;
+import bg.pcbudget.backend.models.ItemInterface;
 import bg.pcbudget.backend.repositories.NetworkInterfaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ public class NetworkInterfaceService {
 
     private final NetworkInterfaceRepository repository;
 
-    public List<NetworkInterface> getAll() { return repository.findAll(); }
+    public List<ItemInterface> getAll() { return repository.findAll(); }
 
-    public Optional<NetworkInterface> getById(Long id) { return repository.findById(id); }
+    public Optional<ItemInterface> getById(Long id) { return repository.findById(id); }
 
-    public NetworkInterface save(NetworkInterface entity) { return repository.save(entity); }
+    public ItemInterface save(ItemInterface entity) { return repository.save(entity); }
 
     public void delete(Long id) { repository.deleteById(id); }
 }

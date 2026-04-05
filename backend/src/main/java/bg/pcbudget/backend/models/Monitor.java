@@ -3,6 +3,8 @@ package bg.pcbudget.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity @Table(name = "monitors")
 @Getter @Setter @NoArgsConstructor
 public class Monitor extends Product {
@@ -14,5 +16,12 @@ public class Monitor extends Product {
     private Integer responseTimeMs;
     private String panelType;
     private Integer brightnessNits;
-    private String interfaces;
+
+    @ManyToMany
+    @JoinTable(
+      name = "monitor_interfaces",
+      joinColumns        = @JoinColumn(name = "monitor_id"),
+      inverseJoinColumns = @JoinColumn(name = "interface_id")
+    )
+    private List<ItemInterface> interfaces;
 }

@@ -10,5 +10,8 @@ public class ROM extends Product {
     private String storageType;
     private Integer memorySizeGB;
     private String formFactor;
-    private String interfaceType;
-}
+
+    @ManyToOne
+    @JoinColumn(name = "interface_id")
+    private ItemInterface interfaceType;
+  }

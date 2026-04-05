@@ -9,7 +9,11 @@ public class GPU extends Product {
 
     private String chipBrand;
     private String graphicsProcessor;
-    private String interfaceType;
+
+    @ManyToOne
+    @JoinColumn(name = "interface_id")
+    private ItemInterface interfaceType;
+
     private Integer memorySizeGB;
     private String memoryType;
     private Integer slotWidth;
