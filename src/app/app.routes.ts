@@ -16,4 +16,9 @@ export const routes: Routes = [
   {path: 'products/ram', loadComponent: () => import('./ram/ram.component').then(m => m.RamComponent)},
   {path: 'products/boxes', loadComponent: () => import('./box/box.component').then(m => m.BoxComponent)},
   {path: 'products/cpu', loadComponent: () => import('./cpu/cpu.component').then(m => m.CpuComponent)},
+  {path: 'products/psu', loadComponent: () => import('./psu/psu.component').then(m => m.PsuComponent)},
+  {path: 'products/gpu', loadComponent: () => import('./gpu/gpu.component').then(m => m.GpuComponent)},
+  {path: 'products/rom', loadComponent: () => import('./rom/rom.component').then(m => m.RomComponent)},
+  {path: 'products/accessories-parts', loadComponent: () => import('./accessory/accessory.component').then(m => m.AccessoryComponent)},
+  {path: 'products/cpu-coolers', loadComponent: () => import('./cooler/cooler.component').then(m => m.CoolerComponent)},
 ];
