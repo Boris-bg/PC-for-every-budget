@@ -214,6 +214,9 @@ export class ProductListComponent implements OnChanges {
       if (val === null || val === undefined) continue;
       if (cfg.type === 'chips-boolean') {
         if (val === true) specs.push(cfg.label);
+      } else if (Array.isArray(val)) {
+        // За масиви (interfaces) — покажи имената разделени със запетая
+        specs.push(val.map((v: any) => v.name ?? v).join(', '));
       } else {
         specs.push(`${val}${cfg.suffix ?? ''}`);
       }

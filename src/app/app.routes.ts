@@ -21,4 +21,6 @@ export const routes: Routes = [
   {path: 'products/rom', loadComponent: () => import('./rom/rom.component').then(m => m.RomComponent)},
   {path: 'products/accessories-parts', loadComponent: () => import('./accessory/accessory.component').then(m => m.AccessoryComponent)},
   {path: 'products/cpu-coolers', loadComponent: () => import('./cooler/cooler.component').then(m => m.CoolerComponent)},
+  { path: 'products/motherboard', loadComponent: () => import('./motherboard/motherboard.component').then(m => m.MotherboardComponent) },
+  {path: 'products/os', loadComponent: () => import('./os/os.component').then(m => m.OsComponent)},
 ];
