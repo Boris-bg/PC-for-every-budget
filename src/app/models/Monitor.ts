@@ -9,5 +9,5 @@ export interface Monitor extends Product {
   responseTimeMs:  number;
   panelType:       string;
   brightnessNits:  number;
-  interfaces:      Interface[];  // ← беше string
+  interfaces:      Interface[];
 }

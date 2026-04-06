@@ -210,6 +210,7 @@ export class ProductListComponent implements OnChanges {
     const specs: string[] = [];
     for (const cfg of this.filterConfig) {
       if (cfg.type === 'price-range') continue;
+      if (cfg.hideFromSpecs) continue;
       const val = this.getFieldValue(item, cfg.field);
       if (val === null || val === undefined) continue;
       if (cfg.type === 'chips-boolean') {
