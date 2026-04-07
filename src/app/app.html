@@ -37,7 +37,7 @@
               <a mat-list-item routerLink="/products/keyboards" (click)="sidenav.close()">Клавиатури</a>
               <a mat-list-item routerLink="/products/mouses" (click)="sidenav.close()">Мишки</a>
               <a mat-list-item routerLink="/products/monitors" (click)="sidenav.close()">Монитори</a>
-              <a mat-list-item routerLink="/products/audio" (click)="sidenav.close()">Аудио</a>
+              <a mat-list-item routerLink="/products/accessories-peripherals" [queryParams]="{type: 'audio'}" (click)="sidenav.close()">Аудио</a>
               <a mat-list-item routerLink="/products/accessories-peripherals" (click)="sidenav.close()">Аксесоари</a>
             </div>
           }

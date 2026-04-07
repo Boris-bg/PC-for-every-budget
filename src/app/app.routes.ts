@@ -26,6 +26,5 @@ export const routes: Routes = [
   {path: 'products/keyboards', loadComponent: () => import('./keyboard/keyboard.component').then(m => m.KeyboardComponent) },
   {path: 'products/mouses', loadComponent: () => import('./mouse/mouse.component').then(m => m.MouseComponent) },
   {path: 'products/monitors', loadComponent: () => import('./monitor/monitor.component').then(m => m.MonitorComponent) },
-  {path: 'products/audio', loadComponent: () => import('./audio/audio.component').then(m => m.AudioComponent) },
   {path: 'products/accessories-peripherals', loadComponent: () => import('./peripheral-accessories/peripheral-accessories.component').then(m => m.PeripheralAccessoriesComponent) },
 ];

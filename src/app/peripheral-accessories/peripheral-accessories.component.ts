@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductListComponent } from '../shared/product-list/product-list.component';
-import { FilterConfig } from '../models/FilterConfig';
-import { PeripheralAccessoryService } from '../services/peripheral-accessory.service';
-import { PeripheralAccessory } from '../models/PeripheralAccessory';
+import {Component, OnInit} from '@angular/core';
+import {ProductListComponent} from '../shared/product-list/product-list.component';
+import {FilterConfig} from '../models/FilterConfig';
+import {PeripheralAccessoryService} from '../services/peripheral-accessory.service';
+import {PeripheralAccessory} from '../models/PeripheralAccessory';
 
 @Component({
   selector: 'app-peripheral-accessories',
@@ -20,19 +20,15 @@ export class PeripheralAccessoriesComponent implements OnInit {
   items: PeripheralAccessory[] = [];
 
   filters: FilterConfig[] = [
-    { type: 'chips-string', label: 'Тип',          field: 'accessoryType' },
-    { type: 'chips-string', label: 'Производител', field: 'brand', hideFromSpecs: true },
-    { type: 'price-range',  label: 'Цена',         field: 'price' },
+    {type: 'chips-string', label: 'Тип', field: 'accessoryType'},
+    {type: 'chips-string', label: 'Производител', field: 'brand', hideFromSpecs: true},
+    {type: 'price-range', label: 'Цена', field: 'price'},
   ];
 
-  constructor(private service: PeripheralAccessoryService) {}
+  constructor(private service: PeripheralAccessoryService) {
+  }
 
   ngOnInit(): void {
-    this.service.getAll().subscribe(data => {
-      // Всичко без аудио
-      this.items = data.filter(p =>
-        !['Headset', 'Speaker', 'Microphone'].includes(p.accessoryType)
-      );
-    });
+    this.service.getAll().subscribe(data => this.items = data);
   }
 }

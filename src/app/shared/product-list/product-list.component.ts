@@ -16,6 +16,7 @@ export class ProductListComponent implements OnChanges {
   @Input() title: string = '';
   @Input() items: Product[] = [];
   @Input() filterConfig: FilterConfig[] = [];
+  @Input() preSelectedChips: { field: string; values: (string | number)[] }[] = [];
 
   // ── Displayed after filter+sort+page ──────────────
   protected displayedItems: Product[] = [];
@@ -48,6 +49,12 @@ export class ProductListComponent implements OnChanges {
     if (changes['items'] && this.items.length) {
       this.buildDynamicOptions();
       this.buildPriceRange();
+
+      // Apply pre-selected chips
+      for (const pre of this.preSelectedChips) {
+        this.activeChips.set(pre.field, [...pre.values]);
+      }
+
       this.applyAll();
     }
   }
