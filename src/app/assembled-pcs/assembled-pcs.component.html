@@ -43,11 +43,51 @@
       </div>
 
       <div class="filter-group">
+        <label>Ядра на процесора</label>
+        <div class="chips">
+          @for (c of availableCores; track c) {
+            <button class="chip" [class.active]="isSelected(selectedCores, c)"
+                    (click)="toggleCores(c)">{{ c }} ядра</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
         <label>Тип RAM</label>
         <div class="chips">
           @for (t of availableRamTypes; track t) {
             <button class="chip" [class.active]="isSelected(selectedRamTypes, t)"
                     (click)="toggleRamType(t)">{{ t }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Оперативна памет</label>
+        <div class="chips">
+          @for (s of availableRamSizes; track s) {
+            <button class="chip" [class.active]="isSelected(selectedRamSizes, s)"
+                    (click)="toggleRamSize(s)">{{ s }} GB</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Форм фактор кутия</label>
+        <div class="chips">
+          @for (f of availableBoxFormFactors; track f) {
+            <button class="chip" [class.active]="isSelected(selectedBoxFormFactors, f)"
+                    (click)="toggleBoxFormFactor(f)">{{ f }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Ефективност на захранването</label>
+        <div class="chips">
+          @for (e of availablePsuEfficiency; track e) {
+            <button class="chip" [class.active]="isSelected(selectedPsuEfficiency, e)"
+                    (click)="togglePsuEfficiency(e)">{{ e }}</button>
           }
         </div>
       </div>

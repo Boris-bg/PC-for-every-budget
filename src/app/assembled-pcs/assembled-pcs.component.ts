@@ -30,6 +30,16 @@ export class AssembledPcsComponent implements OnInit {
   protected availableSockets:  string[] = [];
   protected availableRamTypes: string[] = [];
 
+  protected selectedBoxFormFactors: string[] = [];
+  protected selectedPsuEfficiency:  string[] = [];
+  protected selectedRamSizes:       number[] = [];
+  protected selectedCores:          number[] = [];
+
+  protected availableBoxFormFactors: string[] = [];
+  protected availablePsuEfficiency:  string[] = [];
+  protected availableRamSizes:       number[] = [];
+  protected availableCores:          number[] = [];
+
   // ── Sort & pagination ─────────────────────────────
   protected sortBy      = 'rating';
   protected pageSize    = 6;
@@ -47,6 +57,10 @@ export class AssembledPcsComponent implements OnInit {
 
       this.availableSockets  = [...new Set(data.map(p => p.cpu.socket.name))].sort();
       this.availableRamTypes = [...new Set(data.map(p => p.ram.type))].sort();
+      this.availableBoxFormFactors = [...new Set(data.map(p => p.box.boxFormFactor))].sort();
+      this.availablePsuEfficiency  = [...new Set(data.map(p => p.psu.efficiency))].sort();
+      this.availableRamSizes       = [...new Set(data.map(p => p.ram.memorySizeGB))].sort((a,b) => a - b);
+      this.availableCores          = [...new Set(data.map(p => p.cpu.cores))].sort((a,b) => a - b);
 
       this.minPrice        = Math.floor(Math.min(...data.map(p => p.price)));
       this.maxPrice        = Math.ceil(Math.max(...data.map(p => p.price)));
@@ -59,6 +73,10 @@ export class AssembledPcsComponent implements OnInit {
 
   protected toggleSocket(s: string):  void { this.toggle(this.selectedSockets, s);  this.applyAll(); }
   protected toggleRamType(t: string): void { this.toggle(this.selectedRamTypes, t); this.applyAll(); }
+  protected toggleBoxFormFactor(v: string): void { this.toggle(this.selectedBoxFormFactors, v); this.applyAll(); }
+  protected togglePsuEfficiency(v: string): void { this.toggle(this.selectedPsuEfficiency, v);  this.applyAll(); }
+  protected toggleRamSize(v: number):       void { this.toggle(this.selectedRamSizes, v);        this.applyAll(); }
+  protected toggleCores(v: number):         void { this.toggle(this.selectedCores, v);           this.applyAll(); }
 
   protected toggleHasGpu(): void {
     this.selectedHasGpu = this.selectedHasGpu === null ? true : this.selectedHasGpu === true ? false : null;
@@ -89,6 +107,10 @@ export class AssembledPcsComponent implements OnInit {
   protected clearFilters(): void {
     this.selectedSockets  = [];
     this.selectedRamTypes = [];
+    this.selectedBoxFormFactors = [];
+    this.selectedPsuEfficiency  = [];
+    this.selectedRamSizes       = [];
+    this.selectedCores          = [];
     this.selectedHasGpu   = null;
     this.selectedHasOs    = null;
     this.currentMinPrice  = this.minPrice;
@@ -103,7 +125,11 @@ export class AssembledPcsComponent implements OnInit {
       || this.selectedHasGpu !== null
       || this.selectedHasOs  !== null
       || this.currentMinPrice > this.minPrice
-      || this.currentMaxPrice < this.maxPrice;
+      || this.currentMaxPrice < this.maxPrice
+      || this.selectedBoxFormFactors.length > 0
+      || this.selectedPsuEfficiency.length  > 0
+      || this.selectedRamSizes.length       > 0
+      || this.selectedCores.length          > 0;
   }
 
   private applyAll(): void {
@@ -117,6 +143,14 @@ export class AssembledPcsComponent implements OnInit {
       result = result.filter(p => (p.gpu != null) === this.selectedHasGpu);
     if (this.selectedHasOs !== null)
       result = result.filter(p => (p.os != null) === this.selectedHasOs);
+    if (this.selectedBoxFormFactors.length)
+      result = result.filter(p => this.selectedBoxFormFactors.includes(p.box.boxFormFactor));
+    if (this.selectedPsuEfficiency.length)
+      result = result.filter(p => this.selectedPsuEfficiency.includes(p.psu.efficiency));
+    if (this.selectedRamSizes.length)
+      result = result.filter(p => this.selectedRamSizes.includes(p.ram.memorySizeGB));
+    if (this.selectedCores.length)
+      result = result.filter(p => this.selectedCores.includes(p.cpu.cores));
 
     result = result.filter(p => p.price >= this.currentMinPrice && p.price <= this.currentMaxPrice);
 
