@@ -27,4 +27,5 @@ export const routes: Routes = [
   {path: 'products/mouses', loadComponent: () => import('./mouse/mouse.component').then(m => m.MouseComponent) },
   {path: 'products/monitors', loadComponent: () => import('./monitor/monitor.component').then(m => m.MonitorComponent) },
   {path: 'products/accessories-peripherals', loadComponent: () => import('./peripheral-accessories/peripheral-accessories.component').then(m => m.PeripheralAccessoriesComponent) },
+  {path: 'products/assembled-pcs', loadComponent: () => import('./assembled-pcs/assembled-pcs.component').then(m => m.AssembledPcsComponent) },
 ];

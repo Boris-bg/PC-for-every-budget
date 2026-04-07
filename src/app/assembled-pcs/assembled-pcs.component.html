@@ -1,0 +1,166 @@
+<section class="product-page">
+
+  <header class="toolbar">
+    <h1>Асемблирани конфигурации</h1>
+    <div class="controls">
+      <label for="sort-by">Сортирай по:</label>
+      <select class="select" id="sort-by"
+              [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+        <option value="rating">Най-високо оценени</option>
+        <option value="price-asc">Цена: възходящо</option>
+        <option value="price-desc">Цена: низходящо</option>
+        <option value="name">По азбучен ред</option>
+      </select>
+
+      <label for="show-by">Покажи по:</label>
+      <select class="select" id="show-by"
+              [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+        <option [ngValue]="6">6</option>
+        <option [ngValue]="12">12</option>
+        <option [ngValue]="24">24</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <aside class="filters">
+      <div class="filters-header">
+        <h2>Филтри</h2>
+        @if (hasActiveFilters) {
+          <button class="chip clear-btn" (click)="clearFilters()">✕ Изчисти</button>
+        }
+      </div>
+
+      <div class="filter-group">
+        <label>Сокет</label>
+        <div class="chips">
+          @for (s of availableSockets; track s) {
+            <button class="chip" [class.active]="isSelected(selectedSockets, s)"
+                    (click)="toggleSocket(s)">{{ s }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Тип RAM</label>
+        <div class="chips">
+          @for (t of availableRamTypes; track t) {
+            <button class="chip" [class.active]="isSelected(selectedRamTypes, t)"
+                    (click)="toggleRamType(t)">{{ t }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Допълнителни</label>
+        <div class="chips">
+          <button class="chip"
+                  [class.active]="selectedHasGpu === true"
+                  [class.inactive]="selectedHasGpu === false"
+                  (click)="toggleHasGpu()">
+            Видеокарта {{ selectedHasGpu === true ? '✓' : selectedHasGpu === false ? '✗' : '' }}
+          </button>
+          <button class="chip"
+                  [class.active]="selectedHasOs === true"
+                  [class.inactive]="selectedHasOs === false"
+                  (click)="toggleHasOs()">
+            ОС {{ selectedHasOs === true ? '✓' : selectedHasOs === false ? '✗' : '' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Цена</label>
+        <div class="price-range-slider">
+          <div class="slider-track">
+            <input type="range" class="range-min" [min]="minPrice" [max]="maxPrice" step="50"
+                   [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+            <input type="range" class="range-max" [min]="minPrice" [max]="maxPrice" step="50"
+                   [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+          </div>
+        </div>
+        <div class="price-inputs">
+          <div class="price-input-group">
+            <span class="price-label">От</span>
+            <input type="number" class="price-text" [min]="minPrice" [max]="currentMaxPrice"
+                   [(ngModel)]="currentMinPrice" (ngModelChange)="onPriceChange()" />
+            <span class="price-currency">€</span>
+          </div>
+          <span class="price-separator">—</span>
+          <div class="price-input-group">
+            <span class="price-label">До</span>
+            <input type="number" class="price-text" [min]="currentMinPrice" [max]="maxPrice"
+                   [(ngModel)]="currentMaxPrice" (ngModelChange)="onPriceChange()" />
+            <span class="price-currency">€</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div>
+      <p class="results-count">{{ totalItems }} конфигурации</p>
+
+      <section class="pc-grid" aria-live="polite">
+        @if (displayedPcs.length === 0) {
+          <p class="no-results">Няма намерени конфигурации по избраните филтри.</p>
+        }
+
+        @for (pc of displayedPcs; track pc.id) {
+          <article class="pc-card">
+            <div class="media">
+              <img [src]="pc.imageUrl" [alt]="pc.imageAltText" loading="lazy" />
+            </div>
+
+            <div class="body">
+              <h3 class="title">{{ pc.name }}</h3>
+              <p class="comment">{{ pc.comment }}</p>
+
+              <div class="meta">
+                <span class="price">{{ pc.price }} €</span>
+                <span class="rating">⭐ {{ pc.rating }}</span>
+              </div>
+
+              <ul class="specs">
+                <li>🔲 {{ pc.cpu.name }}</li>
+                <li>🧠 {{ pc.ram.memorySizeGB }} GB {{ pc.ram.type }} {{ pc.ram.speedMHz }} MHz</li>
+                <li>💾 {{ pc.rom.memorySizeGB }} GB {{ pc.rom.storageType }}</li>
+                @if (pc.gpu) { <li>🎮 {{ pc.gpu.name }}</li> }
+                <li>⚡ {{ pc.psu.powerWatts }} W {{ pc.psu.efficiency }}</li>
+                <li>📦 {{ pc.box.name }}</li>
+                @if (pc.os) { <li>🪟 {{ pc.os.osType }}</li> }
+              </ul>
+
+              <div class="actions">
+                <div class="qty">
+                  <button class="qty-btn"
+                          (click)="changeQty(pc.id, -1, pc.availability)">−</button>
+                  <input type="number" [value]="getQty(pc.id)" min="1" readonly />
+                  <button class="qty-btn"
+                          (click)="changeQty(pc.id, +1, pc.availability)">+</button>
+                </div>
+                <button class="buy" [disabled]="pc.availability === 0">
+                  {{ pc.availability > 0 ? 'Добави в количката' : 'Изчерпан' }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </section>
+
+      @if (totalPages > 1) {
+        <nav class="pagination">
+          <button class="page-btn" [disabled]="currentPage === 1"
+                  (click)="goToPage(currentPage - 1)">‹</button>
+          @for (page of pages; track page) {
+            <button class="page-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)">{{ page }}</button>
+          }
+          <button class="page-btn" [disabled]="currentPage === totalPages"
+                  (click)="goToPage(currentPage + 1)">›</button>
+        </nav>
+      }
+    </div>
+
+  </main>
+</section>

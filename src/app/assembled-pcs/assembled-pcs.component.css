@@ -1,0 +1,39 @@
+@import "../shared/product-page.css";
+
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.pc-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: transform .18s ease, box-shadow .18s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+}
+
+.comment {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 6px 0;
+  font-style: italic;
+}
+
+.specs li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 900px) {
+  .pc-grid { grid-template-columns: 1fr; }
+}

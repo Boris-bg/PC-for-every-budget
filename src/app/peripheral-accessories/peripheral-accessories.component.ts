@@ -35,7 +35,6 @@ export class PeripheralAccessoriesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Прочети state от навигацията
     const state = this.router.getCurrentNavigation()?.extras.state
       ?? history.state;
 

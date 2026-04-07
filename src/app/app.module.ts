@@ -16,9 +16,9 @@
   // import {MatExpansionPanel} from "@angular/material/expansion";
   // import { MatExpansionModule } from '@angular/material/expansion';
   //
-  // import { Ram } from './ram/ram';         // ← добави import
-  // import { Box } from './box/box';         // ← добави import
-  // import { HttpClientModule } from '@angular/common/http'; // ← добави
+  // import { Ram } from './ram/ram';
+  // import { Box } from './box/box';
+  // import { HttpClientModule } from '@angular/common/http';
   //
   // @NgModule({
   //   declarations: [
