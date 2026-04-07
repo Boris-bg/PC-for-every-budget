@@ -46,11 +46,11 @@ export class ProductListComponent implements OnChanges {
 
   // Re-run whenever parent pushes new items
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['items'] && this.items.length) {
-      this.buildDynamicOptions();
+    if (changes['items'] && this.items.length > 0) {
+      this.buildDynamicOptions();  // инициализира activeChips с []
       this.buildPriceRange();
 
-      // Apply pre-selected chips
+      // Прилага preSelectedChips СЛЕД buildDynamicOptions
       for (const pre of this.preSelectedChips) {
         this.activeChips.set(pre.field, [...pre.values]);
       }
