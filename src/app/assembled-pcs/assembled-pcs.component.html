@@ -93,6 +93,16 @@
       </div>
 
       <div class="filter-group">
+        <label>Тип охлаждане</label>
+        <div class="chips">
+          @for (c of availableCoolingTypes; track c) {
+            <button class="chip" [class.active]="isSelected(selectedCoolingTypes, c)"
+                    (click)="toggleCoolingType(c)">{{ c }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
         <label>Допълнителни</label>
         <div class="chips">
           <button class="chip"
@@ -102,10 +112,10 @@
             Видеокарта {{ selectedHasGpu === true ? '✓' : selectedHasGpu === false ? '✗' : '' }}
           </button>
           <button class="chip"
-                  [class.active]="selectedHasOs === true"
-                  [class.inactive]="selectedHasOs === false"
-                  (click)="toggleHasOs()">
-            ОС {{ selectedHasOs === true ? '✓' : selectedHasOs === false ? '✗' : '' }}
+                  [class.active]="selectedHasRgbRam === true"
+                  [class.inactive]="selectedHasRgbRam === false"
+                  (click)="toggleHasRgbRam()">
+            RGB памет {{ selectedHasRgbRam === true ? '✓' : selectedHasRgbRam === false ? '✗' : '' }}
           </button>
         </div>
       </div>

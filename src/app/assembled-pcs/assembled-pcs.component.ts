@@ -20,7 +20,9 @@ export class AssembledPcsComponent implements OnInit {
   protected selectedSockets:  string[] = [];
   protected selectedRamTypes: string[] = [];
   protected selectedHasGpu:   boolean | null = null;
-  protected selectedHasOs:    boolean | null = null;
+  protected selectedHasRgbRam: boolean | null = null;
+  protected selectedCoolingTypes: string[] = [];
+  protected availableCoolingTypes: string[] = [];
 
   protected minPrice        = 0;
   protected maxPrice        = 5000;
@@ -55,12 +57,13 @@ export class AssembledPcsComponent implements OnInit {
     this.service.getAll().subscribe(data => {
       this.allPcs = data;
 
-      this.availableSockets  = [...new Set(data.map(p => p.cpu.socket.name))].sort();
+      this.availableSockets = [...new Set(data.map(p => p.cpu.socket.name))].sort();
       this.availableRamTypes = [...new Set(data.map(p => p.ram.type))].sort();
       this.availableBoxFormFactors = [...new Set(data.map(p => p.box.boxFormFactor))].sort();
-      this.availablePsuEfficiency  = [...new Set(data.map(p => p.psu.efficiency))].sort();
-      this.availableRamSizes       = [...new Set(data.map(p => p.ram.memorySizeGB))].sort((a,b) => a - b);
-      this.availableCores          = [...new Set(data.map(p => p.cpu.cores))].sort((a,b) => a - b);
+      this.availablePsuEfficiency = [...new Set(data.map(p => p.psu.efficiency))].sort();
+      this.availableRamSizes = [...new Set(data.map(p => p.ram.memorySizeGB))].sort((a, b) => a - b);
+      this.availableCores = [...new Set(data.map(p => p.cpu.cores))].sort((a, b) => a - b);
+      this.availableCoolingTypes = [...new Set(data.map(p => p.cooler.coolingType))].sort();
 
       this.minPrice        = Math.floor(Math.min(...data.map(p => p.price)));
       this.maxPrice        = Math.ceil(Math.max(...data.map(p => p.price)));
@@ -71,20 +74,48 @@ export class AssembledPcsComponent implements OnInit {
     });
   }
 
-  protected toggleSocket(s: string):  void { this.toggle(this.selectedSockets, s);  this.applyAll(); }
-  protected toggleRamType(t: string): void { this.toggle(this.selectedRamTypes, t); this.applyAll(); }
-  protected toggleBoxFormFactor(v: string): void { this.toggle(this.selectedBoxFormFactors, v); this.applyAll(); }
-  protected togglePsuEfficiency(v: string): void { this.toggle(this.selectedPsuEfficiency, v);  this.applyAll(); }
-  protected toggleRamSize(v: number):       void { this.toggle(this.selectedRamSizes, v);        this.applyAll(); }
-  protected toggleCores(v: number):         void { this.toggle(this.selectedCores, v);           this.applyAll(); }
-
-  protected toggleHasGpu(): void {
-    this.selectedHasGpu = this.selectedHasGpu === null ? true : this.selectedHasGpu === true ? false : null;
+  protected toggleSocket(s: string): void {
+    this.toggle(this.selectedSockets, s);
     this.applyAll();
   }
 
-  protected toggleHasOs(): void {
-    this.selectedHasOs = this.selectedHasOs === null ? true : this.selectedHasOs === true ? false : null;
+  protected toggleRamType(t: string): void {
+    this.toggle(this.selectedRamTypes, t);
+    this.applyAll();
+  }
+
+  protected toggleBoxFormFactor(v: string): void {
+    this.toggle(this.selectedBoxFormFactors, v);
+    this.applyAll();
+  }
+
+  protected togglePsuEfficiency(v: string): void {
+    this.toggle(this.selectedPsuEfficiency, v);
+    this.applyAll();
+  }
+
+  protected toggleRamSize(v: number): void {
+    this.toggle(this.selectedRamSizes, v);
+    this.applyAll();
+  }
+
+  protected toggleCores(v: number): void {
+    this.toggle(this.selectedCores, v);
+    this.applyAll();
+  }
+
+  protected toggleHasRgbRam(): void {
+    this.selectedHasRgbRam = this.selectedHasRgbRam === null ? true : this.selectedHasRgbRam ? false : null;
+    this.applyAll();
+  }
+
+  protected toggleHasGpu(): void {
+    this.selectedHasGpu = this.selectedHasGpu === null ? true : this.selectedHasGpu ? false : null;
+    this.applyAll();
+  }
+
+  protected toggleCoolingType(v: string): void {
+    this.toggle(this.selectedCoolingTypes, v);
     this.applyAll();
   }
 
@@ -112,7 +143,8 @@ export class AssembledPcsComponent implements OnInit {
     this.selectedRamSizes       = [];
     this.selectedCores          = [];
     this.selectedHasGpu   = null;
-    this.selectedHasOs    = null;
+    this.selectedHasRgbRam = null;
+    this.selectedCoolingTypes = [];
     this.currentMinPrice  = this.minPrice;
     this.currentMaxPrice  = this.maxPrice;
     this.currentPage      = 1;
@@ -123,13 +155,14 @@ export class AssembledPcsComponent implements OnInit {
     return this.selectedSockets.length > 0
       || this.selectedRamTypes.length > 0
       || this.selectedHasGpu !== null
-      || this.selectedHasOs  !== null
       || this.currentMinPrice > this.minPrice
       || this.currentMaxPrice < this.maxPrice
       || this.selectedBoxFormFactors.length > 0
       || this.selectedPsuEfficiency.length  > 0
       || this.selectedRamSizes.length       > 0
-      || this.selectedCores.length          > 0;
+      || this.selectedCores.length          > 0
+      || this.selectedHasRgbRam !== null
+      || this.selectedCoolingTypes.length > 0;
   }
 
   private applyAll(): void {
@@ -141,8 +174,6 @@ export class AssembledPcsComponent implements OnInit {
       result = result.filter(p => this.selectedRamTypes.includes(p.ram.type));
     if (this.selectedHasGpu !== null)
       result = result.filter(p => (p.gpu != null) === this.selectedHasGpu);
-    if (this.selectedHasOs !== null)
-      result = result.filter(p => (p.os != null) === this.selectedHasOs);
     if (this.selectedBoxFormFactors.length)
       result = result.filter(p => this.selectedBoxFormFactors.includes(p.box.boxFormFactor));
     if (this.selectedPsuEfficiency.length)
@@ -151,6 +182,10 @@ export class AssembledPcsComponent implements OnInit {
       result = result.filter(p => this.selectedRamSizes.includes(p.ram.memorySizeGB));
     if (this.selectedCores.length)
       result = result.filter(p => this.selectedCores.includes(p.cpu.cores));
+    if (this.selectedHasRgbRam !== null)
+      result = result.filter(p => p.ram.isRGB === this.selectedHasRgbRam);
+    if (this.selectedCoolingTypes.length)
+      result = result.filter(p => this.selectedCoolingTypes.includes(p.cooler.coolingType));
 
     result = result.filter(p => p.price >= this.currentMinPrice && p.price <= this.currentMaxPrice);
 
