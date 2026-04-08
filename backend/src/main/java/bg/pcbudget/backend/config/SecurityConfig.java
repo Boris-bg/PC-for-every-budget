@@ -1,25 +1,48 @@
 package bg.pcbudget.backend.config;
 
+import bg.pcbudget.backend.security.JwtFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+  private final JwtFilter jwtFilter;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
       .csrf(csrf -> csrf.disable())
+      .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/**").permitAll()  // API-то е публично засега
-        .anyRequest().permitAll()                // всичко друго също
+        // Public
+        .requestMatchers("/api/auth/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/sockets/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/interfaces/**").permitAll()
+        .requestMatchers("/**").permitAll()   // static Angular files
+        // Authenticated users
+        .requestMatchers("/api/orders/**").authenticated()
+        .requestMatchers("/api/users/me/**").authenticated()
+        // Admin only
+        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+        .anyRequest().authenticated()
       )
-      .formLogin(form -> form.disable())           // изключва login формата
-      .httpBasic(basic -> basic.disable());        // изключва basic auth
+      .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+      .formLogin(f -> f.disable())
+      .httpBasic(b -> b.disable());
 
     return http.build();
   }

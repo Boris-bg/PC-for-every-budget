@@ -1,0 +1,78 @@
+<div class="profile-page">
+  <div class="profile-header">
+    <div class="profile-avatar">{{ auth.currentUser?.username?.charAt(0)?.toUpperCase() }}</div>
+    <div>
+      <h2>{{ auth.currentUser?.username }}</h2>
+      <span class="role-badge" [class.admin]="auth.isAdmin">
+        {{ auth.isAdmin ? '⚙️ Администратор' : '👤 Потребител' }}
+      </span>
+    </div>
+    <button class="btn-logout" (click)="logout()">Изход</button>
+  </div>
+
+  <div class="profile-tabs">
+    <button [class.active]="tab === 'orders'"   (click)="tab = 'orders'">📦 Поръчки</button>
+    <button [class.active]="tab === 'password'" (click)="tab = 'password'">🔐 Смяна на парола</button>
+  </div>
+
+  <!-- Orders tab -->
+  @if (tab === 'orders') {
+    <div class="tab-content">
+      @if (ordersLoading) {
+        <p class="muted">Зареждане...</p>
+      } @else if (orders.length === 0) {
+        <p class="muted">Нямате поръчки все още.</p>
+      } @else {
+        @for (order of orders; track order.id) {
+          <div class="order-card">
+            <div class="order-header">
+              <span class="order-id">#{{ order.id }}</span>
+              <span class="order-date">{{ order.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
+              <span class="status-badge" [ngClass]="statusClass(order.status)">
+                {{ statusLabel(order.status) }}
+              </span>
+              <span class="order-total">{{ order.total }} €</span>
+            </div>
+            <div class="order-items">
+              @for (item of order.items; track item.productId) {
+                <div class="order-item">
+                  <span>Продукт #{{ item.productId }}</span>
+                  <span>{{ item.quantity }} бр. × {{ item.priceAtPurchase }} €</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  }
+
+  <!-- Password tab -->
+  @if (tab === 'password') {
+    <div class="tab-content">
+      <form class="password-form" (ngSubmit)="changePassword()">
+        <h3>Смяна на парола</h3>
+
+        @if (passwordMsg)   { <div class="success-box">{{ passwordMsg }}</div> }
+        @if (passwordError) { <div class="error-box">{{ passwordError }}</div> }
+
+        <div class="field">
+          <label>Текуща парола</label>
+          <input type="password" [(ngModel)]="currentPassword" name="current" required />
+        </div>
+        <div class="field">
+          <label>Нова парола</label>
+          <input type="password" [(ngModel)]="newPassword" name="new" required />
+        </div>
+        <div class="field">
+          <label>Потвърди нова парола</label>
+          <input type="password" [(ngModel)]="confirmPassword" name="confirm" required />
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="passwordLoading">
+          {{ passwordLoading ? 'Зареждане...' : 'Смени паролата' }}
+        </button>
+      </form>
+    </div>
+  }
+</div>

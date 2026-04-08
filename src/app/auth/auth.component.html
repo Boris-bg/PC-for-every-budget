@@ -1,0 +1,42 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button [class.active]="mode === 'login'"
+              (click)="mode = 'login'; error = ''">Вход</button>
+      <button [class.active]="mode === 'register'"
+              (click)="mode = 'register'; error = ''">Регистрация</button>
+    </div>
+
+    <form (ngSubmit)="submit()" class="auth-form">
+      <h2>{{ mode === 'login' ? 'Добре дошли!' : 'Създай акаунт' }}</h2>
+
+      @if (error) {
+        <div class="error-box">{{ error }}</div>
+      }
+
+      <div class="field">
+        <label>Потребителско име</label>
+        <input type="text" [(ngModel)]="username" name="username"
+               placeholder="Въведи потребителско име" required />
+      </div>
+
+      <div class="field">
+        <label>Парола</label>
+        <input type="password" [(ngModel)]="password" name="password"
+               placeholder="Въведи парола" required />
+      </div>
+
+      @if (mode === 'register') {
+        <div class="field">
+          <label>Потвърди парола</label>
+          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
+                 placeholder="Повтори паролата" required />
+        </div>
+      }
+
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        {{ loading ? 'Зареждане...' : mode === 'login' ? 'Вход' : 'Регистрация' }}
+      </button>
+    </form>
+  </div>
+</div>

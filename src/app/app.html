@@ -116,7 +116,13 @@
         </div>
 
         <div style="flex: 1; justify-content: flex-end;">
-          <button>Вход</button>
+          @if (auth.isLoggedIn) {
+            <button routerLink="/profile">
+              {{ auth.currentUser?.username }}
+            </button>
+          } @else {
+            <button routerLink="/auth">Вход</button>
+          }
         </div>
 
       </header>

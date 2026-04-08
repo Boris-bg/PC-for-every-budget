@@ -29,4 +29,6 @@ export const routes: Routes = [
   {path: 'products/accessories-peripherals', loadComponent: () => import('./peripheral-accessories/peripheral-accessories.component').then(m => m.PeripheralAccessoriesComponent) },
   {path: 'products/assembled-pcs', loadComponent: () => import('./assembled-pcs/assembled-pcs.component').then(m => m.AssembledPcsComponent) },
   {path: 'product/:id', loadComponent: () => import('./product-detail/product-detail.component').then(m => m.ProductDetailComponent) },
+  {path: 'auth', loadComponent: () => import('./auth/auth.component').then(m => m.AuthComponent) },
+  {path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
 ];
