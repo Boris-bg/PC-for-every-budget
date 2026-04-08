@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {ProductDetailService} from '../services/product-detail.service';
-import {Product} from '../models/Product';
+import { Location } from '@angular/common';
 
 interface SpecRow {
   label: string;
@@ -113,7 +113,7 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    private location: Location,
     private service: ProductDetailService
   ) {
   }
@@ -195,6 +195,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['..']);
+    this.location.back();
   }
 }
