@@ -1,0 +1,96 @@
+<div class="detail-page">
+
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Зареждане...</p>
+    </div>
+  }
+
+  @if (notFound) {
+    <div class="not-found">
+      <h2>Продуктът не е намерен</h2>
+      <button class="btn-back" (click)="goBack()">← Назад</button>
+    </div>
+  }
+
+  @if (product && !loading) {
+    <div class="breadcrumb">
+      <button class="btn-back" (click)="goBack()">← Назад</button>
+      <span class="brand-tag">{{ product.brand }}</span>
+    </div>
+
+    <div class="detail-layout">
+
+      <!-- LEFT: Image -->
+      <div class="image-section">
+        <div class="image-wrapper">
+          @if (product.imageUrl) {
+            <img [src]="product.imageUrl" [alt]="product.imageAltText" />
+          } @else {
+            <div class="no-image">🖥️</div>
+          }
+        </div>
+
+        <div class="badges">
+          @if (product.availability > 0) {
+            <span class="badge badge--available">✓ В наличност ({{ product.availability }} бр.)</span>
+          } @else {
+            <span class="badge badge--unavailable">✗ Изчерпан</span>
+          }
+          @if (product.warrantyPeriod) {
+            <span class="badge badge--warranty">🛡️ {{ product.warrantyPeriod }} м. гаранция</span>
+          }
+        </div>
+      </div>
+
+      <!-- RIGHT: Info -->
+      <div class="info-section">
+        <h1 class="product-title">{{ product.name }}</h1>
+
+        <div class="rating-row">
+          @for (star of [1,2,3,4,5]; track star) {
+            <span class="star" [class.filled]="star <= product.rating">★</span>
+          }
+          <span class="rating-value">{{ product.rating }}/5</span>
+        </div>
+
+        @if (product.additionalDetails) {
+          <p class="description">{{ product.additionalDetails }}</p>
+        }
+
+        <div class="price-row">
+          <span class="price">{{ product.price }} €</span>
+        </div>
+
+        <div class="buy-section">
+          <div class="qty-control">
+            <button class="qty-btn" (click)="changeQty(-1)" [disabled]="quantity <= 1">−</button>
+            <span class="qty-value">{{ quantity }}</span>
+            <button class="qty-btn" (click)="changeQty(1)"
+                    [disabled]="quantity >= product.availability">+</button>
+          </div>
+          <button class="btn-buy" [disabled]="product.availability === 0">
+            {{ product.availability > 0 ? '🛒 Добави в количката' : 'Изчерпан' }}
+          </button>
+        </div>
+
+        <!-- Spec table -->
+        <div class="specs-section">
+          <h3 class="specs-title">Технически характеристики</h3>
+          <table class="specs-table">
+            <tbody>
+              @for (spec of specs; track spec.label) {
+                <tr>
+                  <td class="spec-label">{{ spec.label }}</td>
+                  <td class="spec-value">{{ spec.value }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  }
+</div>

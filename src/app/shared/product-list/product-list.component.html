@@ -123,7 +123,9 @@
               <img [src]="item.imageUrl" [alt]="item.imageAltText" loading="lazy" />
             </div>
             <div class="body">
-              <h3 class="title">{{ item.name }}</h3>
+              <h3 class="title">
+                <a [routerLink]="['/product', item.id]" class="product-link">{{ item.name }}</a>
+              </h3>
               <div class="meta">
                 <span class="price">{{ item.price }} €</span>
                 <span class="rating">⭐ {{ item.rating }}</span>

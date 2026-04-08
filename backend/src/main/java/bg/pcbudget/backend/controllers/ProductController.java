@@ -3,6 +3,7 @@ package bg.pcbudget.backend.controllers;
 import bg.pcbudget.backend.models.Product;
 import bg.pcbudget.backend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -18,5 +19,12 @@ public class ProductController {
   public List<Product> search(@RequestParam String q) {
     if (q == null || q.trim().length() < 2) return List.of();
     return repository.searchByNameOrBrand(q.trim());
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Product> getById(@PathVariable Long id) {
+    return repository.findById(id)
+      .map(ResponseEntity::ok)
+      .orElse(ResponseEntity.notFound().build());
   }
 }

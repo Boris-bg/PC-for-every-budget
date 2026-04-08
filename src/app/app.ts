@@ -100,12 +100,9 @@ export class App implements OnInit {
   }
 
   protected selectProduct(product: Product): void {
-    // Navigate to the product's category page
-    const dtype = (product as any).dtype ?? '';
-    const route = PRODUCT_ROUTES[dtype] ?? '/products';
-    this.router.navigate([route]);
-    this.showDropdown       = false;
-    this.itemForSearching   = '';
+    this.router.navigate(['/product', product.id]);
+    this.showDropdown     = false;
+    this.itemForSearching = '';
   }
 
   protected selectCategory(result: SearchResult): void {
