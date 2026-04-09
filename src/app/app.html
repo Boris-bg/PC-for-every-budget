@@ -116,6 +116,13 @@
         </div>
 
         <div style="flex: 1; justify-content: flex-end;">
+          <button routerLink="/cart" class="cart-btn">
+            🛒
+            @if (cart.count > 0) {
+              <span class="cart-badge">{{ cart.count }}</span>
+            }
+          </button>
+
           @if (auth.isLoggedIn) {
             <button routerLink="/profile">
               {{ auth.currentUser?.username }}

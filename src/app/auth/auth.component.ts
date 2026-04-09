@@ -28,7 +28,12 @@ export class AuthComponent {
 
     if (this.mode === 'login') {
       this.auth.login(this.username, this.password).subscribe({
-        next: () => this.router.navigate(['/']),
+        next: () => {
+          const returnUrl = this.router.getCurrentNavigation()?.extras?.state?.['returnUrl']
+            ?? history.state?.returnUrl
+            ?? '/';
+          this.router.navigate([returnUrl]);
+        },
         error: err => {
           this.error   = err.error?.error ?? 'Грешка при вход';
           this.loading = false;

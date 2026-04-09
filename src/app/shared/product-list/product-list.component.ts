@@ -1,9 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Product } from '../../models/Product';
-import { FilterConfig } from '../../models/FilterConfig';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Product} from '../../models/Product';
+import {FilterConfig} from '../../models/FilterConfig';
 import {RouterLink} from '@angular/router';
+import {CartService} from '../../services/cart.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -44,6 +46,19 @@ export class ProductListComponent implements OnChanges {
   protected totalPages  = 1;
   protected totalItems  = 0;
   protected pages:        number[] = [];
+
+  constructor(
+    private cart: CartService,
+    private router: Router
+  ) {}
+
+  protected addToCart(item: Product): void {
+    this.cart.add(item, this.getQty(item.id));
+  }
+
+  protected goToCart(): void {
+    this.router.navigate(['/cart']);
+  }
 
   // Re-run whenever parent pushes new items
   ngOnChanges(changes: SimpleChanges): void {

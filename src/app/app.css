@@ -420,6 +420,28 @@ mat-expansion-panel-header:hover {
   margin-top: 2px;
 }
 
+.cart-btn {
+  position: relative;
+  font-size: 1.3rem;
+  padding: 8px 14px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

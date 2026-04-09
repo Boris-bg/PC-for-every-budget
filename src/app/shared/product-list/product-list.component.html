@@ -144,9 +144,17 @@
                   <button class="qty-btn"
                           (click)="changeQty(item.id, +1, item.availability)">+</button>
                 </div>
-                <button class="buy" [disabled]="item.availability === 0">
-                  {{ item.availability > 0 ? 'Добави в количката' : 'Изчерпан' }}
-                </button>
+                <div class="action-btns">
+                  <button class="buy" [disabled]="item.availability === 0"
+                          (click)="addToCart(item)">
+                    {{ item.availability > 0 ? '+ Количка' : 'Изчерпан' }}
+                  </button>
+                  @if (item.availability > 0) {
+                    <button class="btn-go-cart" (click)="addToCart(item); goToCart()">
+                      🛒
+                    </button>
+                  }
+                </div>
               </div>
             </div>
           </article>

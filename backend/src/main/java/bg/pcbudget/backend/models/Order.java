@@ -28,4 +28,9 @@ public class Order {
     private List<OrderItem> items;
 
     public enum Status { PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED }
+
+    private String phone;
+    private String deliveryAddress;
+    private String deliveryType;   // PICKUP / DELIVERY
+    private String paymentMethod;  // CASH_ON_DELIVERY / CARD
 }

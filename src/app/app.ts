@@ -13,6 +13,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { SearchService, SearchResult } from './services/search.service';
 import { Product } from './models/Product';
 import { AuthService } from './services/auth.service';
+import { CartService } from './services/cart.service';
 
 // Map product types to their category routes
 const PRODUCT_ROUTES: Record<string, string> = {
@@ -59,7 +60,8 @@ export class App implements OnInit {
   constructor(
     private searchService: SearchService,
     private router: Router,
-    public auth: AuthService
+    public auth: AuthService,
+    public cart: CartService
   ) {}
 
   ngOnInit(): void {

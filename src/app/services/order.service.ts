@@ -3,13 +3,35 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
-export interface OrderItem { productId: number; quantity: number; priceAtPurchase: number; }
+export interface OrderItemPayload {
+  product:         { id: number };
+  quantity:        number;
+  priceAtPurchase: number;
+}
+
+export interface OrderPayload {
+  items:           OrderItemPayload[];
+  phone:           string;
+  deliveryAddress: string;
+  deliveryType:    'PICKUP' | 'DELIVERY';
+  paymentMethod:   'CASH_ON_DELIVERY' | 'CARD';
+}
+
+export interface OrderItem {
+  productId:       number;
+  quantity:        number;
+  priceAtPurchase: number;
+}
+
 export interface Order {
-  id:            number;
-  total:         number;
-  status:        'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
-  createdAt:     string;
-  items:         OrderItem[];
+  id:              number;
+  total:           number;
+  status:          'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+  createdAt:       string;
+  items:           OrderItem[];
+  phone?:          string;
+  deliveryAddress?:string;
+  paymentMethod?:  string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -26,7 +48,7 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.apiUrl}/my`, { headers: this.headers() });
   }
 
-  place(order: { items: { product: { id: number }; quantity: number; priceAtPurchase: number }[] }): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order, { headers: this.headers() });
+  place(payload: OrderPayload): Observable<Order> {
+    return this.http.post<Order>(this.apiUrl, payload, { headers: this.headers() });
   }
 }
