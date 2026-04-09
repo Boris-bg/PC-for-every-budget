@@ -1,0 +1,1 @@
+import{Wb as i,Za as s,wb as n,xb as o}from"./chunk-IRLSBWFY.js";var c=class e{static \u0275fac=function(t){return new(t||e)};static \u0275cmp=s({type:e,selectors:[["app-discounts"]],decls:2,vars:0,template:function(t,p){t&1&&(n(0,"p"),i(1,"discounts works!"),o())},encapsulation:2})};export{c as Discounts};

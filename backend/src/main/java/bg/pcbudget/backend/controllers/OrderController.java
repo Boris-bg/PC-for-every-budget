@@ -85,7 +85,33 @@ public class OrderController {
   public ResponseEntity<?> getMyOrders(@RequestHeader("Authorization") String authHeader) {
     String username = jwtUtil.getUsername(authHeader.substring(7));
     return userRepository.findByUsername(username)
-      .map(u -> ResponseEntity.ok(service.getByUserId(u.getId())))
+      .map(u -> {
+        List<Order> orders = service.getByUserId(u.getId());
+        // Map to safe DTO
+        List<java.util.Map<String, Object>> result = orders.stream().map(o -> {
+          java.util.Map<String, Object> map = new java.util.LinkedHashMap<>();
+          map.put("id",              o.getId());
+          map.put("total",           o.getTotal());
+          map.put("status",          o.getStatus());
+          map.put("createdAt",       o.getCreatedAt());
+          map.put("phone",           o.getPhone());
+          map.put("deliveryAddress", o.getDeliveryAddress());
+          map.put("deliveryType",    o.getDeliveryType());
+          map.put("paymentMethod",   o.getPaymentMethod());
+          map.put("items", o.getItems() == null ? List.of() :
+            o.getItems().stream().map(i -> {
+              java.util.Map<String, Object> item = new java.util.LinkedHashMap<>();
+              item.put("productId",       i.getProduct() != null ? i.getProduct().getId() : null);
+              item.put("productName",     i.getProduct() != null ? i.getProduct().getName() : null);
+              item.put("quantity",        i.getQuantity());
+              item.put("priceAtPurchase", i.getPriceAtPurchase());
+              return item;
+            }).collect(java.util.stream.Collectors.toList())
+          );
+          return map;
+        }).collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(result);
+      })
       .orElse(ResponseEntity.status(401).build());
   }
 

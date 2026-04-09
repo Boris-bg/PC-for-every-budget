@@ -41,8 +41,14 @@ export class ProfileComponent implements OnInit {
 
   loadOrders(): void {
     this.orderService.getMyOrders().subscribe({
-      next: orders => { this.orders = orders; this.ordersLoading = false; },
-      error: ()     => { this.ordersLoading = false; }
+      next: orders => {
+        this.orders = orders;
+        this.ordersLoading = false;
+      },
+      error: (err) => {
+        console.error('Orders error:', err);
+        this.ordersLoading = false;
+      }
     });
   }
 
