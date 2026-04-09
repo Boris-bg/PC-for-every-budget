@@ -24,23 +24,93 @@
         <p class="muted">Нямате поръчки все още.</p>
       } @else {
         @for (order of orders; track order.id) {
-          <div class="order-card">
-            <div class="order-header">
+          <div class="order-card" [class.expanded]="expandedOrderId === order.id">
+
+            <!-- Header — always visible -->
+            <div class="order-header" (click)="toggleOrder(order.id)">
               <span class="order-id">#{{ order.id }}</span>
               <span class="order-date">{{ order.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
               <span class="status-badge" [ngClass]="statusClass(order.status)">
-                {{ statusLabel(order.status) }}
-              </span>
+              {{ statusLabel(order.status) }}
+            </span>
               <span class="order-total">{{ order.total }} €</span>
+              <span class="expand-icon">{{ expandedOrderId === order.id ? '▲' : '▼' }}</span>
             </div>
-            <div class="order-items">
-              @for (item of order.items; track item.productId) {
-                <div class="order-item">
-                  <span>Продукт #{{ item.productId }}</span>
-                  <span>{{ item.quantity }} бр. × {{ item.priceAtPurchase }} €</span>
+
+            <!-- Expanded content -->
+            @if (expandedOrderId === order.id) {
+              <div class="order-detail">
+
+                <!-- Tracking timeline -->
+                @if (order.status !== 'CANCELLED') {
+                  <div class="tracking-section">
+                    <h4>Проследяване на пратката</h4>
+                    <div class="tracking-timeline">
+                      @for (step of trackingSteps(order.status); track $index) {
+                        <div class="tracking-step"
+                             [class.done]="step.done"
+                             [class.active]="step.active">
+                          <div class="step-circle">
+                            {{ step.done ? '✓' : step.icon }}
+                          </div>
+                          <div class="step-label">{{ step.label }}</div>
+                          @if (!$last) {
+                            <div class="step-line" [class.done]="step.done"></div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                } @else {
+                  <div class="cancelled-notice">
+                    ❌ Поръчката е отказана
+                  </div>
+                }
+
+                <!-- Order info -->
+                <div class="order-info-grid">
+                  @if (order.phone) {
+                    <div class="info-item">
+                      <span class="info-label">📞 Телефон</span>
+                      <span class="info-value">{{ order.phone }}</span>
+                    </div>
+                  }
+                  @if (order.deliveryAddress) {
+                    <div class="info-item">
+                      <span class="info-label">📦 Адрес</span>
+                      <span class="info-value">{{ order.deliveryAddress }}</span>
+                    </div>
+                  }
+                  @if (order.paymentMethod) {
+                    <div class="info-item">
+                      <span class="info-label">💳 Плащане</span>
+                      <span class="info-value">{{ paymentLabel(order.paymentMethod) }}</span>
+                    </div>
+                  }
                 </div>
-              }
-            </div>
+
+                <!-- Products -->
+                <div class="order-items">
+                  <h4>Продукти</h4>
+                  @for (item of order.items; track item.productId) {
+                    <div class="order-item">
+                      <span class="item-name">Продукт #{{ item.productId }}</span>
+                      <span class="item-qty">{{ item.quantity }} бр.</span>
+                      <span class="item-price">{{ item.priceAtPurchase }} €/бр.</span>
+                      <span class="item-total">{{ (item.quantity * item.priceAtPurchase).toFixed(2) }} €</span>
+                    </div>
+                  }
+                  <div class="order-item total-item">
+                    <span class="item-name"><strong>Общо</strong></span>
+                    <span></span>
+                    <span></span>
+                    <span class="item-total"><strong>{{ order.total }} €</strong></span>
+                  </div>
+                </div>
+
+              </div>
+            }
+
           </div>
         }
       }

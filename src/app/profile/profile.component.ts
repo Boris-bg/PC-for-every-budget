@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
   passwordMsg     = '';
   passwordError   = '';
   passwordLoading = false;
+  expandedOrderId: number | null = null;
 
   constructor(
     public auth: AuthService,
@@ -89,5 +90,33 @@ export class ProfileComponent implements OnInit {
       CANCELLED:  'status--cancelled',
     };
     return map[s] ?? '';
+  }
+
+  toggleOrder(id: number): void {
+    this.expandedOrderId = this.expandedOrderId === id ? null : id;
+  }
+
+  trackingSteps(status: string): { label: string; icon: string; done: boolean; active: boolean }[] {
+    const steps = [
+      {key: 'PENDING', label: 'Получена', icon: '📋'},
+      {key: 'PROCESSING', label: 'Обработва се', icon: '⚙️'},
+      {key: 'SHIPPED', label: 'Изпратена', icon: '🚚'},
+      {key: 'DELIVERED', label: 'Доставена', icon: '✅'},
+    ];
+    const order = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'];
+    const currentIdx = order.indexOf(status);
+    return steps.map((s, i) => ({
+      ...s,
+      done: i < currentIdx,
+      active: i === currentIdx,
+    }));
+  }
+
+  paymentLabel(p: string): string {
+    return p === 'CASH_ON_DELIVERY' ? 'Наложен платеж' : 'Карта';
+  }
+
+  deliveryTypeLabel(t: string): string {
+    return t === 'PICKUP' ? 'Взимане от магазина' : 'Доставка до адрес';
   }
 }
