@@ -422,24 +422,25 @@ mat-expansion-panel-header:hover {
 
 .cart-btn {
   position: relative;
-  font-size: 1.3rem;
-  padding: 8px 14px;
+  font-size: 1.1rem;
+  padding: 8px 20px;
+  min-width: 60px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .cart-badge {
-  position: absolute;
-  top: 2px;
-  right: 2px;
+  position: static;
   background: #ef4444;
   color: white;
-  border-radius: 50%;
-  font-size: 0.65rem;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  padding: 2px 7px;
   font-weight: 700;
+  min-width: 20px;
+  text-align: center;
 }
 
 @keyframes fadeIn {

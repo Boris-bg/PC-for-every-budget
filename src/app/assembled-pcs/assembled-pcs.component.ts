@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PC } from '../models/PC';
 import { PcService } from '../services/pc.service';
+import { CartService } from '../services/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assembled-pcs',
@@ -51,7 +53,20 @@ export class AssembledPcsComponent implements OnInit {
   protected pages:        number[] = [];
   protected quantities:   Map<number, number> = new Map();
 
-  constructor(private service: PcService) {}
+  constructor(
+    private service: PcService,
+    private cart: CartService,
+    private router: Router
+  ) {}
+
+  protected addToCart(pc: PC): void {
+    this.cart.add(pc, this.getQty(pc.id));
+  }
+
+  protected goToCart(pc: PC): void {
+    this.cart.add(pc, this.getQty(pc.id));
+    this.router.navigate(['/cart']);
+  }
 
   ngOnInit(): void {
     this.service.getAll().subscribe(data => {
