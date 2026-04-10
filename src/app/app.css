@@ -84,25 +84,15 @@ header {
   box-sizing: border-box;
 }
 
-header div {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
+/*header div {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  justify-content: center;*/
+/*}*/
 
-header * {
-  height: 48px;
-}
-
-:host ::ng-deep .search-dropdown {
-  height: auto !important;
-  max-height: 400px !important;
-  overflow-y: auto !important;
-}
-
-:host ::ng-deep .search-dropdown * {
-  height: auto !important;
-}
+/*header * {*/
+/*  height: 48px;*/
+/*}*/
 
 div mat-form-field ::ng-deep .mat-mdc-text-field-wrapper {
   height: 48px;
@@ -383,11 +373,6 @@ mat-expansion-panel-header:hover {
   animation: fadeIn 0.15s ease;
   display: flex;
   flex-direction: column;
-  height: auto !important;
-}
-
-.search-dropdown, .search-dropdown * {
-  height: auto;
 }
 
 .search-group-label {
@@ -414,21 +399,21 @@ mat-expansion-panel-header:hover {
   flex-shrink: 0;
 }
 
-.search-item:last-child { border-bottom: none; }
-.search-item:hover { background: rgba(110, 231, 183, 0.08); }
-.search-item--category { background: rgba(255,255,255,0.02); }
+.search-item:last-child {
+  border-bottom: none;
+}
+
+.search-item:hover {
+  background: rgba(110, 231, 183, 0.08);
+}
+
+.search-item--category {
+  background: rgba(255, 255, 255, 0.02);
+}
 
 .search-item-icon {
   font-size: 1.1rem;
   flex-shrink: 0;
-}
-
-.search-item-body {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
 }
 
 .search-item-name {
@@ -443,6 +428,14 @@ mat-expansion-panel-header:hover {
 .search-item-sub {
   font-size: 0.78rem;
   color: #9aa6b2;
+}
+
+.search-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
 .search-no-results {
