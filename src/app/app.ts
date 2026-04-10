@@ -116,9 +116,10 @@ export class App implements OnInit {
   }
 
   protected search(): void {
-    if (!this.itemForSearching.trim()) return;
-    this.router.navigate(['/search'], { queryParams: { q: this.itemForSearching } });
-    this.showDropdown = false;
+    const q = this.itemForSearching.trim();
+    if (!q) return;
+    this.searchSubject.next(q);
+    this.showDropdown = true;
   }
 
   // Close dropdown on Escape

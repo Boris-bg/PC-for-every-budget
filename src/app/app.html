@@ -84,15 +84,20 @@
           @if (showDropdown) {
             <div class="search-dropdown">
 
+              @if (categoryResults.length === 0 && productResults.length === 0) {
+                <div class="search-no-results">
+                  <span>🔍</span>
+                  <span>Няма намерени резултати за „{{ itemForSearching }}"</span>
+                </div>
+              }
+
               @if (categoryResults.length > 0) {
                 <div class="search-group-label">Категории</div>
                 @for (cat of categoryResults; track cat.route) {
                   <div class="search-item search-item--category"
                        (mousedown)="selectCategory(cat)">
                     <span class="search-item-icon">📁</span>
-                    <div>
-                      <div class="search-item-name">{{ cat.label }}</div>
-                    </div>
+                    <div class="search-item-name">{{ cat.label }}</div>
                   </div>
                 }
               }
@@ -103,7 +108,7 @@
                   <div class="search-item"
                        (mousedown)="selectProduct(p)">
                     <span class="search-item-icon">🖥️</span>
-                    <div>
+                    <div class="search-item-body">
                       <div class="search-item-name">{{ p.name }}</div>
                       <div class="search-item-sub">{{ p.brand }} · {{ p.price }} €</div>
                     </div>

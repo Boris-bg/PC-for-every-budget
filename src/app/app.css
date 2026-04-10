@@ -368,7 +368,8 @@ mat-expansion-panel-header:hover {
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   z-index: 999;
-  overflow: hidden;
+  overflow-y: auto;
+  min-height: 400px;
   animation: fadeIn 0.15s ease;
 }
 
@@ -383,12 +384,15 @@ mat-expansion-panel-header:hover {
 
 .search-item {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
   cursor: pointer;
   transition: background 0.12s;
   border-bottom: 1px solid rgba(255,255,255,0.04);
+  min-height: 48px;
+  width: 100%;
 }
 
 .search-item:last-child {
@@ -401,6 +405,35 @@ mat-expansion-panel-header:hover {
 
 .search-item--category {
   background: rgba(255,255,255,0.02);
+}
+
+.search-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-item-name {
+  font-size: 0.9rem;
+  color: #e6eef6;
+  font-weight: 500;
+}
+
+.search-item-sub {
+  font-size: 0.78rem;
+  color: #9aa6b2;
+}
+
+.search-no-results {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 14px;
+  color: #9aa6b2;
+  font-size: 0.88rem;
+  font-style: italic;
 }
 
 .search-item-icon {
