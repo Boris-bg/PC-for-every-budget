@@ -94,6 +94,16 @@ header * {
   height: 48px;
 }
 
+:host ::ng-deep .search-dropdown {
+  height: auto !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+}
+
+:host ::ng-deep .search-dropdown * {
+  height: auto !important;
+}
+
 div mat-form-field ::ng-deep .mat-mdc-text-field-wrapper {
   height: 48px;
 }
@@ -401,7 +411,7 @@ mat-expansion-panel-header:hover {
   border-bottom: 1px solid rgba(255,255,255,0.06);
   width: 100%;
   box-sizing: border-box;
-  flex-shrink: 0;           /* ← добави */
+  flex-shrink: 0;
 }
 
 .search-item:last-child { border-bottom: none; }
