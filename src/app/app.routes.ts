@@ -33,4 +33,5 @@ export const routes: Routes = [
   {path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
   {path: 'cart', loadComponent: () => import('./cart/cart.component').then(m => m.CartComponent) },
   {path: 'checkout', loadComponent: () => import('./checkout/checkout.component').then(m => m.CheckoutComponent) },
+  {path: 'products/pc-assembler', loadComponent: () => import('./pc-builder/pc-builder.component').then(m => m.PcBuilderComponent) },
 ];

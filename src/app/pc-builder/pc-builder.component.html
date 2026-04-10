@@ -1,0 +1,147 @@
+<div class="builder-page">
+
+  <div class="builder-header">
+    <div>
+      <h1>🔧 PC Конфигуратор</h1>
+      <p class="subtitle">Избери компоненти и системата ще провери съвместимостта автоматично.</p>
+    </div>
+    <button class="btn-reset" (click)="reset()">↺ Нулирай</button>
+  </div>
+
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Зареждане на компонентите...</p>
+    </div>
+  } @else {
+    <div class="builder-layout">
+
+      <!-- LEFT: Slots -->
+      <div class="slots-column">
+
+        <!-- Warnings -->
+        @if (warnings.length > 0) {
+          <div class="warnings-box">
+            @for (w of warnings; track w) {
+              <div class="warning-item">{{ w }}</div>
+            }
+          </div>
+        }
+
+        @for (slot of slots; track slot.label) {
+          <div class="slot-card" [class.slot--selected]="slot.selected"
+               [class.slot--required]="slot.required">
+
+            <!-- Slot header -->
+            <div class="slot-header" (click)="toggleSlot(slot)">
+              <span class="slot-icon">{{ slot.icon }}</span>
+              <div class="slot-info">
+                <span class="slot-label">
+                  {{ slot.label }}
+                  @if (!slot.required) { <span class="optional-tag">Незадължително</span> }
+                </span>
+                @if (slot.selected) {
+                  <span class="slot-selected-name">{{ slot.selected.name }}</span>
+                  <span class="slot-spec">{{ specSummary(slot) }}</span>
+                } @else {
+                  <span class="slot-placeholder">Избери {{ slot.label | lowercase }}...</span>
+                }
+              </div>
+              <div class="slot-right">
+                @if (slot.selected) {
+                  <span class="slot-price">{{ slot.selected.price }} €</span>
+                  <button class="btn-deselect" (click)="deselect(slot, $event)">✕</button>
+                } @else {
+                  <span class="slot-arrow">{{ slot.expanded ? '▲' : '▼' }}</span>
+                }
+              </div>
+            </div>
+
+            <!-- Dropdown list -->
+            @if (slot.expanded) {
+              <div class="slot-dropdown">
+                @if (slot.filtered.length === 0) {
+                  <p class="no-parts">
+                    Няма налични компоненти за текущата конфигурация.
+                  </p>
+                } @else {
+                  @for (part of slot.filtered; track part.id) {
+                    <div class="part-row"
+                         [class.part--unavailable]="part.availability === 0"
+                         (click)="part.availability > 0 && select(slot, part)">
+                      <div class="part-info">
+                        <span class="part-name">{{ part.name }}</span>
+                        <span class="part-brand">{{ part.brand }}</span>
+                      </div>
+                      <div class="part-right">
+                        @if (part.availability === 0) {
+                          <span class="out-of-stock">Изчерпан</span>
+                        } @else {
+                          <span class="part-price">{{ part.price }} €</span>
+                          <span class="part-stock">{{ part.availability }} бр.</span>
+                        }
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+
+      <!-- RIGHT: Summary -->
+      <aside class="builder-summary">
+        <h3>Обобщение</h3>
+
+        <div class="summary-progress">
+          <span>{{ selectedCount }} / {{ slots.length }} компонента</span>
+          <div class="progress-bar">
+            <div class="progress-fill"
+                 [style.width.%]="(selectedCount / slots.length) * 100"></div>
+          </div>
+        </div>
+
+        <div class="summary-parts">
+          @for (slot of slots; track slot.label) {
+            <div class="summary-row" [class.summary-row--empty]="!slot.selected">
+              <span class="summary-icon">{{ slot.icon }}</span>
+              <span class="summary-label">{{ slot.label }}</span>
+              @if (slot.selected) {
+                <span class="summary-price">{{ slot.selected.price }} €</span>
+              } @else {
+                <span class="summary-empty">—</span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total">
+          <span>Обща цена:</span>
+          <strong>{{ totalPrice.toFixed(2) }} €</strong>
+        </div>
+
+        <button class="btn-add-cart"
+                [disabled]="!isComplete"
+                (click)="addAllToCart()">
+          @if (isComplete) {
+            🛒 Добави всичко в количката
+          } @else {
+            Избери задължителните части
+          }
+        </button>
+
+        @if (!isComplete) {
+          <p class="required-hint">
+            * Задължителни: процесор, охлаждане, дънна платка, RAM, диск, захранване, кутия
+          </p>
+        }
+      </aside>
+
+    </div>
+  }
+
+</div>
