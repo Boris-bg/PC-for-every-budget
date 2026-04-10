@@ -119,17 +119,25 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.service.getById(id).subscribe({
-      next: p => {
-        this.product = p;
-        this.specs = this.buildSpecs(p);
-        this.loading = false;
-      },
-      error: () => {
-        this.notFound = true;
-        this.loading = false;
-      }
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      this.loading  = true;
+      this.notFound = false;
+      this.product  = null;
+      this.specs    = [];
+      this.quantity = 1;
+
+      this.service.getById(id).subscribe({
+        next: p => {
+          this.product = p;
+          this.specs   = this.buildSpecs(p);
+          this.loading = false;
+        },
+        error: () => {
+          this.notFound = true;
+          this.loading  = false;
+        }
+      });
     });
   }
 
