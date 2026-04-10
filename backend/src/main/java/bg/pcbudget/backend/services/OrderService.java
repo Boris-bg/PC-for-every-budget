@@ -24,11 +24,13 @@ public class OrderService {
     if (order.getItems() != null) {
       for (OrderItem item : order.getItems()) {
         item.setOrder(order);
-        // Load product from DB to get actual price
-        if (item.getPriceAtPurchase() == null) {
-          productRepository.findById(item.getProduct().getId())
-            .ifPresent(p -> item.setPriceAtPurchase(p.getPrice()));
-        }
+        productRepository.findById(item.getProduct().getId())
+          .ifPresent(p -> {
+            item.setPriceAtPurchase(p.getPrice());
+            int newAvailability = p.getAvailability() - item.getQuantity();
+            p.setAvailability(Math.max(0, newAvailability));
+            productRepository.save(p);
+          });
       }
       double total = order.getItems().stream()
         .mapToDouble(i -> i.getPriceAtPurchase() * i.getQuantity())

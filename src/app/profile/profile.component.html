@@ -94,7 +94,7 @@
                   <h4>Продукти</h4>
                   @for (item of order.items; track item.productId) {
                     <div class="order-item">
-                      <span class="item-name">{{ item.productName ?? 'Продукт #' + item.productId }}</span>
+                      <span class="item-name">{{ item.productName }}</span>
                       <span class="item-qty">{{ item.quantity }} бр.</span>
                       <span class="item-price">{{ item.priceAtPurchase }} €/бр.</span>
                       <span class="item-total">{{ (item.quantity * item.priceAtPurchase).toFixed(2) }} €</span>

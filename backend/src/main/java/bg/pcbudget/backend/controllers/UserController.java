@@ -32,4 +32,14 @@ public class UserController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Admin: change role
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<?> changeRole(@PathVariable Long id,
+                                        @RequestParam User.Role role) {
+      return service.getById(id).map(u -> {
+        u.setRole(role);
+        return ResponseEntity.ok(service.save(u));
+      }).orElse(ResponseEntity.notFound().build());
+    }
 }
