@@ -362,15 +362,22 @@ mat-expansion-panel-header:hover {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  width: 380px;
+  width: 400px;
   background: #1a2636;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-  z-index: 999;
+  z-index: 9999;
+  max-height: 400px;
   overflow-y: auto;
-  min-height: 400px;
   animation: fadeIn 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  height: auto !important;
+}
+
+.search-dropdown, .search-dropdown * {
+  height: auto;
 }
 
 .search-group-label {
@@ -380,6 +387,7 @@ mat-expansion-panel-header:hover {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .search-item {
@@ -387,24 +395,22 @@ mat-expansion-panel-header:hover {
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   cursor: pointer;
   transition: background 0.12s;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  min-height: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;           /* ← добави */
 }
 
-.search-item:last-child {
-  border-bottom: none;
-}
+.search-item:last-child { border-bottom: none; }
+.search-item:hover { background: rgba(110, 231, 183, 0.08); }
+.search-item--category { background: rgba(255,255,255,0.02); }
 
-.search-item:hover {
-  background: rgba(110, 231, 183, 0.08);
-}
-
-.search-item--category {
-  background: rgba(255,255,255,0.02);
+.search-item-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .search-item-body {
@@ -419,6 +425,9 @@ mat-expansion-panel-header:hover {
   font-size: 0.9rem;
   color: #e6eef6;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .search-item-sub {
@@ -434,23 +443,6 @@ mat-expansion-panel-header:hover {
   color: #9aa6b2;
   font-size: 0.88rem;
   font-style: italic;
-}
-
-.search-item-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.search-item-name {
-  font-size: 0.9rem;
-  color: #e6eef6;
-  font-weight: 500;
-}
-
-.search-item-sub {
-  font-size: 0.78rem;
-  color: #9aa6b2;
-  margin-top: 2px;
 }
 
 .cart-btn {
