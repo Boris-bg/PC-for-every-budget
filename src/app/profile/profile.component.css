@@ -4,6 +4,11 @@
   padding: 24px;
   color: #e6eef6;
   font-family: Inter, system-ui, Arial, sans-serif;
+  transition: max-width 0.3s ease;
+}
+
+.profile-page.wide {
+  max-width: 1500px;
 }
 
 .profile-header {
@@ -405,13 +410,44 @@
 .admin-table tr:hover td { background: rgba(255,255,255,0.02); }
 .row--admin td { background: rgba(251,191,36,0.03); }
 
-.col-id      { color: #6ee7b7; font-weight: 700; width: 50px; }
-.col-date    { color: #9aa6b2; white-space: nowrap; }
-.col-total   { font-weight: 700; color: #6ee7b7; }
-.col-address { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.col-hash    { color: #9aa6b2; font-size: 0.76rem; font-family: monospace; max-width: 180px; }
-.col-username { font-weight: 600; }
-.admin-star  { color: #fbbf24; margin-left: 6px; }
+.col-id {
+  color: #6ee7b7;
+  font-weight: 700;
+  width: 50px;
+}
+
+.col-date {
+  color: #9aa6b2;
+  white-space: nowrap;
+}
+
+.col-total {
+  font-weight: 700;
+  color: #6ee7b7;
+}
+
+.col-address {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.col-hash {
+  color: #9aa6b2;
+  font-size: 0.76rem;
+  font-family: monospace;
+  max-width: 180px;
+}
+
+.col-username {
+  font-weight: 600;
+}
+
+.admin-star {
+  color: #fbbf24;
+  margin-left: 6px;
+}
 
 .tag {
   padding: 3px 8px;
@@ -460,4 +496,59 @@
   background: rgba(251,191,36,0.06);
   border: 1px solid rgba(251,191,36,0.15);
   border-radius: 8px;
+}
+
+/* Admin order expandable rows */
+.btn-order-id {
+  background: transparent;
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  color: #6ee7b7;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-order-id:hover {
+  background: rgba(110, 231, 183, 0.1);
+}
+
+.expand-arrow {
+  font-size: 0.65rem;
+  color: #9aa6b2;
+}
+
+.order-main-row.order-expanded td {
+  background: rgba(110, 231, 183, 0.04);
+  border-bottom: none;
+}
+
+.order-detail-row td {
+  padding: 0;
+  background: rgba(110, 231, 183, 0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.admin-order-detail {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-order-items { display: flex; flex-direction: column; gap: 0; }
+
+.admin-order-items h4,
+.tracking-section h4 {
+  margin: 0 0 12px;
+  color: #6ee7b7;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }

@@ -1,4 +1,4 @@
-<div class="profile-page">
+<div class="profile-page" [class.wide]="tab === 'admin'">
   <div class="profile-header">
     <div class="profile-avatar">{{ auth.currentUser?.username?.charAt(0)?.toUpperCase() }}</div>
     <div>
@@ -189,8 +189,17 @@
               </thead>
               <tbody>
                 @for (order of adminOrders; track order.id) {
-                  <tr>
-                    <td class="col-id">#{{ order.id }}</td>
+                  <tr class="order-main-row"
+                      [class.order-expanded]="expandedAdminOrderId === order.id">
+                    <td class="col-id">
+                      <button class="btn-order-id"
+                              (click)="toggleAdminOrder(order.id)">
+                        #{{ order.id }}
+                        <span class="expand-arrow">
+                    {{ expandedAdminOrderId === order.id ? '▲' : '▼' }}
+                  </span>
+                      </button>
+                    </td>
                     <td>{{ order.user?.username ?? '—' }}</td>
                     <td class="col-date">{{ order.createdAt | date:'dd.MM.yy HH:mm' }}</td>
                     <td>{{ order.phone ?? '—' }}</td>
@@ -204,9 +213,9 @@
                     </td>
                     <td class="col-total">{{ order.total }} €</td>
                     <td>
-                    <span class="status-badge" [ngClass]="statusClass(order.status)">
-                      {{ statusLabel(order.status) }}
-                    </span>
+                <span class="status-badge" [ngClass]="statusClass(order.status)">
+                  {{ statusLabel(order.status) }}
+                </span>
                     </td>
                     <td>
                       <select class="status-select"
@@ -218,6 +227,59 @@
                       </select>
                     </td>
                   </tr>
+
+                  <!-- Expanded order details -->
+                  @if (expandedAdminOrderId === order.id) {
+                    <tr class="order-detail-row">
+                      <td colspan="9">
+                        <div class="admin-order-detail">
+
+                          <!-- Tracking timeline -->
+                          @if (order.status !== 'CANCELLED') {
+                            <div class="tracking-section">
+                              <h4>Проследяване</h4>
+                              <div class="tracking-timeline">
+                                @for (step of trackingSteps(order.status); track $index) {
+                                  <div class="tracking-step"
+                                       [class.done]="step.done"
+                                       [class.active]="step.active">
+                                    <div class="step-circle">
+                                      {{ step.done ? '✓' : step.icon }}
+                                    </div>
+                                    <div class="step-label">{{ step.label }}</div>
+                                    @if (!$last) {
+                                      <div class="step-line" [class.done]="step.done"></div>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                          }
+
+                          <!-- Products -->
+                          <div class="admin-order-items">
+                            <h4>Продукти</h4>
+                            @for (item of order.items; track item.productId) {
+                              <div class="order-item">
+                                <span class="item-name">{{ item.productName }}</span>
+                                <span class="item-qty">{{ item.quantity }} бр.</span>
+                                <span class="item-price">{{ item.priceAtPurchase }} € / бр.</span>
+                                <span class="item-total">
+                            {{ (item.quantity * item.priceAtPurchase).toFixed(2) }} €
+                          </span>
+                              </div>
+                            }
+                            <div class="order-item total-item">
+                              <span class="item-name"><strong>Общо</strong></span>
+                              <span></span><span></span>
+                              <span class="item-total"><strong>{{ order.total }} €</strong></span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </td>
+                    </tr>
+                  }
                 }
               </tbody>
             </table>

@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
   adminUsers:   any[] = [];
   adminLoading  = false;
   adminTab:     'orders' | 'users' = 'orders';
+  expandedAdminOrderId: number | null = null;
 
   readonly ORDER_STATUSES = ['PENDING','PROCESSING','SHIPPED','DELIVERED','CANCELLED'];
 
@@ -162,5 +163,9 @@ export class ProfileComponent implements OnInit {
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/']);
+  }
+
+  toggleAdminOrder(id: number): void {
+    this.expandedAdminOrderId = this.expandedAdminOrderId === id ? null : id;
   }
 }
