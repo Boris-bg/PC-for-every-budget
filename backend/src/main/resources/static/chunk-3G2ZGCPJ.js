@@ -1,0 +1,1 @@
+import{p as e}from"./chunk-Z7KPZPVY.js";import{V as r,Z as o}from"./chunk-JUFRADVZ.js";var i=class t{constructor(p){this.http=p}apiUrl="http://localhost:8080/api/products/coolers";getAll(){return this.http.get(this.apiUrl)}static \u0275fac=function(a){return new(a||t)(o(e))};static \u0275prov=r({token:t,factory:t.\u0275fac,providedIn:"root"})};export{i as a};

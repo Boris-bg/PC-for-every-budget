@@ -37,6 +37,13 @@
       <button type="submit" class="btn-submit" [disabled]="loading">
         {{ loading ? 'Зареждане...' : mode === 'login' ? 'Вход' : 'Регистрация' }}
       </button>
+
+      @if (mode === 'login') {
+        <p class="forgot-hint">
+          Забравена парола? Свържете се с нас на
+          <a href="mailto:boris07georgiev@gmail.com" target="_blank">boris07georgiev&#64;gmail.com</a>
+        </p>
+      }
     </form>
   </div>
 </div>

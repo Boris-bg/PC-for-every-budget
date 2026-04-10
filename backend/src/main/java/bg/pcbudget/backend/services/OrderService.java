@@ -16,8 +16,14 @@ public class OrderService {
   private final OrderRepository repository;
   private final ProductRepository productRepository;
 
-  public List<Order> getAll() { return repository.findAll(); }
-  public List<Order> getByUserId(Long userId) { return repository.findByUser_Id(userId); }
+  public List<Order> getAll() {
+    return repository.findAllByOrderByIdDesc();
+  }
+
+  public List<Order> getByUserId(Long userId) {
+    return repository.findByUser_IdOrderByIdDesc(userId);
+  }
+
   public Optional<Order> getById(Long id) { return repository.findById(id); }
 
   public Order save(Order order) {
