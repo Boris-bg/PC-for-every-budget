@@ -269,13 +269,11 @@ export class ProductListComponent implements OnChanges {
       if (cfg.hideFromSpecs) continue;
       const val = this.getFieldValue(item, cfg.field);
       if (val === null || val === undefined) continue;
-      if (cfg.type === 'chips-nullable') {
-        if (val !== null && val !== undefined) specs.push(String(val));
-      }
       if (cfg.type === 'chips-boolean') {
         if (val === true) specs.push(cfg.label);
+      } else if (cfg.type === 'chips-nullable') {
+        if (val !== null) specs.push(String(val));
       } else if (Array.isArray(val)) {
-        // За масиви (interfaces) — покажи имената разделени със запетая
         specs.push(val.map((v: any) => v.name ?? v).join(', '));
       } else {
         specs.push(`${val}${cfg.suffix ?? ''}`);

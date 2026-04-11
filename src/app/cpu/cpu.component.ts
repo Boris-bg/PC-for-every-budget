@@ -27,7 +27,7 @@ export class CpuComponent implements OnInit {
     {type: 'chips-number', label: 'Честота', field: 'frequencyGHz', suffix: ' GHz'},
     {type: 'chips-number', label: 'TDP', field: 'tdpWatts', suffix: ' W'},
     {type: 'chips-string', label: 'Производител', field: 'brand'},
-    {type: 'chips-nullable', label: 'Вградено графично ядро', field: 'integratedGraphicsModel', nullLabel: 'Без вградено графично ядро'},
+    {type: 'chips-nullable', label: 'Вградено графично ядро', field: 'integratedGraphicsModel', nullLabel: 'Без вградено графично ядро', hideFromSpecs: false},
     {type: 'price-range', label: 'Цена', field: 'price'},
   ];
 
