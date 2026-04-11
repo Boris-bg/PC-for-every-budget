@@ -30,6 +30,9 @@ export class ProductListComponent implements OnChanges {
   protected activeChips: Map<string, (string | number)[]> = new Map();
   // chips-boolean: field → null | true | false
   protected activeBooleans: Map<string, boolean | null> = new Map();
+  // chips-nullable: field → Set от избрани стойности (включително null представен като '__null__')
+  protected activeNullable: Map<string, Set<string>> = new Map();
+
   // price-range
   protected minPrice        = 0;
   protected maxPrice        = 500;
@@ -101,6 +104,11 @@ export class ProductListComponent implements OnChanges {
         if (!this.activeChips.has(cfg.field))
           this.activeChips.set(cfg.field, []);
       }
+
+      if (cfg.type === 'chips-nullable') {
+        if (!this.activeNullable.has(cfg.field))
+          this.activeNullable.set(cfg.field, new Set());
+      }
     }
   }
 
@@ -123,6 +131,19 @@ export class ProductListComponent implements OnChanges {
     i >= 0 ? arr.splice(i, 1) : arr.push(value);
     this.activeChips.set(field, arr);
     this.applyAll();
+  }
+
+  protected toggleNullable(field: string, value: string | null): void {
+    const key = value ?? '__null__';
+    const set = this.activeNullable.get(field) ?? new Set<string>();
+    if (set.has(key)) set.delete(key);
+    else set.add(key);
+    this.activeNullable.set(field, set);
+    this.applyAll();
+  }
+
+  protected isNullableSelected(field: string, value: string | null): boolean {
+    return (this.activeNullable.get(field) ?? new Set()).has(value ?? '__null__');
   }
 
   protected toggleBoolean(field: string): void {
@@ -161,6 +182,7 @@ export class ProductListComponent implements OnChanges {
   protected clearFilters(): void {
     this.activeChips.forEach((_, key) => this.activeChips.set(key, []));
     this.activeBooleans.forEach((_, key) => this.activeBooleans.set(key, null));
+    this.activeNullable.forEach((_, key) => this.activeNullable.set(key, new Set()));
     this.currentMinPrice = this.minPrice;
     this.currentMaxPrice = this.maxPrice;
     this.currentPage = 1;
@@ -168,10 +190,11 @@ export class ProductListComponent implements OnChanges {
   }
 
   get hasActiveFilters(): boolean {
-    const hasChip     = [...this.activeChips.values()].some(arr => arr.length > 0);
-    const hasBool     = [...this.activeBooleans.values()].some(v => v !== null);
-    const hasPrice    = this.currentMinPrice > this.minPrice || this.currentMaxPrice < this.maxPrice;
-    return hasChip || hasBool || hasPrice;
+    const hasChip = [...this.activeChips.values()].some(arr => arr.length > 0);
+    const hasBool = [...this.activeBooleans.values()].some(v => v !== null);
+    const hasPrice = this.currentMinPrice > this.minPrice || this.currentMaxPrice < this.maxPrice;
+    const hasNullable = [...this.activeNullable.values()].some(s => s.size > 0);
+    return hasChip || hasBool || hasNullable || hasPrice;
   }
 
   // ── Core: filter → sort → paginate ────────────────
@@ -188,6 +211,16 @@ export class ProductListComponent implements OnChanges {
     this.activeBooleans.forEach((value, field) => {
       if (value !== null)
         result = result.filter(item => this.getFieldValue(item, field) === value);
+    });
+
+    // Apply nullable filters
+    this.activeNullable.forEach((selected, field) => {
+      if (selected.size === 0) return;
+      result = result.filter(item => {
+        const val = this.getFieldValue(item, field);
+        const key = val == null ? '__null__' : String(val);
+        return selected.has(key);
+      });
     });
 
     // Apply price filter
@@ -236,6 +269,9 @@ export class ProductListComponent implements OnChanges {
       if (cfg.hideFromSpecs) continue;
       const val = this.getFieldValue(item, cfg.field);
       if (val === null || val === undefined) continue;
+      if (cfg.type === 'chips-nullable') {
+        if (val !== null && val !== undefined) specs.push(String(val));
+      }
       if (cfg.type === 'chips-boolean') {
         if (val === true) specs.push(cfg.label);
       } else if (Array.isArray(val)) {

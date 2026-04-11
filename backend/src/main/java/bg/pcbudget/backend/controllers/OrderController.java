@@ -12,8 +12,8 @@ import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -27,17 +27,22 @@ public class OrderController {
   private final JwtUtil jwtUtil;
 
   // ── DTOs ────────────────────────────────────────────────
-  @Getter @Setter
-  static class ProductRef { private Long id; }
+  @Getter
+  @Setter
+  static class ProductRef {
+    private Long id;
+  }
 
-  @Getter @Setter
+  @Getter
+  @Setter
   static class OrderItemDto {
     private ProductRef product;
     private Integer quantity;
     private Double priceAtPurchase;
   }
 
-  @Getter @Setter
+  @Getter
+  @Setter
   static class OrderDto {
     private List<OrderItemDto> items;
     private String phone;
@@ -90,20 +95,20 @@ public class OrderController {
         // Map to safe DTO
         List<java.util.Map<String, Object>> result = orders.stream().map(o -> {
           java.util.Map<String, Object> map = new java.util.LinkedHashMap<>();
-          map.put("id",              o.getId());
-          map.put("total",           o.getTotal());
-          map.put("status",          o.getStatus());
-          map.put("createdAt",       o.getCreatedAt());
-          map.put("phone",           o.getPhone());
+          map.put("id", o.getId());
+          map.put("total", o.getTotal());
+          map.put("status", o.getStatus());
+          map.put("createdAt", o.getCreatedAt());
+          map.put("phone", o.getPhone());
           map.put("deliveryAddress", o.getDeliveryAddress());
-          map.put("deliveryType",    o.getDeliveryType());
-          map.put("paymentMethod",   o.getPaymentMethod());
+          map.put("deliveryType", o.getDeliveryType());
+          map.put("paymentMethod", o.getPaymentMethod());
           map.put("items", o.getItems() == null ? List.of() :
             o.getItems().stream().map(i -> {
               java.util.Map<String, Object> item = new java.util.LinkedHashMap<>();
-              item.put("productId",       i.getProduct() != null ? i.getProduct().getId() : null);
-              item.put("productName",     i.getProduct() != null ? i.getProduct().getName() : null);
-              item.put("quantity",        i.getQuantity());
+              item.put("productId", i.getProduct() != null ? i.getProduct().getId() : null);
+              item.put("productName", i.getProduct() != null ? i.getProduct().getName() : null);
+              item.put("quantity", i.getQuantity());
               item.put("priceAtPurchase", i.getPriceAtPurchase());
               return item;
             }).collect(java.util.stream.Collectors.toList())
@@ -117,7 +122,33 @@ public class OrderController {
 
   // ── Admin ─────────────────────────────────────────────────
   @GetMapping
-  public List<Order> getAll() { return service.getAll(); }
+  public List<Map<String, Object>> getAll() {
+    return service.getAll().stream().map(o -> {
+      Map<String, Object> map = new LinkedHashMap<>();
+      map.put("id", o.getId());
+      map.put("total", o.getTotal());
+      map.put("status", o.getStatus());
+      map.put("createdAt", o.getCreatedAt());
+      map.put("phone", o.getPhone());
+      map.put("deliveryAddress", o.getDeliveryAddress());
+      map.put("deliveryType", o.getDeliveryType());
+      map.put("paymentMethod", o.getPaymentMethod());
+      map.put("user", o.getUser() != null
+        ? Map.of("username", o.getUser().getUsername())
+        : null);
+      map.put("items", o.getItems() == null ? List.of() :
+        o.getItems().stream().map(i -> {
+          Map<String, Object> item = new LinkedHashMap<>();
+          item.put("productId", i.getProduct() != null ? i.getProduct().getId() : null);
+          item.put("productName", i.getProduct() != null ? i.getProduct().getName() : null);
+          item.put("quantity", i.getQuantity());
+          item.put("priceAtPurchase", i.getPriceAtPurchase());
+          return item;
+        }).collect(Collectors.toList())
+      );
+      return map;
+    }).collect(Collectors.toList());
+  }
 
   @GetMapping("/{id}")
   public ResponseEntity<Order> getById(@PathVariable Long id) {

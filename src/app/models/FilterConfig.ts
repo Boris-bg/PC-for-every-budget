@@ -1,14 +1,16 @@
 export type FilterType =
-  | 'chips-string'   // избор от текстови стойности (бранд, цвят, тип)
-  | 'chips-number'   // избор от числови стойности (GB, MHz)
-  | 'chips-boolean'  // единичен toggle (isKIT, isRGB, hasWifi)
-  | 'price-range';   // двоен ценови слайдер
+  | 'chips-string'
+  | 'chips-number'
+  | 'chips-boolean'
+  | 'chips-nullable'
+  | 'price-range';
 
 export interface FilterConfig {
-  type: FilterType;
-  label: string;        // "Обем", "Тип", "Производител"...
-  field: string;        // ключ от обекта: 'memorySizeGB', 'brand', 'type'...
-  options?: (string | number)[];  // за chips — ако е null, се генерира от данните
-  suffix?: string;        // " GB", " MHz" — добавя се след стойността в chip-а
-  hideFromSpecs?: boolean;  // скрива от specs в картата
+  type:           FilterType;
+  label:          string;
+  field:          string;
+  options?:       (string | number)[];
+  suffix?:        string;
+  hideFromSpecs?: boolean;
+  nullLabel?:     string;
 }

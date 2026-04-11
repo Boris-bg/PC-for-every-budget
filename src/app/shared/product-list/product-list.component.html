@@ -89,6 +89,29 @@
           </div>
         }
 
+        <!-- Nullable chips (string | null) -->
+        @if (cfg.type === 'chips-nullable') {
+          <div class="filter-group">
+            <label>{{ cfg.label }}</label>
+            <div class="chips">
+              <!-- Null option — "Без iGPU" -->
+              <button class="chip"
+                      [class.active]="isNullableSelected(cfg.field, null)"
+                      (click)="toggleNullable(cfg.field, null)">
+                {{ cfg.nullLabel ?? 'Без ' + cfg.label }}
+              </button>
+              <!-- Specific values -->
+              @for (opt of dynamicOptions.get(cfg.field) ?? []; track opt) {
+                <button class="chip"
+                        [class.active]="isNullableSelected(cfg.field, opt.toString())"
+                        (click)="toggleNullable(cfg.field, opt.toString())">
+                  {{ opt }}{{ cfg.suffix ?? '' }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
         <!-- String / Number chips -->
         @if (cfg.type === 'chips-string' || cfg.type === 'chips-number') {
           <div class="filter-group">
