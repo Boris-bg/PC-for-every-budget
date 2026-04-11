@@ -240,6 +240,17 @@ export class PcBuilderComponent implements OnInit {
         );
       }
     }
+
+    if (this.gpuRequired && !gpu.selected) {
+      this.warnings.push(
+        '⚠️ Избраният процесор няма интегрирана графика — необходима е видеокарта'
+      );
+    }
+  }
+
+  get gpuRequired(): boolean {
+    return this.cpu.selected !== null
+      && !this.cpu.selected.integratedGraphicsModel;
   }
 
   // ── Price total ────────────────────────────────────
@@ -250,7 +261,13 @@ export class PcBuilderComponent implements OnInit {
   }
 
   get isComplete(): boolean {
-    return this.slots.filter(s => s.required).every(s => s.selected !== null);
+    const requiredSlots = this.slots
+      .filter(s => s.required)
+      .every(s => s.selected !== null);
+
+    const gpuOk = !this.gpuRequired || this.gpu.selected !== null;
+
+    return requiredSlots && gpuOk;
   }
 
   get selectedCount(): number {

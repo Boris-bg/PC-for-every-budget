@@ -38,7 +38,11 @@
               <div class="slot-info">
                 <span class="slot-label">
                   {{ slot.label }}
-                  @if (!slot.required) { <span class="optional-tag">Незадължително</span> }
+                  @if (slot === gpu && gpuRequired) {
+                    <span class="required-tag">Задължително</span>
+                  } @else if (!slot.required && !(slot === gpu && gpuRequired)) {
+                    <span class="optional-tag">Незадължително</span>
+                  }
                 </span>
                 @if (slot.selected) {
                   <span class="slot-selected-name">{{ slot.selected.name }}</span>

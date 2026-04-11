@@ -272,7 +272,7 @@ export class ProductListComponent implements OnChanges {
       if (cfg.type === 'chips-boolean') {
         if (val === true) specs.push(cfg.label);
       } else if (cfg.type === 'chips-nullable') {
-        if (val !== null) specs.push(String(val));
+        specs.push(String(val));
       } else if (Array.isArray(val)) {
         specs.push(val.map((v: any) => v.name ?? v).join(', '));
       } else {
