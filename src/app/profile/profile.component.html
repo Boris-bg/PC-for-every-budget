@@ -219,8 +219,10 @@
                     </td>
                     <td>
                       <select class="status-select"
+                              #statusSelect
                               [value]="order.status"
-                              (change)="updateOrderStatus(order.id, $any($event.target).value)">
+                              [disabled]="order.status === 'CANCELLED'"
+                              (change)="updateOrderStatus(order.id, $any($event.target).value, statusSelect)">
                         @for (s of ORDER_STATUSES; track s) {
                           <option [value]="s">{{ statusLabel(s) }}</option>
                         }

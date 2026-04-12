@@ -157,8 +157,13 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/status")
-  public ResponseEntity<Order> updateStatus(@PathVariable Long id,
-                                            @RequestParam Order.Status status) {
-    return ResponseEntity.ok(service.updateStatus(id, status));
+  public ResponseEntity<?> updateStatus(@PathVariable Long id,
+                                        @RequestParam Order.Status status) {
+    try {
+      return ResponseEntity.ok(service.updateStatus(id, status));
+    } catch (RuntimeException e) {
+      return ResponseEntity.badRequest()
+        .body(java.util.Map.of("error", e.getMessage()));
+    }
   }
 }

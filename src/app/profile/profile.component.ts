@@ -146,9 +146,25 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  updateOrderStatus(orderId: number, status: string): void {
-    this.adminService.updateOrderStatus(orderId, status)
-      .subscribe(() => this.loadAdminOrders());
+  updateOrderStatus(orderId: number, status: string, selectEl: HTMLSelectElement): void {
+    if (status === 'CANCELLED') {
+      const confirmed = confirm(
+        `Сигурни ли сте, че искате да откажете поръчка #${orderId}?\nТова действие ще върне наличността на продуктите и не може да бъде отменено.`
+      );
+      if (!confirmed) {
+        const order = this.adminOrders.find(o => o.id === orderId);
+        if (order) selectEl.value = order.status;
+        return;
+      }
+    }
+
+    this.adminService.updateOrderStatus(orderId, status).subscribe({
+      next: () => this.loadAdminOrders(),
+      error: err => {
+        alert(err.error?.error ?? 'Грешка при промяна на статуса');
+        this.loadAdminOrders();
+      }
+    });
   }
 
   deleteUser(id: number, username: string): void {

@@ -49,6 +49,23 @@ public class OrderService {
   public Order updateStatus(Long id, Order.Status status) {
     Order order = repository.findById(id)
       .orElseThrow(() -> new RuntimeException("Order not found: " + id));
+
+    // Не позволявай промяна на вече отказана поръчка
+    if (order.getStatus() == Order.Status.CANCELLED) {
+      throw new RuntimeException("Cannot change status of a cancelled order");
+    }
+
+    // Ако се отказва — върни наличността
+    if (status == Order.Status.CANCELLED && order.getItems() != null) {
+      for (OrderItem item : order.getItems()) {
+        productRepository.findById(item.getProduct().getId())
+          .ifPresent(p -> {
+            p.setAvailability(p.getAvailability() + item.getQuantity());
+            productRepository.save(p);
+          });
+      }
+    }
+
     order.setStatus(status);
     return repository.save(order);
   }
