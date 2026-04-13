@@ -211,8 +211,15 @@ export class ProfileComponent implements OnInit {
   loadAdminProducts(): void {
     this.productsLoading = true;
     this.adminService.getAllProducts().subscribe({
-      next: p => { this.adminProducts = p; this.productsLoading = false; },
-      error: () => { this.productsLoading = false; }
+      next: p => {
+        console.log('Products loaded:', p); // ← добави
+        this.adminProducts = p;
+        this.productsLoading = false;
+      },
+      error: (err) => {
+        console.error('Products error:', err); // ← добави
+        this.productsLoading = false;
+      }
     });
   }
 
@@ -229,14 +236,13 @@ export class ProfileComponent implements OnInit {
     this.adminService.getProductById(product.id).subscribe({
       next: full => {
         this.editingProduct = full;
-        // dtype от таблицата идва като lowercase в някои случаи
-        this.editCategory = full.dtype ?? product.dtype ?? '';
+        this.editCategory = full.category ?? product.category ?? '';
         this.populateEditForm(full);
       },
       error: () => {
         // Fallback към базовите данни
         this.editingProduct = product;
-        this.editCategory   = product.dtype ?? '';
+        this.editCategory   = product.category ?? '';
         this.populateEditForm(product);
       }
     });

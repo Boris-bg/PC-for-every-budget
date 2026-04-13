@@ -147,7 +147,7 @@ public class AdminProductController {
         return mid != null && Long.parseLong(mid.toString()) == id;
       })
       .findFirst();
-    return result.map(m -> (String) m.get("dtype")).orElse(null);
+    return result.map(m -> (String) m.get("category")).orElse(null);
   }
 
   // ── Update methods ─────────────────────────────────────────
