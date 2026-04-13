@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -17,9 +18,17 @@ public class ProductController {
   private final ProductRepository repository;
 
   @GetMapping("/search")
-  public List<Product> search(@RequestParam String q) {
-    if (q == null || q.trim().length() < 2) return List.of();
+  public List<Product> search(@RequestParam(required = false, defaultValue = "") String q) {
+    if (q == null || q.trim().isEmpty())
+      return repository.findAll();   // ← всички продукти при празно
+    if (q.trim().length() < 2)
+      return List.of();
     return repository.searchByNameOrBrand(q.trim());
+  }
+
+  @GetMapping("/all")
+  public List<java.util.Map<String, Object>> getAll() {
+    return repository.findAllBasicInfo();
   }
 
   @GetMapping("/{id}")
@@ -36,5 +45,37 @@ public class ProductController {
     return serviceRepository.findByNameIgnoreCase(name)
       .map(s -> ResponseEntity.ok((Product) s))
       .orElse(ResponseEntity.notFound().build());
+  }
+
+  // Admin: partial update на базови полета
+  @PatchMapping("/{id}")
+  public ResponseEntity<?> patchProduct(@PathVariable Long id,
+                                        @RequestBody Map<String, Object> updates) {
+    return repository.findById(id).map(p -> {
+      if (updates.containsKey("name"))
+        p.setName((String) updates.get("name"));
+      if (updates.containsKey("price"))
+        p.setPrice(((Number) updates.get("price")).doubleValue());
+      if (updates.containsKey("brand"))
+        p.setBrand((String) updates.get("brand"));
+      if (updates.containsKey("availability"))
+        p.setAvailability(((Number) updates.get("availability")).intValue());
+      if (updates.containsKey("rating"))
+        p.setRating(((Number) updates.get("rating")).doubleValue());
+      if (updates.containsKey("additionalDetails"))
+        p.setAdditionalDetails((String) updates.get("additionalDetails"));
+      if (updates.containsKey("imageUrl"))
+        p.setImageUrl((String) updates.get("imageUrl"));
+      return ResponseEntity.ok(repository.save(p));
+    }).orElse(ResponseEntity.notFound().build());
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable Long id) {
+    if (repository.existsById(id)) {
+      repository.deleteById(id);
+      return ResponseEntity.noContent().build();
+    }
+    return ResponseEntity.notFound().build();
   }
 }

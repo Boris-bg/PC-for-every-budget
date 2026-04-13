@@ -35,8 +35,22 @@ export class ProfileComponent implements OnInit {
   adminOrders:  any[] = [];
   adminUsers:   any[] = [];
   adminLoading  = false;
-  adminTab:     'orders' | 'users' = 'orders';
+  adminTab:     'orders' | 'users' | 'products' = 'orders';
   expandedAdminOrderId: number | null = null;
+
+  adminProducts:    any[]    = [];
+  productsLoading   = false;
+  productSearch     = '';
+  editingProduct:   any | null = null;
+  editForm = {
+    name:              '',
+    price:             0,
+    brand:             '',
+    availability:      0,
+    rating:            0,
+    additionalDetails: '',
+    imageUrl:          ''
+  };
 
   readonly ORDER_STATUSES = ['PENDING','PROCESSING','SHIPPED','DELIVERED','CANCELLED'];
 
@@ -51,6 +65,11 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     if (!this.auth.isLoggedIn) { this.router.navigate(['/auth']); return; }
     this.loadOrders();
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/']);
   }
 
   // ── Orders ─────────────────────────────────────────
@@ -130,6 +149,7 @@ export class ProfileComponent implements OnInit {
   onAdminTab(): void {
     if (this.adminOrders.length === 0) this.loadAdminOrders();
     if (this.adminUsers.length === 0)  this.loadAdminUsers();
+    if (this.adminProducts.length === 0) this.loadAdminProducts();
   }
 
   loadAdminOrders(): void {
@@ -176,12 +196,54 @@ export class ProfileComponent implements OnInit {
     this.adminService.changeRole(id, role).subscribe(() => this.loadAdminUsers());
   }
 
-  logout(): void {
-    this.auth.logout();
-    this.router.navigate(['/']);
-  }
-
   toggleAdminOrder(id: number): void {
     this.expandedAdminOrderId = this.expandedAdminOrderId === id ? null : id;
+  }
+
+  loadAdminProducts(): void {
+    this.productsLoading = true;
+    this.adminService.getAllProducts().subscribe({
+      next: p => { this.adminProducts = p; this.productsLoading = false; },
+      error: () => { this.productsLoading = false; }
+    });
+  }
+
+  get filteredProducts(): any[] {
+    const q = this.productSearch.toLowerCase().trim();
+    if (!q) return this.adminProducts;
+    return this.adminProducts.filter(p =>
+      p.name?.toLowerCase().includes(q) || p.brand?.toLowerCase().includes(q)
+    );
+  }
+
+  startEdit(product: any): void {
+    this.editingProduct = product;
+    this.editForm = {
+      name:              product.name              ?? '',
+      price:             product.price             ?? 0,
+      brand:             product.brand             ?? '',
+      availability:      product.availability      ?? 0,
+      rating:            product.rating            ?? 0,
+      additionalDetails: product.additionalDetails ?? '',
+      imageUrl:          product.imageUrl          ?? ''
+    };
+  }
+
+  cancelEdit(): void {
+    this.editingProduct = null;
+  }
+
+  saveProduct(): void {
+    if (!this.editingProduct) return;
+    this.adminService.updateProduct(this.editingProduct.id, this.editForm)
+      .subscribe(() => {
+        this.editingProduct = null;
+        this.loadAdminProducts();
+      });
+  }
+
+  deleteProduct(id: number, name: string): void {
+    if (!confirm(`Изтрий продукт "${name}"?`)) return;
+    this.adminService.deleteProduct(id).subscribe(() => this.loadAdminProducts());
   }
 }
