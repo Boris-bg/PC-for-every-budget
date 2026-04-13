@@ -69,9 +69,12 @@ export class ProductListComponent implements OnChanges {
       this.buildDynamicOptions();  // инициализира activeChips с []
       this.buildPriceRange();
 
-      // Прилага preSelectedChips СЛЕД buildDynamicOptions
-      for (const pre of this.preSelectedChips) {
-        this.activeChips.set(pre.field, [...pre.values]);
+      const restored = this.restoreState();
+
+      if (!restored) {
+        for (const pre of this.preSelectedChips) {
+          this.activeChips.set(pre.field, [...pre.values]);
+        }
       }
 
       this.applyAll();
@@ -186,6 +189,7 @@ export class ProductListComponent implements OnChanges {
     this.currentMinPrice = this.minPrice;
     this.currentMaxPrice = this.maxPrice;
     this.currentPage = 1;
+    sessionStorage.removeItem(this.stateKey);
     this.applyAll();
   }
 
@@ -247,6 +251,8 @@ export class ProductListComponent implements OnChanges {
 
     const start       = (this.currentPage - 1) * this.pageSize;
     this.displayedItems = result.slice(start, start + this.pageSize);
+
+    this.saveState();
   }
 
   // ── Quantity helpers ───────────────────────────────
@@ -280,5 +286,55 @@ export class ProductListComponent implements OnChanges {
       }
     }
     return specs;
+  }
+
+  private get stateKey(): string {
+    return `product-list-state:${this.title}`;
+  }
+
+  private saveState(): void {
+    const state = {
+      sortBy:          this.sortBy,
+      pageSize:        this.pageSize,
+      currentPage:     this.currentPage,
+      currentMinPrice: this.currentMinPrice,
+      currentMaxPrice: this.currentMaxPrice,
+      activeChips:     Object.fromEntries(this.activeChips),
+      activeBooleans:  Object.fromEntries(this.activeBooleans),
+      activeNullable:  Object.fromEntries(
+        [...this.activeNullable.entries()].map(([k, v]) => [k, [...v]])
+      ),
+    };
+    sessionStorage.setItem(this.stateKey, JSON.stringify(state));
+  }
+
+  private restoreState(): boolean {
+    const raw = sessionStorage.getItem(this.stateKey);
+    if (!raw) return false;
+    try {
+      const state = JSON.parse(raw);
+      this.sortBy          = state.sortBy      ?? 'rating';
+      this.pageSize        = state.pageSize    ?? 15;
+      this.currentPage     = state.currentPage ?? 1;
+      this.currentMinPrice = state.currentMinPrice ?? this.minPrice;
+      this.currentMaxPrice = state.currentMaxPrice ?? this.maxPrice;
+
+      if (state.activeChips) {
+        for (const [k, v] of Object.entries(state.activeChips)) {
+          this.activeChips.set(k, v as (string | number)[]);
+        }
+      }
+      if (state.activeBooleans) {
+        for (const [k, v] of Object.entries(state.activeBooleans)) {
+          this.activeBooleans.set(k, v as boolean | null);
+        }
+      }
+      if (state.activeNullable) {
+        for (const [k, v] of Object.entries(state.activeNullable)) {
+          this.activeNullable.set(k, new Set(v as string[]));
+        }
+      }
+      return true;
+    } catch { return false; }
   }
 }
