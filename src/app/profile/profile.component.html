@@ -221,7 +221,7 @@
                       <select class="status-select"
                               #statusSelect
                               [value]="order.status"
-                              [disabled]="order.status === 'CANCELLED'"
+                              [disabled]="order.status === 'CANCELLED' || order.status === 'DELIVERED'"
                               (change)="updateOrderStatus(order.id, $any($event.target).value, statusSelect)">
                         @for (s of ORDER_STATUSES; track s) {
                           <option [value]="s">{{ statusLabel(s) }}</option>

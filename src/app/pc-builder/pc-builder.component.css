@@ -308,6 +308,13 @@
   margin-bottom: 16px;
 }
 
+.assembly-row {
+  background: rgba(110, 231, 183, 0.05);
+  border-radius: 6px;
+  padding: 6px 4px;
+  font-style: italic;
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 900px) {

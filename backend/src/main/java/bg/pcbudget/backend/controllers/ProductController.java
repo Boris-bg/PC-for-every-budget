@@ -27,4 +27,14 @@ public class ProductController {
       .map(ResponseEntity::ok)
       .orElse(ResponseEntity.notFound().build());
   }
+
+  @GetMapping("/by-name")
+  public ResponseEntity<Product> getByExactName(@RequestParam String name) {
+    return repository.findByNameContainingIgnoreCase(name)
+      .stream()
+      .filter(p -> p.getName().equalsIgnoreCase(name))
+      .findFirst()
+      .map(ResponseEntity::ok)
+      .orElse(ResponseEntity.notFound().build());
+  }
 }

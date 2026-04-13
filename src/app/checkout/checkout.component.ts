@@ -26,7 +26,7 @@ export class CheckoutComponent implements OnInit {
   error   = '';
 
   readonly VAT_RATE = 0.20;
-  readonly STORE_ADDRESS = 'бул. „Александър Стамболийски" 101, 1303 София';
+  readonly STORE_ADDRESS = 'ул. "Райко Алексиев" 48, София, 1113, ж.к. Изток';
 
   constructor(
     public cart: CartService,

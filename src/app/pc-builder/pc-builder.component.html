@@ -123,6 +123,16 @@
 
         <div class="summary-divider"></div>
 
+        @if (assemblyProduct) {
+          <div class="summary-row assembly-row">
+            <span class="summary-icon">🔧</span>
+            <span class="summary-label">{{ assemblyProduct.name }}</span>
+            <span class="summary-price">{{ assemblyProduct.price }} €</span>
+          </div>
+        }
+
+        <div class="summary-divider"></div>
+
         <div class="summary-total">
           <span>Обща цена:</span>
           <strong>{{ totalPrice.toFixed(2) }} €</strong>

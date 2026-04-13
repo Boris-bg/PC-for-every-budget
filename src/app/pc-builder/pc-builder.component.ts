@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
+import {SearchService} from '../services/search.service';
 
 import {CPU} from '../models/CPU';
 import {Cooler} from '../models/Cooler';
@@ -27,6 +28,7 @@ import {BoxService} from '../services/box.service';
 import {OsService} from '../services/os.service';
 import {AccessoryService} from '../services/accessory.service';
 import {CartService} from '../services/cart.service';
+import {HttpClient} from '@angular/common/http';
 
 export interface BuildSlot<T extends Product> {
   label: string;
@@ -76,6 +78,7 @@ export class PcBuilderComponent implements OnInit {
   }
 
   warnings: string[] = [];
+  assemblyProduct: Product | null = null
 
   constructor(
     private cpuSvc: CpuService,
@@ -89,7 +92,8 @@ export class PcBuilderComponent implements OnInit {
     private osSvc: OsService,
     private accessorySvc: AccessoryService,
     private cart: CartService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
   }
 
@@ -121,6 +125,13 @@ export class PcBuilderComponent implements OnInit {
       this.accessory2.all = data.accessories;
       this.applyAllFilters();
       this.loading = false;
+    });
+
+    this.http.get<Product>(
+      `http://localhost:8080/api/products/by-name?name=${encodeURIComponent('Сглобяване на компютърна конфигурация')}`
+    ).subscribe({
+      next: product => this.assemblyProduct = product,
+      error: err => console.error('Assembly product not found:', err)
     });
   }
 
@@ -304,6 +315,11 @@ export class PcBuilderComponent implements OnInit {
     this.slots
       .filter(s => s.selected)
       .forEach(s => this.cart.add(s.selected!, 1));
+
+    if (this.assemblyProduct) {
+      this.cart.add(this.assemblyProduct, 1);
+    }
+
     this.router.navigate(['/cart']);
   }
 
