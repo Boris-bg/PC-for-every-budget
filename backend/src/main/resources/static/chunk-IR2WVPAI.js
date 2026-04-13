@@ -1,0 +1,1 @@
+import{q as o}from"./chunk-ZTYTUVXS.js";import{V as r,Z as i}from"./chunk-JUFRADVZ.js";var e=class t{constructor(a){this.http=a}apiUrl="http://localhost:8080/api/products/ram";getAll(){return this.http.get(this.apiUrl)}static \u0275fac=function(p){return new(p||t)(i(o))};static \u0275prov=r({token:t,factory:t.\u0275fac,providedIn:"root"})};export{e as a};

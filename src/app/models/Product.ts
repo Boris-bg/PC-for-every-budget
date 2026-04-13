@@ -8,6 +8,7 @@ export interface Product {
   availability: number;
   additionalDetails: string;
   rating: number; // average user rating from 1 to 5
+  ratingCount?: number;
   imageUrl?: string;
   imageAltText?: string;
 }

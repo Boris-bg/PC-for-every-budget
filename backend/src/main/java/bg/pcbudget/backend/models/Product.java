@@ -29,7 +29,11 @@ public abstract class Product {
   private Integer warrantyPeriod;
   private Integer availability;
   private String additionalDetails;
+
   private Double rating;
+  @Column(nullable = false, columnDefinition = "integer default 0")
+  private Integer ratingCount = 0;
+
   private String imageUrl;
   private String imageAltText;
 }

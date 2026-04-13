@@ -48,11 +48,37 @@
       <div class="info-section">
         <h1 class="product-title">{{ product.name }}</h1>
 
-        <div class="rating-row">
-          @for (star of [1,2,3,4,5]; track star) {
-            <span class="star" [class.filled]="star <= product.rating">★</span>
+        <div class="rating-section">
+          <!-- Текущ рейтинг -->
+          <div class="rating-row">
+            @for (star of [1,2,3,4,5]; track star) {
+              <span class="star" [class.filled]="star <= product.rating">★</span>
+            }
+            <span class="rating-value">{{ product.rating?.toFixed(1) }}/5</span>
+            <span class="rating-count">({{ product.ratingCount ?? 0 }} оценки)</span>
+          </div>
+
+          <!-- Форма за оценяване -->
+          @if (!rated) {
+            <div class="rate-form">
+              <span class="rate-label">Вашата оценка:</span>
+              <div class="star-picker">
+                @for (star of [1,2,3,4,5]; track star) {
+                  <button class="star-btn"
+                          [class.active]="star <= (hoveredStar || userRating)"
+                          (mouseenter)="setHover(star)"
+                          (mouseleave)="clearHover()"
+                          (click)="rate(star)">★</button>
+                }
+              </div>
+            </div>
+          } @else {
+            <p class="rated-msg">✓ Благодарим за оценката!</p>
           }
-          <span class="rating-value">{{ product.rating }}/5</span>
+
+          @if (ratingError) {
+            <p class="rating-error">{{ ratingError }}</p>
+          }
         </div>
 
         @if (product.additionalDetails) {

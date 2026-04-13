@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductDetailService} from '../services/product-detail.service';
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
 import {CartService} from '../services/cart.service';
 
 interface SpecRow {
@@ -113,6 +113,11 @@ export class ProductDetailComponent implements OnInit {
   notFound = false;
   addedToCart = false;
 
+  userRating: number = 0;
+  hoveredStar: number = 0;
+  rated: boolean = false;
+  ratingError: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -125,21 +130,21 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
-      this.loading  = true;
+      this.loading = true;
       this.notFound = false;
-      this.product  = null;
-      this.specs    = [];
+      this.product = null;
+      this.specs = [];
       this.quantity = 1;
 
       this.service.getById(id).subscribe({
         next: p => {
           this.product = p;
-          this.specs   = this.buildSpecs(p);
+          this.specs = this.buildSpecs(p);
           this.loading = false;
         },
         error: () => {
           this.notFound = true;
-          this.loading  = false;
+          this.loading = false;
         }
       });
     });
@@ -199,25 +204,25 @@ export class ProductDetailComponent implements OnInit {
 
     // PC components — вложени обекти
     const pcFields: Record<string, string> = {
-      cpu:         'Процесор',
-      cooler:      'Охлаждане',
+      cpu: 'Процесор',
+      cooler: 'Охлаждане',
       motherboard: 'Дънна платка',
-      ram:         'Оперативна памет',
-      rom:         'Диск',
-      rom2:        'Втори диск',
-      gpu:         'Видеокарта',
-      psu:         'Захранване',
-      os:          'Операционна система',
-      box:         'Кутия',
+      ram: 'Оперативна памет',
+      rom: 'Диск',
+      rom2: 'Втори диск',
+      gpu: 'Видеокарта',
+      psu: 'Захранване',
+      os: 'Операционна система',
+      box: 'Кутия',
     };
 
     for (const [field, label] of Object.entries(pcFields)) {
       const val = (p as any)[field];
-      if (val?.name) rows.push({ label, value: val.name });
+      if (val?.name) rows.push({label, value: val.name});
     }
 
     if ((p as any).comment) {
-      rows.push({ label: 'Коментар', value: (p as any).comment });
+      rows.push({label: 'Коментар', value: (p as any).comment});
     }
 
     return rows;
@@ -243,5 +248,29 @@ export class ProductDetailComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  setHover(star: number): void {
+    this.hoveredStar = star;
+  }
+
+  clearHover(): void {
+    this.hoveredStar = 0;
+  }
+
+  rate(star: number): void {
+    if (this.rated) return;
+    this.userRating = star;
+    this.ratingError = '';
+    this.service.rate(this.product.id, star).subscribe({
+      next: updated => {
+        this.product.rating = updated.rating;
+        this.product.ratingCount = updated.ratingCount;
+        this.rated = true;
+      },
+      error: () => {
+        this.ratingError = 'Грешка при оценяване';
+      }
+    });
   }
 }

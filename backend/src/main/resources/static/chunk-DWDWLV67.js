@@ -1,0 +1,1 @@
+import{q as e}from"./chunk-ZTYTUVXS.js";import{V as r,Z as o}from"./chunk-JUFRADVZ.js";var i=class t{constructor(a){this.http=a}apiUrl="http://localhost:8080/api/products/motherboards";getAll(){return this.http.get(this.apiUrl)}static \u0275fac=function(p){return new(p||t)(o(e))};static \u0275prov=r({token:t,factory:t.\u0275fac,providedIn:"root"})};export{i as a};

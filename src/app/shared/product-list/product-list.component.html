@@ -151,7 +151,7 @@
               </h3>
               <div class="meta">
                 <span class="price">{{ item.price }} €</span>
-                <span class="rating">⭐ {{ item.rating }}</span>
+                <span class="rating">⭐ {{ item.rating.toFixed(1) }}</span>
               </div>
               <ul class="specs">
                 @for (spec of getSpecs(item); track spec) {

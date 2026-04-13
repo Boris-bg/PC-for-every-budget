@@ -11,4 +11,8 @@ export class ProductDetailService {
   getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
+
+  rate(id: number, rating: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/rate`, { rating });
+  }
 }

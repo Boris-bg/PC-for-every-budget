@@ -6,6 +6,7 @@ import bg.pcbudget.backend.repositories.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -77,5 +78,23 @@ public class ProductController {
       return ResponseEntity.noContent().build();
     }
     return ResponseEntity.notFound().build();
+  }
+
+  @PostMapping("/{id}/rate")
+  public ResponseEntity<?> rateProduct(@PathVariable Long id,
+                                       @RequestBody java.util.Map<String, Object> body) {
+    double newRating = ((Number) body.get("rating")).doubleValue();
+    if (newRating < 1 || newRating > 5)
+      return ResponseEntity.badRequest()
+        .body(java.util.Map.of("error", "Рейтингът трябва да е между 1 и 5"));
+
+    return repository.findById(id).map(p -> {
+      int count = p.getRatingCount() != null ? p.getRatingCount() : 0;
+      double current = p.getRating() != null ? p.getRating() : 0;
+      double updated = (count * current + newRating) / (count + 1);
+      p.setRating(Math.round(updated * 100.0) / 100.0);
+      p.setRatingCount(count + 1);
+      return ResponseEntity.ok(repository.save(p));
+    }).orElse(ResponseEntity.notFound().build());
   }
 }
