@@ -163,7 +163,9 @@
             </div>
 
             <div class="body">
-              <h3 class="title">{{ pc.name }}</h3>
+              <h3 class="title">
+                <a [routerLink]="['/product', pc.id]" class="pc-link">{{ pc.name }}</a>
+              </h3>
               <p class="comment">{{ pc.comment }}</p>
 
               <div class="meta">

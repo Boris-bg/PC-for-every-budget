@@ -242,6 +242,24 @@
   margin-bottom: 16px;
 }
 
+.btn-go-cart {
+  background: rgba(110, 231, 183, 0.12);
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  color: #6ee7b7;
+  padding: 14px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-go-cart:hover { background: rgba(110, 231, 183, 0.2); }
+
+.btn-buy {
+  transition: background 0.3s, transform 0.12s;
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .not-found { text-align: center; padding: 80px; color: #9aa6b2; }

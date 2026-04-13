@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProductDetailService} from '../services/product-detail.service';
 import { Location } from '@angular/common';
+import {CartService} from '../services/cart.service';
 
 interface SpecRow {
   label: string;
@@ -110,11 +111,14 @@ export class ProductDetailComponent implements OnInit {
   quantity = 1;
   loading = true;
   notFound = false;
+  addedToCart = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location,
-    private service: ProductDetailService
+    private service: ProductDetailService,
+    private cart: CartService
   ) {
   }
 
@@ -193,6 +197,29 @@ export class ProductDetailComponent implements OnInit {
       rows.push({label: 'Интерфейси', value: p.interfaces.map((i: any) => i.name).join(', ')});
     }
 
+    // PC components — вложени обекти
+    const pcFields: Record<string, string> = {
+      cpu:         'Процесор',
+      cooler:      'Охлаждане',
+      motherboard: 'Дънна платка',
+      ram:         'Оперативна памет',
+      rom:         'Диск',
+      rom2:        'Втори диск',
+      gpu:         'Видеокарта',
+      psu:         'Захранване',
+      os:          'Операционна система',
+      box:         'Кутия',
+    };
+
+    for (const [field, label] of Object.entries(pcFields)) {
+      const val = (p as any)[field];
+      if (val?.name) rows.push({ label, value: val.name });
+    }
+
+    if ((p as any).comment) {
+      rows.push({ label: 'Коментар', value: (p as any).comment });
+    }
+
     return rows;
   }
 
@@ -200,6 +227,18 @@ export class ProductDetailComponent implements OnInit {
     const next = this.quantity + delta;
     if (next < 1 || next > (this.product?.availability ?? 1)) return;
     this.quantity = next;
+  }
+
+  addToCart(): void {
+    if (!this.product) return;
+    this.cart.add(this.product, this.quantity);
+    this.addedToCart = true;
+    setTimeout(() => this.addedToCart = false, 2000);
+  }
+
+  goToCart(): void {
+    this.cart.add(this.product, this.quantity);
+    this.router.navigate(['/cart']);
   }
 
   goBack(): void {

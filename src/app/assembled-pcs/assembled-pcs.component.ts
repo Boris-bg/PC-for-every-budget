@@ -5,11 +5,12 @@ import { PC } from '../models/PC';
 import { PcService } from '../services/pc.service';
 import { CartService } from '../services/cart.service';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-assembled-pcs',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './assembled-pcs.component.html',
   styleUrl: './assembled-pcs.component.css'
 })
