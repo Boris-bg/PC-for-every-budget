@@ -348,13 +348,233 @@
       @if (adminTab === 'products') {
         <div class="admin-products">
 
-          <!-- Search -->
+          <!-- Toolbar с бутон Добави -->
           <div class="products-toolbar">
-            <input class="product-search"
-                   [(ngModel)]="productSearch"
+            <input class="product-search" [(ngModel)]="productSearch"
                    placeholder="🔍 Търси по име или марка..." />
             <span class="products-count">{{ filteredProducts.length }} продукта</span>
+            <button class="btn-add-product" (click)="openAddForm()">+ Добави продукт</button>
           </div>
+
+          <!-- Форма за нов продукт -->
+          @if (showAddForm) {
+            <div class="edit-form">
+              <h4>➕ Нов продукт</h4>
+
+              @if (addError) { <div class="error-box">{{ addError }}</div> }
+
+              <!-- Категория -->
+              <div class="edit-field" style="margin-bottom: 14px;">
+                <label>Категория *</label>
+                <select class="status-select" [(ngModel)]="addCategory" style="width: 200px;">
+                  <option value="">-- Избери --</option>
+                  @for (cat of CATEGORIES; track cat) {
+                    <option [value]="cat">{{ cat }}</option>
+                  }
+                </select>
+              </div>
+
+              @if (addCategory) {
+                <div class="edit-grid">
+
+                  <!-- Базови полета — всички категории -->
+                  <div class="edit-field">
+                    <label>Име *</label>
+                    <input [(ngModel)]="addForm.name" />
+                  </div>
+                  <div class="edit-field">
+                    <label>Цена (€) *</label>
+                    <input type="number" step="0.01" [(ngModel)]="addForm.price" />
+                  </div>
+                  <div class="edit-field">
+                    <label>Марка</label>
+                    <input [(ngModel)]="addForm.brand" />
+                  </div>
+                  <div class="edit-field">
+                    <label>Наличност</label>
+                    <input type="number" [(ngModel)]="addForm.availability" />
+                  </div>
+                  <div class="edit-field">
+                    <label>Рейтинг</label>
+                    <input type="number" step="0.1" min="1" max="5" [(ngModel)]="addForm.rating" />
+                  </div>
+                  <div class="edit-field">
+                    <label>Гаранция (месеци)</label>
+                    <input type="number" [(ngModel)]="addForm.warrantyPeriod" />
+                  </div>
+                  <div class="edit-field edit-field--full">
+                    <label>Допълнителна информация</label>
+                    <textarea [(ngModel)]="addForm.additionalDetails" rows="2"></textarea>
+                  </div>
+                  <div class="edit-field edit-field--full">
+                    <label>URL на снимка</label>
+                    <input [(ngModel)]="addForm.imageUrl" />
+                  </div>
+
+                  <!-- CPU специфични -->
+                  @if (addCategory === 'CPU') {
+                    <div class="edit-field">
+                      <label>Сокет</label>
+                      <select class="status-select" [(ngModel)]="addForm.socketId">
+                        @for (s of sockets; track s.id) {
+                          <option [ngValue]="s.id">{{ s.name }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Модел</label><input [(ngModel)]="addForm.model" /></div>
+                    <div class="edit-field"><label>Честота (GHz)</label><input type="number" step="0.1" [(ngModel)]="addForm.frequencyGHz" /></div>
+                    <div class="edit-field"><label>Ядра</label><input type="number" [(ngModel)]="addForm.cores" /></div>
+                    <div class="edit-field"><label>Нишки</label><input type="number" [(ngModel)]="addForm.threads" /></div>
+                    <div class="edit-field"><label>TDP (W)</label><input type="number" [(ngModel)]="addForm.tdpWatts" /></div>
+                    <div class="edit-field"><label>iGPU модел (оставете празно ако няма)</label><input [(ngModel)]="addForm.integratedGraphicsModel" /></div>
+                  }
+
+                  <!-- GPU -->
+                  @if (addCategory === 'GPU') {
+                    <div class="edit-field"><label>Чип марка</label><input [(ngModel)]="addForm.chipBrand" /></div>
+                    <div class="edit-field"><label>Графичен процесор</label><input [(ngModel)]="addForm.graphicsProcessor" /></div>
+                    <div class="edit-field">
+                      <label>Интерфейс</label>
+                      <select class="status-select" [(ngModel)]="addForm.interfaceTypeId">
+                        @for (i of interfaces; track i.id) {
+                          <option [ngValue]="i.id">{{ i.name }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Памет (GB)</label><input type="number" [(ngModel)]="addForm.memorySizeGB" /></div>
+                    <div class="edit-field"><label>Тип памет</label><input [(ngModel)]="addForm.memoryType" /></div>
+                    <div class="edit-field"><label>Слотове</label><input type="number" [(ngModel)]="addForm.slotWidth" /></div>
+                    <div class="edit-field"><label>DirectX</label><input [(ngModel)]="addForm.directXVersion" /></div>
+                  }
+
+                  <!-- RAM -->
+                  @if (addCategory === 'RAM') {
+                    <div class="edit-field"><label>Памет (GB)</label><input type="number" [(ngModel)]="addForm.memorySizeGB" /></div>
+                    <div class="edit-field"><label>Тип (DDR4/DDR5)</label><input [(ngModel)]="addForm.type" /></div>
+                    <div class="edit-field"><label>Честота (MHz)</label><input type="number" [(ngModel)]="addForm.speedMHz" /></div>
+                    <div class="edit-field">
+                      <label>KIT</label>
+                      <select class="status-select" [(ngModel)]="addForm.isKIT">
+                        <option [ngValue]="false">Не</option>
+                        <option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>RGB</label>
+                      <select class="status-select" [(ngModel)]="addForm.isRGB">
+                        <option [ngValue]="false">Не</option>
+                        <option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                  }
+
+                  <!-- ROM -->
+                  @if (addCategory === 'ROM') {
+                    <div class="edit-field"><label>Тип (SSD/HDD)</label><input [(ngModel)]="addForm.storageType" /></div>
+                    <div class="edit-field"><label>Размер (GB)</label><input type="number" [(ngModel)]="addForm.memorySizeGB" /></div>
+                    <div class="edit-field"><label>Форм фактор</label><input [(ngModel)]="addForm.formFactor" /></div>
+                    <div class="edit-field">
+                      <label>Интерфейс</label>
+                      <select class="status-select" [(ngModel)]="addForm.interfaceTypeId">
+                        @for (i of interfaces; track i.id) {
+                          <option [ngValue]="i.id">{{ i.name }}</option>
+                        }
+                      </select>
+                    </div>
+                  }
+
+                  <!-- Motherboard -->
+                  @if (addCategory === 'Motherboard') {
+                    <div class="edit-field">
+                      <label>Сокет</label>
+                      <select class="status-select" [(ngModel)]="addForm.socketId">
+                        @for (s of sockets; track s.id) {
+                          <option [ngValue]="s.id">{{ s.name }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Чипсет</label><input [(ngModel)]="addForm.chipset" /></div>
+                    <div class="edit-field"><label>RAM тип</label><input [(ngModel)]="addForm.supportedRamType" /></div>
+                    <div class="edit-field"><label>RAM слотове</label><input type="number" [(ngModel)]="addForm.ramSlots" /></div>
+                    <div class="edit-field"><label>Форм фактор</label><input [(ngModel)]="addForm.formFactor" /></div>
+                    <div class="edit-field">
+                      <label>Wi-Fi</label>
+                      <select class="status-select" [(ngModel)]="addForm.hasBuiltInWifi">
+                        <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Bluetooth</label>
+                      <select class="status-select" [(ngModel)]="addForm.hasBuiltInBluetooth">
+                        <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Портове</label><input [(ngModel)]="addForm.ports" /></div>
+                  }
+
+                  <!-- Cooler -->
+                  @if (addCategory === 'Cooler') {
+                    <div class="edit-field">
+                      <label>Сокет</label>
+                      <select class="status-select" [(ngModel)]="addForm.socketId">
+                        @for (s of sockets; track s.id) {
+                          <option [ngValue]="s.id">{{ s.name }}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Тип (Air/Liquid)</label><input [(ngModel)]="addForm.coolingType" /></div>
+                    <div class="edit-field"><label>Вентилатор (mm)</label><input type="number" [(ngModel)]="addForm.fanWidthMM" /></div>
+                  }
+
+                  <!-- PSU -->
+                  @if (addCategory === 'PSU') {
+                    <div class="edit-field"><label>Мощност (W)</label><input type="number" [(ngModel)]="addForm.powerWatts" /></div>
+                    <div class="edit-field"><label>Форм фактор</label><input [(ngModel)]="addForm.formFactor" /></div>
+                    <div class="edit-field"><label>Ефективност</label><input [(ngModel)]="addForm.efficiency" placeholder="80+ Gold" /></div>
+                    <div class="edit-field"><label>Категория</label><input [(ngModel)]="addForm.category" /></div>
+                    <div class="edit-field">
+                      <label>PFC</label>
+                      <select class="status-select" [(ngModel)]="addForm.hasPfc">
+                        <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Кабели</label><input [(ngModel)]="addForm.wiringType" placeholder="Modular" /></div>
+                  }
+
+                  <!-- Box -->
+                  @if (addCategory === 'Box') {
+                    <div class="edit-field"><label>MB форм фактор</label><input [(ngModel)]="addForm.motherboardFormFactor" /></div>
+                    <div class="edit-field"><label>Тип кутия</label><input [(ngModel)]="addForm.boxFormFactor" /></div>
+                    <div class="edit-field"><label>Цвят</label><input [(ngModel)]="addForm.color" /></div>
+                    <div class="edit-field"><label>Макс. GPU (mm)</label><input type="number" [(ngModel)]="addForm.maxGPULengthMM" /></div>
+                    <div class="edit-field"><label>Макс. охладител (mm)</label><input type="number" [(ngModel)]="addForm.maxCPUCoolerHeightMM" /></div>
+                    <div class="edit-field"><label>PSU тип</label><input [(ngModel)]="addForm.psuType" /></div>
+                  }
+
+                  <!-- OS -->
+                  @if (addCategory === 'OS') {
+                    <div class="edit-field"><label>Тип ОС</label><input [(ngModel)]="addForm.osType" /></div>
+                  }
+
+                  <!-- Accessory / Peripheral -->
+                  @if (addCategory === 'Accessory' || addCategory === 'Peripheral') {
+                    <div class="edit-field"><label>Тип аксесоар</label><input [(ngModel)]="addForm.accessoryType" /></div>
+                    @if (addCategory === 'Accessory') {
+                      <div class="edit-field"><label>Вентилатор (mm, ако е fan)</label><input type="number" [(ngModel)]="addForm.fanWidthMM" /></div>
+                    }
+                  }
+
+                </div>
+
+                <div class="edit-actions">
+                  <button class="btn-save" (click)="submitNewProduct()" [disabled]="addLoading">
+                    {{ addLoading ? 'Запазване...' : '💾 Създай продукт' }}
+                  </button>
+                  <button class="btn-cancel-edit" (click)="closeAddForm()">Отказ</button>
+                </div>
+              }
+            </div>
+          }
 
           <!-- Edit form -->
           @if (editingProduct) {

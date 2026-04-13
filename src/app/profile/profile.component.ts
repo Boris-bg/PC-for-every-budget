@@ -52,7 +52,19 @@ export class ProfileComponent implements OnInit {
     imageUrl:          ''
   };
 
-  readonly ORDER_STATUSES = ['PENDING','PROCESSING','SHIPPED','DELIVERED','CANCELLED'];
+  showAddForm = false;
+  addCategory = '';
+  sockets: any[] = [];
+  interfaces: any[] = [];
+  addForm: any = {};
+  addError = '';
+  addLoading = false;
+
+  readonly CATEGORIES = [
+    'CPU', 'GPU', 'RAM', 'ROM', 'Motherboard',
+    'Cooler', 'PSU', 'Box', 'OS', 'Accessory', 'Peripheral'
+  ];
+  readonly ORDER_STATUSES = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
 
   constructor(
     public  auth:         AuthService,
@@ -148,8 +160,11 @@ export class ProfileComponent implements OnInit {
   // ── Admin ──────────────────────────────────────────
   onAdminTab(): void {
     if (this.adminOrders.length === 0) this.loadAdminOrders();
-    if (this.adminUsers.length === 0)  this.loadAdminUsers();
+    if (this.adminUsers.length === 0) this.loadAdminUsers();
     if (this.adminProducts.length === 0) this.loadAdminProducts();
+
+    this.adminService.getSockets().subscribe(s => this.sockets = s);
+    this.adminService.getInterfaces().subscribe(i => this.interfaces = i);
   }
 
   loadAdminOrders(): void {
@@ -245,5 +260,36 @@ export class ProfileComponent implements OnInit {
   deleteProduct(id: number, name: string): void {
     if (!confirm(`Изтрий продукт "${name}"?`)) return;
     this.adminService.deleteProduct(id).subscribe(() => this.loadAdminProducts());
+  }
+
+  openAddForm(): void {
+    this.showAddForm = true;
+    this.addCategory = '';
+    this.addForm     = { availability: 0, rating: 4.5, warrantyPeriod: 24 };
+    this.addError    = '';
+  }
+
+  closeAddForm(): void {
+    this.showAddForm = false;
+  }
+
+  submitNewProduct(): void {
+    if (!this.addCategory) { this.addError = 'Избери категория'; return; }
+    if (!this.addForm.name || !this.addForm.price) {
+      this.addError = 'Попълни поне Ime и Цена'; return;
+    }
+    this.addLoading = true;
+    this.adminService.createProduct({ ...this.addForm, category: this.addCategory })
+      .subscribe({
+        next: () => {
+          this.addLoading  = false;
+          this.showAddForm = false;
+          this.loadAdminProducts();
+        },
+        error: err => {
+          this.addError   = err.error?.error ?? 'Грешка при създаване';
+          this.addLoading = false;
+        }
+      });
   }
 }

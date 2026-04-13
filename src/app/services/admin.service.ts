@@ -50,4 +50,16 @@ export class AdminService {
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/products/${id}`, { headers: this.headers() });
   }
+
+  createProduct(data: any): Observable<any> {
+    return this.http.post(`${this.base}/admin/products`, data, { headers: this.headers() });
+  }
+
+  getSockets(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/sockets`);
+  }
+
+  getInterfaces(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/interfaces`);
+  }
 }
