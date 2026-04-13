@@ -1,0 +1,1 @@
+import{p as i}from"./chunk-G4MYOV3V.js";import{V as r,Z as o}from"./chunk-JUFRADVZ.js";var e=class t{constructor(p){this.http=p}apiUrl="http://localhost:8080/api/products/boxes";getAll(){return this.http.get(this.apiUrl)}static \u0275fac=function(a){return new(a||t)(o(i))};static \u0275prov=r({token:t,factory:t.\u0275fac,providedIn:"root"})};export{e as a};

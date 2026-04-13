@@ -3,9 +3,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Product} from '../../models/Product';
 import {FilterConfig} from '../../models/FilterConfig';
-import {RouterLink} from '@angular/router';
+import {RouterLink, Router} from '@angular/router';
 import {CartService} from '../../services/cart.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
