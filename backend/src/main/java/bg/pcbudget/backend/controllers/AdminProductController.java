@@ -64,6 +64,165 @@ public class AdminProductController {
     }
   }
 
+  @PatchMapping("/{id}")
+  @Transactional
+  public ResponseEntity<?> updateProduct(@PathVariable Long id,
+                                         @RequestBody Map<String, Object> body) {
+    String category = (String) body.get("category");
+    if (category == null) return ResponseEntity.badRequest()
+      .body(Map.of("error", "Category is required"));
+
+    try {
+      return switch (category) {
+        case "CPU"         -> ResponseEntity.ok(updateCpu(id, body));
+        case "GPU"         -> ResponseEntity.ok(updateGpu(id, body));
+        case "RAM"         -> ResponseEntity.ok(updateRam(id, body));
+        case "ROM"         -> ResponseEntity.ok(updateRom(id, body));
+        case "Motherboard" -> ResponseEntity.ok(updateMotherboard(id, body));
+        case "Cooler"      -> ResponseEntity.ok(updateCooler(id, body));
+        case "PSU"         -> ResponseEntity.ok(updatePsu(id, body));
+        case "Box"         -> ResponseEntity.ok(updateBox(id, body));
+        case "OS"          -> ResponseEntity.ok(updateOs(id, body));
+        case "Accessory"   -> ResponseEntity.ok(updateAccessory(id, body));
+        case "Peripheral"  -> ResponseEntity.ok(updatePeripheral(id, body));
+        default -> ResponseEntity.badRequest()
+          .body(Map.of("error", "Unknown category: " + category));
+      };
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.internalServerError()
+        .body(Map.of("error", e.getMessage()));
+    }
+  }
+
+  // ── Update methods ─────────────────────────────────────────
+  private CPU updateCpu(Long id, Map<String, Object> b) {
+    CPU p = cpuRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("CPU not found"));
+    fillBase(p, b);
+    p.setSocket(getSocket(b.get("socketId")));
+    p.setModel((String) b.get("model"));
+    p.setFrequencyGHz(toDouble(b.get("frequencyGHz")));
+    p.setCores(toInt(b.get("cores")));
+    p.setThreads(toInt(b.get("threads")));
+    p.setIntegratedGraphicsModel((String) b.get("integratedGraphicsModel"));
+    p.setTdpWatts(toInt(b.get("tdpWatts")));
+    return cpuRepository.save(p);
+  }
+
+  private GPU updateGpu(Long id, Map<String, Object> b) {
+    GPU p = gpuRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("GPU not found"));
+    fillBase(p, b);
+    p.setChipBrand((String) b.get("chipBrand"));
+    p.setGraphicsProcessor((String) b.get("graphicsProcessor"));
+    p.setInterfaceType(getInterface(b.get("interfaceTypeId")));
+    p.setMemorySizeGB(toInt(b.get("memorySizeGB")));
+    p.setMemoryType((String) b.get("memoryType"));
+    p.setSlotWidth(toInt(b.get("slotWidth")));
+    p.setDirectXVersion((String) b.get("directXVersion"));
+    return gpuRepository.save(p);
+  }
+
+  private RAM updateRam(Long id, Map<String, Object> b) {
+    RAM p = ramRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("RAM not found"));
+    fillBase(p, b);
+    p.setMemorySizeGB(toInt(b.get("memorySizeGB")));
+    p.setType((String) b.get("type"));
+    p.setSpeedMHz(toInt(b.get("speedMHz")));
+    p.setIsKIT((Boolean) b.getOrDefault("isKIT", false));
+    p.setIsRGB((Boolean) b.getOrDefault("isRGB", false));
+    return ramRepository.save(p);
+  }
+
+  private ROM updateRom(Long id, Map<String, Object> b) {
+    ROM p = romRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("ROM not found"));
+    fillBase(p, b);
+    p.setStorageType((String) b.get("storageType"));
+    p.setMemorySizeGB(toInt(b.get("memorySizeGB")));
+    p.setFormFactor((String) b.get("formFactor"));
+    p.setInterfaceType(getInterface(b.get("interfaceTypeId")));
+    return romRepository.save(p);
+  }
+
+  private Motherboard updateMotherboard(Long id, Map<String, Object> b) {
+    Motherboard p = motherboardRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Motherboard not found"));
+    fillBase(p, b);
+    p.setSocket(getSocket(b.get("socketId")));
+    p.setChipset((String) b.get("chipset"));
+    p.setSupportedRamType((String) b.get("supportedRamType"));
+    p.setRamSlots(toInt(b.get("ramSlots")));
+    p.setFormFactor((String) b.get("formFactor"));
+    p.setHasBuiltInWifi((Boolean) b.getOrDefault("hasBuiltInWifi", false));
+    p.setHasBuiltInBluetooth((Boolean) b.getOrDefault("hasBuiltInBluetooth", false));
+    p.setPorts((String) b.getOrDefault("ports", ""));
+    return motherboardRepository.save(p);
+  }
+
+  private Cooler updateCooler(Long id, Map<String, Object> b) {
+    Cooler p = coolerRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Cooler not found"));
+    fillBase(p, b);
+    p.setSocket(getSocket(b.get("socketId")));
+    p.setCoolingType((String) b.get("coolingType"));
+    p.setFanWidthMM(toInt(b.get("fanWidthMM")));
+    return coolerRepository.save(p);
+  }
+
+  private PSU updatePsu(Long id, Map<String, Object> b) {
+    PSU p = psuRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("PSU not found"));
+    fillBase(p, b);
+    p.setPowerWatts(toInt(b.get("powerWatts")));
+    p.setFormFactor((String) b.get("formFactor"));
+    p.setEfficiency((String) b.get("efficiency"));
+    p.setCategory((String) b.get("category"));
+    p.setHasPfc((Boolean) b.getOrDefault("hasPfc", false));
+    p.setWiringType((String) b.get("wiringType"));
+    return psuRepository.save(p);
+  }
+
+  private Box updateBox(Long id, Map<String, Object> b) {
+    Box p = boxRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Box not found"));
+    fillBase(p, b);
+    p.setMotherboardFormFactor((String) b.get("motherboardFormFactor"));
+    p.setBoxFormFactor((String) b.get("boxFormFactor"));
+    p.setColor((String) b.get("color"));
+    p.setMaxGPULengthMM(toInt(b.get("maxGPULengthMM")));
+    p.setMaxCPUCoolerHeightMM(toInt(b.get("maxCPUCoolerHeightMM")));
+    p.setPsuType((String) b.get("psuType"));
+    return boxRepository.save(p);
+  }
+
+  private OS updateOs(Long id, Map<String, Object> b) {
+    OS p = osRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("OS not found"));
+    fillBase(p, b);
+    p.setOsType((String) b.get("osType"));
+    return osRepository.save(p);
+  }
+
+  private Accessory updateAccessory(Long id, Map<String, Object> b) {
+    Accessory p = accessoryRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Accessory not found"));
+    fillBase(p, b);
+    p.setAccessoryType((String) b.get("accessoryType"));
+    p.setFanWidthMM(b.get("fanWidthMM") != null ? toInt(b.get("fanWidthMM")) : null);
+    return accessoryRepository.save(p);
+  }
+
+  private PeripheralAccessory updatePeripheral(Long id, Map<String, Object> b) {
+    PeripheralAccessory p = peripheralRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Peripheral not found"));
+    fillBase(p, b);
+    p.setAccessoryType((String) b.get("accessoryType"));
+    return peripheralRepository.save(p);
+  }
+
   // ── Helpers ────────────────────────────────────────────
   private void fillBase(Product p, Map<String, Object> b) {
     p.setName((String) b.get("name"));

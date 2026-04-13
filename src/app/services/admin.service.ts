@@ -43,8 +43,8 @@ export class AdminService {
     return this.http.get<any[]>(`${this.base}/products/all`, { headers: this.headers() });
   }
 
-  updateProduct(id: number, data: Partial<any>): Observable<any> {
-    return this.http.patch(`${this.base}/products/${id}`, data, { headers: this.headers() });
+  updateProduct(id: number, data: any): Observable<any> {
+    return this.http.patch(`${this.base}/admin/products/${id}`, data, { headers: this.headers() });
   }
 
   deleteProduct(id: number): Observable<void> {
