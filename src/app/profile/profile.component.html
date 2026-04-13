@@ -759,7 +759,7 @@
                       <td [class.low-stock]="product.availability < 5">
                         {{ product.availability }} бр.
                       </td>
-                      <td>⭐ {{ product.rating }}</td>
+                      <td>⭐ {{ product.rating.toFixed(1) }}</td>
                       <td class="col-actions">
                         <button class="btn-edit"
                                 (click)="startEdit(product)"

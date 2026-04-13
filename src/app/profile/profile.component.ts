@@ -225,70 +225,84 @@ export class ProfileComponent implements OnInit {
   }
 
   startEdit(product: any): void {
-    this.editingProduct = product;
-    this.editCategory   = product.dtype ?? '';
+    // Зареди пълния обект с всички полета
+    this.adminService.getProductById(product.id).subscribe({
+      next: full => {
+        this.editingProduct = full;
+        // dtype от таблицата идва като lowercase в някои случаи
+        this.editCategory = full.dtype ?? product.dtype ?? '';
+        this.populateEditForm(full);
+      },
+      error: () => {
+        // Fallback към базовите данни
+        this.editingProduct = product;
+        this.editCategory   = product.dtype ?? '';
+        this.populateEditForm(product);
+      }
+    });
+  }
 
-    // Базови полета
+  private populateEditForm(p: any): void {
     this.editForm = {
-      name: product.name ?? '',
-      price: product.price ?? 0,
-      brand: product.brand ?? '',
-      availability: product.availability ?? 0,
-      rating: product.rating ?? 0,
-      additionalDetails: product.additionalDetails ?? '',
-      imageUrl: product.imageUrl ?? '',
-      warrantyPeriod: product.warrantyPeriod ?? 0,
+      name:              p.name              ?? '',
+      price:             p.price             ?? 0,
+      brand:             p.brand             ?? '',
+      availability:      p.availability      ?? 0,
+      rating:            p.rating            ?? 0,
+      additionalDetails: p.additionalDetails ?? '',
+      imageUrl:          p.imageUrl          ?? '',
+      warrantyPeriod:    p.warrantyPeriod    ?? 0,
       // CPU
-      socketId: product.socket?.id ?? null,
-      model: product.model ?? '',
-      frequencyGHz: product.frequencyGHz ?? 0,
-      cores: product.cores ?? 0,
-      threads: product.threads ?? 0,
-      tdpWatts: product.tdpWatts ?? 0,
-      integratedGraphicsModel: product.integratedGraphicsModel ?? '',
+      socketId:                p.socket?.id                ?? null,
+      model:                   p.model                    ?? '',
+      frequencyGHz:            p.frequencyGHz             ?? 0,
+      cores:                   p.cores                    ?? 0,
+      threads:                 p.threads                  ?? 0,
+      tdpWatts:                p.tdpWatts                 ?? 0,
+      integratedGraphicsModel: p.integratedGraphicsModel  ?? '',
       // GPU
-      chipBrand: product.chipBrand ?? '',
-      graphicsProcessor: product.graphicsProcessor ?? '',
-      interfaceTypeId: product.interfaceType?.id ?? null,
-      memorySizeGB: product.memorySizeGB ?? 0,
-      memoryType: product.memoryType ?? '',
-      slotWidth: product.slotWidth ?? 0,
-      directXVersion: product.directXVersion ?? '',
+      chipBrand:         p.chipBrand         ?? '',
+      graphicsProcessor: p.graphicsProcessor ?? '',
+      interfaceTypeId:   p.interfaceType?.id ?? null,
+      memorySizeGB:      p.memorySizeGB      ?? 0,
+      memoryType:        p.memoryType        ?? '',
+      slotWidth:         p.slotWidth         ?? 0,
+      directXVersion:    p.directXVersion    ?? '',
       // RAM
-      type: product.type ?? '',
-      speedMHz: product.speedMHz ?? 0,
-      isKIT: product.isKIT ?? false,
-      isRGB: product.isRGB ?? false,
+      type:     p.type     ?? '',
+      speedMHz: p.speedMHz ?? 0,
+      isKIT:    p.isKIT    ?? false,
+      isRGB:    p.isRGB    ?? false,
       // ROM
-      storageType: product.storageType ?? '',
-      formFactor: product.formFactor ?? '',
+      storageType: p.storageType ?? '',
+      formFactor:  p.formFactor  ?? '',
       // Motherboard
-      chipset: product.chipset ?? '',
-      supportedRamType: product.supportedRamType ?? '',
-      ramSlots: product.ramSlots ?? 0,
-      hasBuiltInWifi: product.hasBuiltInWifi ?? false,
-      hasBuiltInBluetooth: product.hasBuiltInBluetooth ?? false,
-      ports: product.ports ?? '',
+      chipset:             p.chipset             ?? '',
+      supportedRamType:    p.supportedRamType    ?? '',
+      ramSlots:            p.ramSlots            ?? 0,
+      hasBuiltInWifi:      p.hasBuiltInWifi      ?? false,
+      hasBuiltInBluetooth: p.hasBuiltInBluetooth ?? false,
+      ports:               p.ports               ?? '',
       // Cooler
-      coolingType: product.coolingType ?? '',
-      fanWidthMM: product.fanWidthMM ?? 0,
+      coolingType: p.coolingType ?? '',
+      fanWidthMM:  p.fanWidthMM  ?? 0,
       // PSU
-      powerWatts: product.powerWatts ?? 0,
-      efficiency: product.efficiency ?? '',
-      category: product.category ?? '',
-      hasPfc: product.hasPfc ?? false,
-      wiringType: product.wiringType ?? '',
+      powerWatts: p.powerWatts ?? 0,
+      efficiency: p.efficiency  ?? '',
+      category:   p.category    ?? '',
+      hasPfc:     p.hasPfc      ?? false,
+      wiringType: p.wiringType  ?? '',
       // Box
-      motherboardFormFactor: product.motherboardFormFactor ?? '',
-      boxFormFactor: product.boxFormFactor ?? '',
-      color: product.color ?? '',
-      maxGPULengthMM: product.maxGPULengthMM ?? 0,
-      maxCPUCoolerHeightMM: product.maxCPUCoolerHeightMM ?? 0,
-      psuType: product.psuType ?? '',
+      motherboardFormFactor: p.motherboardFormFactor ?? '',
+      boxFormFactor:         p.boxFormFactor         ?? '',
+      color:                 p.color                 ?? '',
+      maxGPULengthMM:        p.maxGPULengthMM        ?? 0,
+      maxCPUCoolerHeightMM:  p.maxCPUCoolerHeightMM  ?? 0,
+      psuType:               p.psuType               ?? '',
       // OS
-      osType: product.osType ?? '',
+      osType: p.osType ?? '',
       // Accessory / Peripheral
-      accessoryType: product.accessoryType ?? '',
+      accessoryType: p.accessoryType ?? '',
     };
   }
 
@@ -298,7 +312,11 @@ export class ProfileComponent implements OnInit {
 
   saveProduct(): void {
     if (!this.editingProduct) return;
-    const payload = { ...this.editForm, category: this.editCategory };
+
+    let cat = this.editCategory;
+    if (cat === 'PeripheralAccessory') cat = 'Peripheral';
+
+    const payload = { ...this.editForm, category: cat };
     this.adminService.updateProduct(this.editingProduct.id, payload)
       .subscribe({
         next: () => {

@@ -95,6 +95,61 @@ public class AdminProductController {
     }
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getProductById(@PathVariable Long id) {
+    String dtype = getDtype(id);
+    if (dtype == null) return ResponseEntity.notFound().build();
+
+    return switch (dtype) {
+      case "CPU"                -> cpuRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "GPU"                -> gpuRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "RAM"                -> ramRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "ROM"                -> romRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Motherboard"        -> motherboardRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Cooler"             -> coolerRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "PSU"                -> psuRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Box"                -> boxRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "OS"                 -> osRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Accessory"          -> accessoryRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "PeripheralAccessory"-> peripheralRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      default -> ResponseEntity.badRequest()
+        .body(Map.of("error", "Unknown dtype: " + dtype));
+    };
+  }
+
+  @SuppressWarnings("unchecked")
+  private String getDtype(Long id) {
+    var result = productRepository.findAllBasicInfo().stream()
+      .filter(m -> {
+        Object mid = m.get("id");
+        return mid != null && Long.parseLong(mid.toString()) == id;
+      })
+      .findFirst();
+    return result.map(m -> (String) m.get("dtype")).orElse(null);
+  }
+
   // ── Update methods ─────────────────────────────────────────
   private CPU updateCpu(Long id, Map<String, Object> b) {
     CPU p = cpuRepository.findById(id)

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -18,6 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(p.brand) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Product> searchByNameOrBrand(@Param("query") String query);
 
-    @Query(value = "SELECT id, name, price, brand, availability, rating, image_url, image_alt_text, additional_details, warranty_period FROM products ORDER BY id DESC", nativeQuery = true)
-    List<java.util.Map<String, Object>> findAllBasicInfo();
+  @Query(value = "SELECT id, name, price, brand, availability, rating, image_url, image_alt_text, additional_details, warranty_period, dtype FROM products ORDER BY id DESC", nativeQuery = true)
+  List<Map<String, Object>> findAllBasicInfo();
 }

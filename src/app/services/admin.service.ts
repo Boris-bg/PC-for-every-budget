@@ -62,4 +62,8 @@ export class AdminService {
   getInterfaces(): Observable<any[]> {
     return this.http.get<any[]>(`${this.base}/interfaces`);
   }
+
+  getProductById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.base}/admin/products/${id}`, { headers: this.headers() });
+  }
 }
