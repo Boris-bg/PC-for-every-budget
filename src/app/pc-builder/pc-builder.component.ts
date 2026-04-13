@@ -294,9 +294,13 @@ export class PcBuilderComponent implements OnInit {
   }
 
   get totalPrice(): number {
-    return this.slots
+    const partsTotal = this.slots
       .filter(s => s.selected)
       .reduce((sum, s) => sum + (s.selected?.price ?? 0), 0);
+
+    const assemblyPrice = this.assemblyProduct?.price ?? 0;
+
+    return partsTotal + assemblyPrice;
   }
 
   get isComplete(): boolean {

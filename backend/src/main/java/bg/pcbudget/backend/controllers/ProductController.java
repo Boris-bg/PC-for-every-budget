@@ -2,6 +2,7 @@ package bg.pcbudget.backend.controllers;
 
 import bg.pcbudget.backend.models.Product;
 import bg.pcbudget.backend.repositories.ProductRepository;
+import bg.pcbudget.backend.repositories.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,12 @@ public class ProductController {
       .orElse(ResponseEntity.notFound().build());
   }
 
+  private final ServiceRepository serviceRepository;
+
   @GetMapping("/by-name")
   public ResponseEntity<Product> getByExactName(@RequestParam String name) {
-    return repository.findByNameContainingIgnoreCase(name)
-      .stream()
-      .filter(p -> p.getName().equalsIgnoreCase(name))
-      .findFirst()
-      .map(ResponseEntity::ok)
+    return serviceRepository.findByNameIgnoreCase(name)
+      .map(s -> ResponseEntity.ok((Product) s))
       .orElse(ResponseEntity.notFound().build());
   }
 }
