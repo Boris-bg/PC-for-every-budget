@@ -1,1 +1,76 @@
-<p>products works!</p>
+<div class="products-page">
+
+  <div class="page-header">
+    <h1>Всички продукти</h1>
+    <p class="subtitle">Разгледайте най-високо оценените продукти от всяка категория</p>
+  </div>
+
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Зареждане...</p>
+    </div>
+  }
+
+  @for (section of sections; track section.route) {
+    @if (section.items.length > 0) {
+      <section class="product-section">
+
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">{{ section.icon }}</span>
+            {{ section.title }}
+          </h2>
+          <a [routerLink]="section.route" class="btn-see-all">
+            Виж всички →
+          </a>
+        </div>
+
+        <div class="cards-grid">
+          @for (product of section.items; track product.id) {
+            <a [routerLink]="['/product', product.id]" class="product-card">
+
+              <div class="card-image">
+                @if (product.imageUrl) {
+                  <img [src]="product.imageUrl" [alt]="product.imageAltText" loading="lazy" />
+                } @else {
+                  <div class="no-image">{{ section.icon }}</div>
+                }
+              </div>
+
+              <div class="card-body">
+                <p class="card-brand">{{ product.brand }}</p>
+                <h3 class="card-name">{{ product.name }}</h3>
+
+                <div class="card-rating">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <span class="star" [class.filled]="star <= product.rating">★</span>
+                  }
+                  <span class="rating-val">{{ product.rating.toFixed(1) }}</span>
+                </div>
+
+                <div class="card-footer">
+                  <span class="card-price">{{ product.price }} €</span>
+                  <button class="btn-cart"
+                          [disabled]="product.availability === 0"
+                          (click)="addToCart(product, $event)">
+                    {{ product.availability > 0 ? '+ Количка' : 'Изчерпан' }}
+                  </button>
+                </div>
+              </div>
+
+            </a>
+          }
+        </div>
+
+        <div class="section-footer">
+          <a [routerLink]="section.route" class="btn-category">
+            Всички {{ section.title }} →
+          </a>
+        </div>
+
+      </section>
+    }
+  }
+
+</div>

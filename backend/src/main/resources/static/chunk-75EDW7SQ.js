@@ -1,0 +1,1 @@
+import{p as i}from"./chunk-XRRTLQ3G.js";import{V as r,Z as e}from"./chunk-JUFRADVZ.js";var o=class t{constructor(p){this.http=p}apiUrl="http://localhost:8080/api/products/peripheral-accessories";getAll(){return this.http.get(this.apiUrl)}static \u0275fac=function(a){return new(a||t)(e(i))};static \u0275prov=r({token:t,factory:t.\u0275fac,providedIn:"root"})};export{o as a};
