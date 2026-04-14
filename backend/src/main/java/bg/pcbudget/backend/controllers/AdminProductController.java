@@ -284,7 +284,7 @@ public class AdminProductController {
     p.setPrice(toDouble(b.get("price")));
     p.setBrand((String) b.get("brand"));
     p.setAvailability(toInt(b.get("availability")));
-    p.setRating(toDouble(b.get("rating")));
+//    p.setRating(toDouble(b.get("rating")));  // не е необходимо, DEFAULT CONSTRAINT в SQL
     p.setAdditionalDetails((String) b.getOrDefault("additionalDetails", ""));
     p.setImageUrl((String) b.getOrDefault("imageUrl", ""));
     p.setImageAltText((String) b.getOrDefault("imageAltText", ""));

@@ -51,7 +51,14 @@ export class CheckoutComponent implements OnInit {
   placeOrder(): void {
     this.error = '';
 
-    if (!this.phone.trim()) { this.error = 'Въведи телефон за връзка'; return; }
+    const phoneRegex = /^(\+359|0)[0-9]{9}$/;
+    if (!this.phone.trim()) {
+      this.error = 'Въведи телефон за връзка'; return;
+    }
+    if (!phoneRegex.test(this.phone.trim().replace(/\s/g, ''))) {
+      this.error = 'Невалиден телефонен номер (пр. +359 88 888 8888 или 0888888888)'; return;
+    }
+
     if (this.deliveryType === 'DELIVERY' && !this.deliveryAddress.trim()) {
       this.error = 'Въведи адрес за доставка'; return;
     }
