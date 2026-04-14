@@ -560,6 +560,59 @@
                     }
                   }
 
+                  <!-- Keyboard -->
+                  @if (addCategory === 'Keyboard') {
+                    <div class="edit-field">
+                      <label>Интерфейс</label>
+                      <select class="status-select" [(ngModel)]="addCategory === 'Keyboard' ? addForm.interfaceTypeId : editForm.interfaceTypeId">
+                        @for (i of interfaces; track i.id) { <option [ngValue]="i.id">{{ i.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Свързване</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.connectionType : editForm.connectionType" /></div>
+                    <div class="edit-field"><label>Тип клавиатура</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.keyboardType : editForm.keyboardType" /></div>
+                    <div class="edit-field"><label>Цвят</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.color : editForm.color" /></div>
+                    <div class="edit-field"><label>Суичове</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.switches : editForm.switches" /></div>
+                    <div class="edit-field"><label>BG подредба</label>
+                      <select class="status-select" [(ngModel)]="addCategory === 'Keyboard' ? addForm.hasBulgarianLayout : editForm.hasBulgarianLayout">
+                        <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Осветление</label>
+                      <select class="status-select" [(ngModel)]="addCategory === 'Keyboard' ? addForm.hasLighting : editForm.hasLighting">
+                        <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                  }
+
+                  <!-- Mouse -->
+                  @if (addCategory === 'Mouse') {
+                    <div class="edit-field"><label>Свързване</label><input [(ngModel)]="addCategory === 'Mouse' ? addForm.connectionType : editForm.connectionType" /></div>
+                    <div class="edit-field"><label>Макс. DPI</label><input type="number" [(ngModel)]="addCategory === 'Mouse' ? addForm.maxDpi : editForm.maxDpi" /></div>
+                    <div class="edit-field">
+                      <label>Интерфейс</label>
+                      <select class="status-select" [(ngModel)]="addCategory === 'Mouse' ? addForm.interfaceTypeId : editForm.interfaceTypeId">
+                        @for (i of interfaces; track i.id) { <option [ngValue]="i.id">{{ i.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field"><label>Цвят</label><input [(ngModel)]="addCategory === 'Mouse' ? addForm.color : editForm.color" /></div>
+                    <div class="edit-field"><label>За лява ръка</label>
+                      <select class="status-select" [(ngModel)]="addCategory === 'Mouse' ? addForm.suitableForLeftHand : editForm.suitableForLeftHand">
+                        <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                      </select>
+                    </div>
+                  }
+
+                  <!-- Monitor -->
+                  @if (addCategory === 'Monitor') {
+                    <div class="edit-field"><label>Размер (")</label><input type="number" step="0.1" [(ngModel)]="addCategory === 'Monitor' ? addForm.panelSizeInch : editForm.panelSizeInch" /></div>
+                    <div class="edit-field"><label>Съотношение</label><input [(ngModel)]="addCategory === 'Monitor' ? addForm.aspectRatio : editForm.aspectRatio" placeholder="16:9" /></div>
+                    <div class="edit-field"><label>Резолюция</label><input [(ngModel)]="addCategory === 'Monitor' ? addForm.resolution : editForm.resolution" placeholder="1920x1080" /></div>
+                    <div class="edit-field"><label>Честота (Hz)</label><input type="number" [(ngModel)]="addCategory === 'Monitor' ? addForm.refreshRateHz : editForm.refreshRateHz" /></div>
+                    <div class="edit-field"><label>Реакция (ms)</label><input type="number" [(ngModel)]="addCategory === 'Monitor' ? addForm.responseTimeMs : editForm.responseTimeMs" /></div>
+                    <div class="edit-field"><label>Тип панел</label><input [(ngModel)]="addCategory === 'Monitor' ? addForm.panelType : editForm.panelType" placeholder="IPS" /></div>
+                    <div class="edit-field"><label>Яркост (nits)</label><input type="number" [(ngModel)]="addCategory === 'Monitor' ? addForm.brightnessNits : editForm.brightnessNits" /></div>
+                  }
+
                 </div>
 
                 <div class="edit-actions">
@@ -717,6 +770,59 @@
                   @if (editCategory === 'Accessory') {
                     <div class="edit-field"><label>Вентилатор (mm)</label><input type="number" [(ngModel)]="editForm.fanWidthMM" /></div>
                   }
+                }
+
+                <!-- Keyboard -->
+                @if (editCategory === 'Keyboard') {
+                  <div class="edit-field">
+                    <label>Интерфейс</label>
+                    <select class="status-select" [(ngModel)]="addCategory === 'Keyboard' ? addForm.interfaceTypeId : editForm.interfaceTypeId">
+                      @for (i of interfaces; track i.id) { <option [ngValue]="i.id">{{ i.name }}</option> }
+                    </select>
+                  </div>
+                  <div class="edit-field"><label>Свързване</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.connectionType : editForm.connectionType" /></div>
+                  <div class="edit-field"><label>Тип клавиатура</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.keyboardType : editForm.keyboardType" /></div>
+                  <div class="edit-field"><label>Цвят</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.color : editForm.color" /></div>
+                  <div class="edit-field"><label>Суичове</label><input [(ngModel)]="addCategory === 'Keyboard' ? addForm.switches : editForm.switches" /></div>
+                  <div class="edit-field"><label>BG подредба</label>
+                    <select class="status-select" [(ngModel)]="addCategory === 'Keyboard' ? addForm.hasBulgarianLayout : editForm.hasBulgarianLayout">
+                      <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                    </select>
+                  </div>
+                  <div class="edit-field"><label>Осветление</label>
+                    <select class="status-select" [(ngModel)]="addCategory === 'Keyboard' ? addForm.hasLighting : editForm.hasLighting">
+                      <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                    </select>
+                  </div>
+                }
+
+                <!-- Mouse -->
+                @if (editCategory === 'Mouse') {
+                  <div class="edit-field"><label>Свързване</label><input [(ngModel)]="addCategory === 'Mouse' ? addForm.connectionType : editForm.connectionType" /></div>
+                  <div class="edit-field"><label>Макс. DPI</label><input type="number" [(ngModel)]="addCategory === 'Mouse' ? addForm.maxDpi : editForm.maxDpi" /></div>
+                  <div class="edit-field">
+                    <label>Интерфейс</label>
+                    <select class="status-select" [(ngModel)]="addCategory === 'Mouse' ? addForm.interfaceTypeId : editForm.interfaceTypeId">
+                      @for (i of interfaces; track i.id) { <option [ngValue]="i.id">{{ i.name }}</option> }
+                    </select>
+                  </div>
+                  <div class="edit-field"><label>Цвят</label><input [(ngModel)]="addCategory === 'Mouse' ? addForm.color : editForm.color" /></div>
+                  <div class="edit-field"><label>За лява ръка</label>
+                    <select class="status-select" [(ngModel)]="addCategory === 'Mouse' ? addForm.suitableForLeftHand : editForm.suitableForLeftHand">
+                      <option [ngValue]="false">Не</option><option [ngValue]="true">Да</option>
+                    </select>
+                  </div>
+                }
+
+                <!-- Monitor -->
+                @if (editCategory === 'Monitor') {
+                  <div class="edit-field"><label>Размер (")</label><input type="number" step="0.1" [(ngModel)]="addCategory === 'Monitor' ? addForm.panelSizeInch : editForm.panelSizeInch" /></div>
+                  <div class="edit-field"><label>Съотношение</label><input [(ngModel)]="addCategory === 'Monitor' ? addForm.aspectRatio : editForm.aspectRatio" placeholder="16:9" /></div>
+                  <div class="edit-field"><label>Резолюция</label><input [(ngModel)]="addCategory === 'Monitor' ? addForm.resolution : editForm.resolution" placeholder="1920x1080" /></div>
+                  <div class="edit-field"><label>Честота (Hz)</label><input type="number" [(ngModel)]="addCategory === 'Monitor' ? addForm.refreshRateHz : editForm.refreshRateHz" /></div>
+                  <div class="edit-field"><label>Реакция (ms)</label><input type="number" [(ngModel)]="addCategory === 'Monitor' ? addForm.responseTimeMs : editForm.responseTimeMs" /></div>
+                  <div class="edit-field"><label>Тип панел</label><input [(ngModel)]="addCategory === 'Monitor' ? addForm.panelType : editForm.panelType" placeholder="IPS" /></div>
+                  <div class="edit-field"><label>Яркост (nits)</label><input type="number" [(ngModel)]="addCategory === 'Monitor' ? addForm.brightnessNits : editForm.brightnessNits" /></div>
                 }
               </div>
 

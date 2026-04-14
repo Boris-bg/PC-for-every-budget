@@ -29,6 +29,10 @@ public class AdminProductController {
   private final PeripheralAccessoryRepository peripheralRepository;
   private final SocketRepository socketRepository;
   private final NetworkInterfaceRepository interfaceRepository;
+  private final KeyboardRepository keyboardRepository;
+  private final MouseRepository mouseRepository;
+  private final MonitorRepository monitorRepository;
+  private final PCRepository pcRepository;
 
   @PostMapping
   @Transactional
@@ -39,17 +43,20 @@ public class AdminProductController {
 
     try {
       return switch (category) {
-        case "CPU"         -> ResponseEntity.ok(createCpu(body));
-        case "GPU"         -> ResponseEntity.ok(createGpu(body));
-        case "RAM"         -> ResponseEntity.ok(createRam(body));
-        case "ROM"         -> ResponseEntity.ok(createRom(body));
+        case "CPU" -> ResponseEntity.ok(createCpu(body));
+        case "GPU" -> ResponseEntity.ok(createGpu(body));
+        case "RAM" -> ResponseEntity.ok(createRam(body));
+        case "ROM" -> ResponseEntity.ok(createRom(body));
         case "Motherboard" -> ResponseEntity.ok(createMotherboard(body));
-        case "Cooler"      -> ResponseEntity.ok(createCooler(body));
-        case "PSU"         -> ResponseEntity.ok(createPsu(body));
-        case "Box"         -> ResponseEntity.ok(createBox(body));
-        case "OS"          -> ResponseEntity.ok(createOs(body));
-        case "Accessory"   -> ResponseEntity.ok(createAccessory(body));
-        case "Peripheral"  -> ResponseEntity.ok(createPeripheral(body));
+        case "Cooler" -> ResponseEntity.ok(createCooler(body));
+        case "PSU" -> ResponseEntity.ok(createPsu(body));
+        case "Box" -> ResponseEntity.ok(createBox(body));
+        case "OS" -> ResponseEntity.ok(createOs(body));
+        case "Accessory" -> ResponseEntity.ok(createAccessory(body));
+        case "Peripheral" -> ResponseEntity.ok(createPeripheral(body));
+        case "Keyboard" -> ResponseEntity.ok(createKeyboard(body));
+        case "Mouse" -> ResponseEntity.ok(createMouse(body));
+        case "Monitor" -> ResponseEntity.ok(createMonitor(body));
         default -> ResponseEntity.badRequest()
           .body(Map.of("error", "Unknown category: " + category));
       };
@@ -57,9 +64,9 @@ public class AdminProductController {
       e.printStackTrace();
       return ResponseEntity.internalServerError()
         .body(Map.of(
-          "error",  e.getMessage(),
-          "cause",  e.getCause() != null ? e.getCause().getMessage() : "none",
-          "class",  e.getClass().getSimpleName()
+          "error", e.getMessage(),
+          "cause", e.getCause() != null ? e.getCause().getMessage() : "none",
+          "class", e.getClass().getSimpleName()
         ));
     }
   }
@@ -74,17 +81,20 @@ public class AdminProductController {
 
     try {
       return switch (category) {
-        case "CPU"         -> ResponseEntity.ok(updateCpu(id, body));
-        case "GPU"         -> ResponseEntity.ok(updateGpu(id, body));
-        case "RAM"         -> ResponseEntity.ok(updateRam(id, body));
-        case "ROM"         -> ResponseEntity.ok(updateRom(id, body));
+        case "CPU" -> ResponseEntity.ok(updateCpu(id, body));
+        case "GPU" -> ResponseEntity.ok(updateGpu(id, body));
+        case "RAM" -> ResponseEntity.ok(updateRam(id, body));
+        case "ROM" -> ResponseEntity.ok(updateRom(id, body));
         case "Motherboard" -> ResponseEntity.ok(updateMotherboard(id, body));
-        case "Cooler"      -> ResponseEntity.ok(updateCooler(id, body));
-        case "PSU"         -> ResponseEntity.ok(updatePsu(id, body));
-        case "Box"         -> ResponseEntity.ok(updateBox(id, body));
-        case "OS"          -> ResponseEntity.ok(updateOs(id, body));
-        case "Accessory"   -> ResponseEntity.ok(updateAccessory(id, body));
-        case "Peripheral"  -> ResponseEntity.ok(updatePeripheral(id, body));
+        case "Cooler" -> ResponseEntity.ok(updateCooler(id, body));
+        case "PSU" -> ResponseEntity.ok(updatePsu(id, body));
+        case "Box" -> ResponseEntity.ok(updateBox(id, body));
+        case "OS" -> ResponseEntity.ok(updateOs(id, body));
+        case "Accessory" -> ResponseEntity.ok(updateAccessory(id, body));
+        case "Peripheral" -> ResponseEntity.ok(updatePeripheral(id, body));
+        case "Keyboard" -> ResponseEntity.ok(updateKeyboard(id, body));
+        case "Mouse" -> ResponseEntity.ok(updateMouse(id, body));
+        case "Monitor" -> ResponseEntity.ok(updateMonitor(id, body));
         default -> ResponseEntity.badRequest()
           .body(Map.of("error", "Unknown category: " + category));
       };
@@ -101,37 +111,49 @@ public class AdminProductController {
     if (dtype == null) return ResponseEntity.notFound().build();
 
     return switch (dtype) {
-      case "CPU"                -> cpuRepository.findById(id)
+      case "CPU" -> cpuRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "GPU"                -> gpuRepository.findById(id)
+      case "GPU" -> gpuRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "RAM"                -> ramRepository.findById(id)
+      case "RAM" -> ramRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "ROM"                -> romRepository.findById(id)
+      case "ROM" -> romRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "Motherboard"        -> motherboardRepository.findById(id)
+      case "Motherboard" -> motherboardRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "Cooler"             -> coolerRepository.findById(id)
+      case "Cooler" -> coolerRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "PSU"                -> psuRepository.findById(id)
+      case "PSU" -> psuRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "Box"                -> boxRepository.findById(id)
+      case "Box" -> boxRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "OS"                 -> osRepository.findById(id)
+      case "OS" -> osRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "Accessory"          -> accessoryRepository.findById(id)
+      case "Accessory" -> accessoryRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "PeripheralAccessory"-> peripheralRepository.findById(id)
+      case "PeripheralAccessory" -> peripheralRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Keyboard" -> keyboardRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Mouse" -> mouseRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "Monitor" -> monitorRepository.findById(id)
+        .map(p -> ResponseEntity.ok((Object) p))
+        .orElse(ResponseEntity.notFound().build());
+      case "PC" -> pcRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
       default -> ResponseEntity.badRequest()
@@ -276,6 +298,46 @@ public class AdminProductController {
     fillBase(p, b);
     p.setAccessoryType((String) b.get("accessoryType"));
     return peripheralRepository.save(p);
+  }
+
+  private Keyboard updateKeyboard(Long id, Map<String, Object> b) {
+    Keyboard p = keyboardRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Keyboard not found"));
+    fillBase(p, b);
+    p.setInterfaceType(getInterface(b.get("interfaceTypeId")));
+    p.setConnectionType((String) b.get("connectionType"));
+    p.setHasBulgarianLayout((Boolean) b.getOrDefault("hasBulgarianLayout", false));
+    p.setKeyboardType((String) b.get("keyboardType"));
+    p.setColor((String) b.get("color"));
+    p.setSwitches((String) b.get("switches"));
+    p.setHasLighting((Boolean) b.getOrDefault("hasLighting", false));
+    return keyboardRepository.save(p);
+  }
+
+  private Mouse updateMouse(Long id, Map<String, Object> b) {
+    Mouse p = mouseRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Mouse not found"));
+    fillBase(p, b);
+    p.setConnectionType((String) b.get("connectionType"));
+    p.setMaxDpi(toInt(b.get("maxDpi")));
+    p.setInterfaceType(getInterface(b.get("interfaceTypeId")));
+    p.setColor((String) b.get("color"));
+    p.setSuitableForLeftHand((Boolean) b.getOrDefault("suitableForLeftHand", false));
+    return mouseRepository.save(p);
+  }
+
+  private Monitor updateMonitor(Long id, Map<String, Object> b) {
+    Monitor p = monitorRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Monitor not found"));
+    fillBase(p, b);
+    p.setPanelSizeInch(toDouble(b.get("panelSizeInch")));
+    p.setAspectRatio((String) b.get("aspectRatio"));
+    p.setResolution((String) b.get("resolution"));
+    p.setRefreshRateHz(toInt(b.get("refreshRateHz")));
+    p.setResponseTimeMs(toInt(b.get("responseTimeMs")));
+    p.setPanelType((String) b.get("panelType"));
+    p.setBrightnessNits(toInt(b.get("brightnessNits")));
+    return monitorRepository.save(p);
   }
 
   // ── Helpers ────────────────────────────────────────────
@@ -434,5 +496,43 @@ public class AdminProductController {
     fillBase(p, b);
     p.setAccessoryType((String) b.get("accessoryType"));
     return peripheralRepository.save(p);
+  }
+
+  private Keyboard createKeyboard(Map<String, Object> b) {
+    Keyboard p = new Keyboard();
+    fillBase(p, b);
+    p.setInterfaceType(getInterface(b.get("interfaceTypeId")));
+    p.setConnectionType((String) b.get("connectionType"));
+    p.setHasBulgarianLayout((Boolean) b.getOrDefault("hasBulgarianLayout", false));
+    p.setKeyboardType((String) b.get("keyboardType"));
+    p.setColor((String) b.get("color"));
+    p.setSwitches((String) b.get("switches"));
+    p.setHasLighting((Boolean) b.getOrDefault("hasLighting", false));
+    return keyboardRepository.save(p);
+  }
+
+  private Mouse createMouse(Map<String, Object> b) {
+    Mouse p = new Mouse();
+    fillBase(p, b);
+    p.setConnectionType((String) b.get("connectionType"));
+    p.setMaxDpi(toInt(b.get("maxDpi")));
+    p.setInterfaceType(getInterface(b.get("interfaceTypeId")));
+    p.setColor((String) b.get("color"));
+    p.setSuitableForLeftHand((Boolean) b.getOrDefault("suitableForLeftHand", false));
+    return mouseRepository.save(p);
+  }
+
+
+  private Monitor createMonitor(Map<String, Object> b) {
+    Monitor p = new Monitor();
+    fillBase(p, b);
+    p.setPanelSizeInch(toDouble(b.get("panelSizeInch")));
+    p.setAspectRatio((String) b.get("aspectRatio"));
+    p.setResolution((String) b.get("resolution"));
+    p.setRefreshRateHz(toInt(b.get("refreshRateHz")));
+    p.setResponseTimeMs(toInt(b.get("responseTimeMs")));
+    p.setPanelType((String) b.get("panelType"));
+    p.setBrightnessNits(toInt(b.get("brightnessNits")));
+    return monitorRepository.save(p);
   }
 }
