@@ -30,7 +30,7 @@ public abstract class Product {
   private Integer availability;
   private String additionalDetails;
 
-  @Column(columnDefinition = "double precision default 5.0")
+  @Column(nullable = false, columnDefinition = "double precision default 5.0")
   private Double rating = 5.0;
   @Column(nullable = false, columnDefinition = "integer default 0")
   private Integer ratingCount = 0;

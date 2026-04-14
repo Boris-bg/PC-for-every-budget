@@ -4,11 +4,11 @@ export interface Product {
   price: number;
   brand: string;
   warrantyPeriod: number; // in months
-  // category: string;  // TODO think about categories later
+  // category: string; in SQL query
   availability: number;
   additionalDetails: string;
-  rating: number; // average user rating from 1 to 5
-  ratingCount?: number;
+  rating: number; // average user rating - [1; 5]
+  ratingCount: number;
   imageUrl?: string;
   imageAltText?: string;
 }
