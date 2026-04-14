@@ -143,7 +143,7 @@ public class AdminProductController {
       case "Accessory" -> accessoryRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
-      case "PeripheralAccessory" -> peripheralRepository.findById(id)
+      case "Peripheral" -> peripheralRepository.findById(id)
         .map(p -> ResponseEntity.ok((Object) p))
         .orElse(ResponseEntity.notFound().build());
       case "Keyboard" -> keyboardRepository.findById(id)
