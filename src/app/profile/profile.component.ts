@@ -341,7 +341,7 @@ export class ProfileComponent implements OnInit {
   openAddForm(): void {
     this.showAddForm = true;
     this.addCategory = '';
-    this.addForm     = { availability: 0, rating: 4.5, warrantyPeriod: 24 };
+    this.addForm     = { availability: 0, warrantyPeriod: 24 };
     this.addError    = '';
   }
 
