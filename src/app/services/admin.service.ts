@@ -66,4 +66,47 @@ export class AdminService {
   getProductById(id: number): Observable<any> {
     return this.http.get<any>(`${this.base}/admin/products/${id}`, { headers: this.headers() });
   }
+
+  /*
+  PC parts
+   */
+  getCpus(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/cpu`);
+  }
+
+  getCoolers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/coolers`);
+  }
+
+  getMotherboards(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/motherboards`);
+  }
+
+  getRams(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/ram`);
+  }
+
+  getRoms(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/rom`);
+  }
+
+  getGpus(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/gpu`);
+  }
+
+  getPsus(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/psu`);
+  }
+
+  getOss(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/os`);
+  }
+
+  getBoxes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/boxes`);
+  }
+
+  getAccessories(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/products/accessories`);
+  }
 }

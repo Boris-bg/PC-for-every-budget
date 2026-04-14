@@ -53,6 +53,17 @@ export class ProfileComponent implements OnInit {
   addError = '';
   addLoading = false;
 
+  pcCpus: any[] = [];
+  pcCoolers: any[] = [];
+  pcMotherboards: any[] = [];
+  pcRams: any[] = [];
+  pcRoms: any[] = [];
+  pcGpus: any[] = [];
+  pcPsus: any[] = [];
+  pcOss: any[] = [];
+  pcBoxes: any[] = [];
+  pcAccessories: any[] = [];
+
   readonly CATEGORIES = [
     'CPU', 'GPU', 'RAM', 'ROM', 'Motherboard',
     'Cooler', 'PSU', 'Box', 'OS', 'Accessory', 'Peripheral',
@@ -159,6 +170,16 @@ export class ProfileComponent implements OnInit {
 
     this.adminService.getSockets().subscribe(s => this.sockets = s);
     this.adminService.getInterfaces().subscribe(i => this.interfaces = i);
+    this.adminService.getCpus().subscribe(d => this.pcCpus = d);
+    this.adminService.getCoolers().subscribe(d => this.pcCoolers = d);
+    this.adminService.getMotherboards().subscribe(d => this.pcMotherboards = d);
+    this.adminService.getRams().subscribe(d => this.pcRams = d);
+    this.adminService.getRoms().subscribe(d => this.pcRoms = d);
+    this.adminService.getGpus().subscribe(d => this.pcGpus = d);
+    this.adminService.getPsus().subscribe(d => this.pcPsus = d);
+    this.adminService.getOss().subscribe(d => this.pcOss = d);
+    this.adminService.getBoxes().subscribe(d => this.pcBoxes = d);
+    this.adminService.getAccessories().subscribe(d => this.pcAccessories = d);
   }
 
   loadAdminOrders(): void {
@@ -252,65 +273,95 @@ export class ProfileComponent implements OnInit {
 
   private populateEditForm(p: any): void {
     this.editForm = {
-      name:              p.name              ?? '',
-      price:             p.price             ?? 0,
-      brand:             p.brand             ?? '',
-      availability:      p.availability      ?? 0,
-      rating:            p.rating            ?? 0,
+      name: p.name ?? '',
+      price: p.price ?? 0,
+      brand: p.brand ?? '',
+      availability: p.availability ?? 0,
       additionalDetails: p.additionalDetails ?? '',
-      imageUrl:          p.imageUrl          ?? '',
-      warrantyPeriod:    p.warrantyPeriod    ?? 0,
+      imageUrl: p.imageUrl ?? '',
+      warrantyPeriod: p.warrantyPeriod ?? 0,
       // CPU
-      socketId:                p.socket?.id                ?? null,
-      model:                   p.model                    ?? '',
-      frequencyGHz:            p.frequencyGHz             ?? 0,
-      cores:                   p.cores                    ?? 0,
-      threads:                 p.threads                  ?? 0,
-      tdpWatts:                p.tdpWatts                 ?? 0,
-      integratedGraphicsModel: p.integratedGraphicsModel  ?? '',
+      socketId: p.socket?.id ?? null,
+      model: p.model ?? '',
+      frequencyGHz: p.frequencyGHz ?? 0,
+      cores: p.cores ?? 0,
+      threads: p.threads ?? 0,
+      tdpWatts: p.tdpWatts ?? 0,
+      integratedGraphicsModel: p.integratedGraphicsModel ?? '',
       // GPU
-      chipBrand:         p.chipBrand         ?? '',
+      chipBrand: p.chipBrand ?? '',
       graphicsProcessor: p.graphicsProcessor ?? '',
-      interfaceTypeId:   p.interfaceType?.id ?? null,
-      memorySizeGB:      p.memorySizeGB      ?? 0,
-      memoryType:        p.memoryType        ?? '',
-      slotWidth:         p.slotWidth         ?? 0,
-      directXVersion:    p.directXVersion    ?? '',
+      interfaceTypeId: p.interfaceType?.id ?? null,
+      memorySizeGB: p.memorySizeGB ?? 0,
+      memoryType: p.memoryType ?? '',
+      slotWidth: p.slotWidth ?? 0,
+      directXVersion: p.directXVersion ?? '',
       // RAM
-      type:     p.type     ?? '',
+      type: p.type ?? '',
       speedMHz: p.speedMHz ?? 0,
-      isKIT:    p.isKIT    ?? false,
-      isRGB:    p.isRGB    ?? false,
+      isKIT: p.isKIT ?? false,
+      isRGB: p.isRGB ?? false,
       // ROM
       storageType: p.storageType ?? '',
-      formFactor:  p.formFactor  ?? '',
+      formFactor: p.formFactor ?? '',
       // Motherboard
-      chipset:             p.chipset             ?? '',
-      supportedRamType:    p.supportedRamType    ?? '',
-      ramSlots:            p.ramSlots            ?? 0,
-      hasBuiltInWifi:      p.hasBuiltInWifi      ?? false,
+      chipset: p.chipset ?? '',
+      supportedRamType: p.supportedRamType ?? '',
+      ramSlots: p.ramSlots ?? 0,
+      hasBuiltInWifi: p.hasBuiltInWifi ?? false,
       hasBuiltInBluetooth: p.hasBuiltInBluetooth ?? false,
-      ports:               p.ports               ?? '',
+      ports: p.ports ?? '',
       // Cooler
       coolingType: p.coolingType ?? '',
-      fanWidthMM:  p.fanWidthMM  ?? 0,
+      fanWidthMM: p.fanWidthMM ?? 0,
       // PSU
       powerWatts: p.powerWatts ?? 0,
-      efficiency: p.efficiency  ?? '',
-      category:   p.category    ?? '',
-      hasPfc:     p.hasPfc      ?? false,
-      wiringType: p.wiringType  ?? '',
+      efficiency: p.efficiency ?? '',
+      category: p.category ?? '',
+      hasPfc: p.hasPfc ?? false,
+      wiringType: p.wiringType ?? '',
       // Box
       motherboardFormFactor: p.motherboardFormFactor ?? '',
-      boxFormFactor:         p.boxFormFactor         ?? '',
-      color:                 p.color                 ?? '',
-      maxGPULengthMM:        p.maxGPULengthMM        ?? 0,
-      maxCPUCoolerHeightMM:  p.maxCPUCoolerHeightMM  ?? 0,
-      psuType:               p.psuType               ?? '',
+      boxFormFactor: p.boxFormFactor ?? '',
+      color: p.color ?? '',
+      maxGPULengthMM: p.maxGPULengthMM ?? 0,
+      maxCPUCoolerHeightMM: p.maxCPUCoolerHeightMM ?? 0,
+      psuType: p.psuType ?? '',
       // OS
       osType: p.osType ?? '',
       // Accessory / Peripheral
-      accessoryType: p.accessoryType ?? '',
+      accessoryType: p.accessoryType ?? p.accessory_type ?? '',
+      // Keyboard
+      connectionType: p.connectionType ?? '',
+      keyboardType: p.keyboardType ?? '',
+      switches: p.switches ?? '',
+      hasLighting: p.hasLighting ?? false,
+      hasBulgarianLayout: p.hasBulgarianLayout ?? false,
+      // Mouse
+      maxDpi: p.maxDpi ?? 0,
+      suitableForLeftHand: p.suitableForLeftHand ?? false,
+      // Monitor
+      panelSizeInch: p.panelSizeInch ?? 0,
+      aspectRatio: p.aspectRatio ?? '',
+      resolution: p.resolution ?? '',
+      refreshRateHz: p.refreshRateHz ?? 0,
+      responseTimeMs: p.responseTimeMs ?? 0,
+      panelType: p.panelType ?? '',
+      brightnessNits: p.brightnessNits ?? 0,
+      // PC
+      cpuId: p.cpu?.id ?? null,
+      coolerId: p.cooler?.id ?? null,
+      motherboardId: p.motherboard?.id ?? null,
+      ramId: p.ram?.id ?? null,
+      romId: p.rom?.id ?? null,
+      rom2Id: p.rom2?.id ?? null,
+      gpuId: p.gpu?.id ?? null,
+      psuId: p.psu?.id ?? null,
+      osId: p.os?.id ?? null,
+      boxId: p.box?.id ?? null,
+      accessory1Id: p.accessory1?.id ?? null,
+      accessory2Id: p.accessory2?.id ?? null,
+      comment: p.comment ?? '',
     };
   }
 

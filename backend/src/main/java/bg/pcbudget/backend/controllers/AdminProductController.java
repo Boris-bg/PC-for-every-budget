@@ -57,6 +57,7 @@ public class AdminProductController {
         case "Keyboard" -> ResponseEntity.ok(createKeyboard(body));
         case "Mouse" -> ResponseEntity.ok(createMouse(body));
         case "Monitor" -> ResponseEntity.ok(createMonitor(body));
+        case "PC" -> ResponseEntity.ok(createPc(body));
         default -> ResponseEntity.badRequest()
           .body(Map.of("error", "Unknown category: " + category));
       };
@@ -95,6 +96,7 @@ public class AdminProductController {
         case "Keyboard" -> ResponseEntity.ok(updateKeyboard(id, body));
         case "Mouse" -> ResponseEntity.ok(updateMouse(id, body));
         case "Monitor" -> ResponseEntity.ok(updateMonitor(id, body));
+        case "PC" -> ResponseEntity.ok(updatePc(id, body));
         default -> ResponseEntity.badRequest()
           .body(Map.of("error", "Unknown category: " + category));
       };
@@ -161,7 +163,6 @@ public class AdminProductController {
     };
   }
 
-  @SuppressWarnings("unchecked")
   private String getDtype(Long id) {
     var result = productRepository.findAllBasicInfo().stream()
       .filter(m -> {
@@ -338,6 +339,33 @@ public class AdminProductController {
     p.setPanelType((String) b.get("panelType"));
     p.setBrightnessNits(toInt(b.get("brightnessNits")));
     return monitorRepository.save(p);
+  }
+
+  private PC updatePc(Long id, Map<String, Object> b) {
+    PC p = pcRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("PC not found"));
+    fillBase(p, b);
+    if (b.get("cpuId") != null)
+      p.setCpu(cpuRepository.findById(toLong(b.get("cpuId"))).orElse(p.getCpu()));
+    if (b.get("coolerId") != null)
+      p.setCooler(coolerRepository.findById(toLong(b.get("coolerId"))).orElse(p.getCooler()));
+    if (b.get("motherboardId") != null)
+      p.setMotherboard(motherboardRepository.findById(toLong(b.get("motherboardId"))).orElse(p.getMotherboard()));
+    if (b.get("ramId") != null)
+      p.setRam(ramRepository.findById(toLong(b.get("ramId"))).orElse(p.getRam()));
+    if (b.get("romId") != null)
+      p.setRom(romRepository.findById(toLong(b.get("romId"))).orElse(p.getRom()));
+    p.setRom2(b.get("rom2Id") != null ? romRepository.findById(toLong(b.get("rom2Id"))).orElse(null) : null);
+    p.setGpu(b.get("gpuId") != null ? gpuRepository.findById(toLong(b.get("gpuId"))).orElse(null) : null);
+    if (b.get("psuId") != null)
+      p.setPsu(psuRepository.findById(toLong(b.get("psuId"))).orElse(p.getPsu()));
+    p.setOs(b.get("osId") != null ? osRepository.findById(toLong(b.get("osId"))).orElse(null) : null);
+    if (b.get("boxId") != null)
+      p.setBox(boxRepository.findById(toLong(b.get("boxId"))).orElse(p.getBox()));
+    p.setAccessory1(b.get("accessory1Id") != null ? accessoryRepository.findById(toLong(b.get("accessory1Id"))).orElse(null) : null);
+    p.setAccessory2(b.get("accessory2Id") != null ? accessoryRepository.findById(toLong(b.get("accessory2Id"))).orElse(null) : null);
+    p.setComment((String) b.get("comment"));
+    return pcRepository.save(p);
   }
 
   // ── Helpers ────────────────────────────────────────────
@@ -534,5 +562,36 @@ public class AdminProductController {
     p.setPanelType((String) b.get("panelType"));
     p.setBrightnessNits(toInt(b.get("brightnessNits")));
     return monitorRepository.save(p);
+  }
+
+  private PC createPc(Map<String, Object> b) {
+    PC p = new PC();
+    fillBase(p, b);
+    p.setCpu(cpuRepository.findById(toLong(b.get("cpuId")))
+      .orElseThrow(() -> new RuntimeException("CPU not found")));
+    p.setCooler(coolerRepository.findById(toLong(b.get("coolerId")))
+      .orElseThrow(() -> new RuntimeException("Cooler not found")));
+    p.setMotherboard(motherboardRepository.findById(toLong(b.get("motherboardId")))
+      .orElseThrow(() -> new RuntimeException("Motherboard not found")));
+    p.setRam(ramRepository.findById(toLong(b.get("ramId")))
+      .orElseThrow(() -> new RuntimeException("RAM not found")));
+    p.setRom(romRepository.findById(toLong(b.get("romId")))
+      .orElseThrow(() -> new RuntimeException("ROM not found")));
+    if (b.get("rom2Id") != null)
+      p.setRom2(romRepository.findById(toLong(b.get("rom2Id"))).orElse(null));
+    if (b.get("gpuId") != null)
+      p.setGpu(gpuRepository.findById(toLong(b.get("gpuId"))).orElse(null));
+    p.setPsu(psuRepository.findById(toLong(b.get("psuId")))
+      .orElseThrow(() -> new RuntimeException("PSU not found")));
+    if (b.get("osId") != null)
+      p.setOs(osRepository.findById(toLong(b.get("osId"))).orElse(null));
+    p.setBox(boxRepository.findById(toLong(b.get("boxId")))
+      .orElseThrow(() -> new RuntimeException("Box not found")));
+    if (b.get("accessory1Id") != null)
+      p.setAccessory1(accessoryRepository.findById(toLong(b.get("accessory1Id"))).orElse(null));
+    if (b.get("accessory2Id") != null)
+      p.setAccessory2(accessoryRepository.findById(toLong(b.get("accessory2Id"))).orElse(null));
+    p.setComment((String) b.get("comment"));
+    return pcRepository.save(p);
   }
 }
