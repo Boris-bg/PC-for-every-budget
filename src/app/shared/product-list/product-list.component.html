@@ -150,7 +150,14 @@
                 <a [routerLink]="['/product', item.id]" class="product-link">{{ item.name }}</a>
               </h3>
               <div class="meta">
-                <span class="price">{{ item.price }} €</span>
+                <div class="price-info">
+                  @if (item.discountPrice) {
+                    <span class="card-price-discount">{{ item.discountPrice.toFixed(2) }} €</span>
+                    <span class="card-price-original">{{ item.price.toFixed(2) }} €</span>
+                  } @else {
+                    <span class="card-price">{{ item.price }} €</span>
+                  }
+                </div>
                 <span class="rating">⭐ {{ item.rating.toFixed(1) }}</span>
               </div>
               <ul class="specs">

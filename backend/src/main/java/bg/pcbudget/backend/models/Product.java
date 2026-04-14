@@ -25,6 +25,9 @@ public abstract class Product {
   @Column(nullable = false)
   private Double price;
 
+  @Column(name = "discount_price")
+  private Double discountPrice;
+
   private String brand;
   private Integer warrantyPeriod;
   private Integer availability;

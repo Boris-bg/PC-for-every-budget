@@ -273,4 +273,9 @@ export class ProductDetailComponent implements OnInit {
       }
     });
   }
+
+  discountPercent(product: any): number {
+    if (!product.discountPrice || !product.price) return 0;
+    return Math.round((1 - product.discountPrice / product.price) * 100);
+  }
 }

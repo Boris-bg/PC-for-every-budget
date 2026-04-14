@@ -67,6 +67,10 @@ public class ProductController {
         p.setAdditionalDetails((String) updates.get("additionalDetails"));
       if (updates.containsKey("imageUrl"))
         p.setImageUrl((String) updates.get("imageUrl"));
+      if (updates.containsKey("discountPrice")) {
+        Object val = updates.get("discountPrice");
+        p.setDiscountPrice(val == null ? null : ((Number) val).doubleValue());
+      }
       return ResponseEntity.ok(repository.save(p));
     }).orElse(ResponseEntity.notFound().build());
   }

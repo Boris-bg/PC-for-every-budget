@@ -724,13 +724,40 @@
 
               <div class="edit-grid">
                 <!-- Базови полета -->
-                <div class="edit-field"><label>Име</label><input [(ngModel)]="editForm.name" /></div>
-                <div class="edit-field"><label>Цена (€)</label><input type="number" step="0.01" [(ngModel)]="editForm.price" /></div>
-                <div class="edit-field"><label>Марка</label><input [(ngModel)]="editForm.brand" /></div>
-                <div class="edit-field"><label>Наличност</label><input type="number" [(ngModel)]="editForm.availability" /></div>
-                <div class="edit-field"><label>Гаранция (мес.)</label><input type="number" [(ngModel)]="editForm.warrantyPeriod" /></div>
-                <div class="edit-field edit-field--full"><label>Допълнителна информация</label><textarea [(ngModel)]="editForm.additionalDetails" rows="2"></textarea></div>
-                <div class="edit-field edit-field--full"><label>URL снимка</label><input [(ngModel)]="editForm.imageUrl" /></div>
+                <div class="edit-field">
+                  <label>Име</label>
+                  <input [(ngModel)]="editForm.name"/>
+                </div>
+                <div class="edit-field">
+                  <label>Цена (€)</label>
+                  <input type="number" step="0.01" [(ngModel)]="editForm.price"/>
+                </div>
+                <div class="edit-field">
+                  <label>Марка</label>
+                  <input [(ngModel)]="editForm.brand"/>
+                </div>
+                <div class="edit-field">
+                  <label>Наличност</label>
+                  <input type="number" [(ngModel)]="editForm.availability"/>
+                </div>
+                <div class="edit-field">
+                  <label>Гаранция (мес.)</label>
+                  <input type="number" [(ngModel)]="editForm.warrantyPeriod"/>
+                </div>
+                <div class="edit-field">
+                  <label>Промоционална цена (€, оставете празно ако няма)</label>
+                  <input type="number" step="0.01" min="0.01"
+                         [(ngModel)]="editForm.discountPrice"
+                         placeholder="Без промоция"/>
+                </div>
+                <div class="edit-field edit-field--full">
+                  <label>Допълнителна информация</label>
+                  <textarea [(ngModel)]="editForm.additionalDetails" rows="2"></textarea>
+                </div>
+                <div class="edit-field edit-field--full">
+                  <label>URL снимка</label>
+                  <input [(ngModel)]="editForm.imageUrl"/>
+                </div>
 
                 <!-- CPU -->
                 @if (editCategory === 'CPU') {

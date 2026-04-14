@@ -280,6 +280,7 @@ export class ProfileComponent implements OnInit {
       additionalDetails: p.additionalDetails ?? '',
       imageUrl: p.imageUrl ?? '',
       warrantyPeriod: p.warrantyPeriod ?? 0,
+      discountPrice: p.discountPrice ?? null,
       // CPU
       socketId: p.socket?.id ?? null,
       model: p.model ?? '',

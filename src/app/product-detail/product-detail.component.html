@@ -86,7 +86,15 @@
         }
 
         <div class="price-row">
-          <span class="price">{{ product.price }} €</span>
+          @if (product.discountPrice) {
+            <span class="price-discount">{{ product.discountPrice.toFixed(2) }} €</span>
+            <span class="price-original">{{ product.price.toFixed(2) }} €</span>
+            <span class="discount-badge">
+              -{{ discountPercent(product) }}%
+            </span>
+          } @else {
+            <span class="price">{{ product.price.toFixed(2) }} €</span>
+          }
         </div>
 
         <div class="buy-section">

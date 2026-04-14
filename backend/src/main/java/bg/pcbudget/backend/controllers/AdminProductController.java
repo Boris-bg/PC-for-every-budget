@@ -379,6 +379,11 @@ public class AdminProductController {
     p.setImageUrl((String) b.getOrDefault("imageUrl", ""));
     p.setImageAltText((String) b.getOrDefault("imageAltText", ""));
     p.setWarrantyPeriod(toInt(b.get("warrantyPeriod")));
+
+    if (b.containsKey("discountPrice")) {
+      Object val = b.get("discountPrice");
+      p.setDiscountPrice(val == null || val.toString().isEmpty() ? null : ((Number) val).doubleValue());
+    }
   }
 
   private Socket getSocket(Object id) {
