@@ -233,17 +233,18 @@ export class ProfileComponent implements OnInit {
   }
 
   startEdit(product: any): void {
-    // Зареди пълния обект с всички полета
+    // Запази категорията от таблицата ПРЕДИ да заредиш пълния обект
+    const productCategory = product.category; // идва от findAllBasicInfo native query
+
     this.adminService.getProductById(product.id).subscribe({
       next: full => {
         this.editingProduct = full;
-        this.editCategory = full.category ?? product.category ?? '';
+        this.editCategory   = productCategory;
         this.populateEditForm(full);
       },
       error: () => {
-        // Fallback към базовите данни
         this.editingProduct = product;
-        this.editCategory   = product.category ?? '';
+        this.editCategory   = productCategory;
         this.populateEditForm(product);
       }
     });
