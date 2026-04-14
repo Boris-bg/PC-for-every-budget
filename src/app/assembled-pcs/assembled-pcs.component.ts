@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PC } from '../models/PC';
 import { PcService } from '../services/pc.service';
 import { CartService } from '../services/cart.service';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assembled-pcs',
@@ -14,10 +15,12 @@ import { RouterLink } from '@angular/router';
   templateUrl: './assembled-pcs.component.html',
   styleUrl: './assembled-pcs.component.css'
 })
-export class AssembledPcsComponent implements OnInit {
+export class AssembledPcsComponent implements OnInit, OnDestroy {
 
   private allPcs: PC[] = [];
   protected displayedPcs: PC[] = [];
+  private routerSub?: Subscription;
+  private readonly STATE_KEY = 'assembled-pcs-state';
 
   // ── Filters ───────────────────────────────────────
   protected selectedSockets:  string[] = [];
@@ -58,15 +61,14 @@ export class AssembledPcsComponent implements OnInit {
     private service: PcService,
     private cart: CartService,
     private router: Router
-  ) {}
-
-  protected addToCart(pc: PC): void {
-    this.cart.add(pc, this.getQty(pc.id));
-  }
-
-  protected goToCart(pc: PC): void {
-    this.cart.add(pc, this.getQty(pc.id));
-    this.router.navigate(['/cart']);
+  ) {
+    this.routerSub = this.router.events.pipe(
+      filter(e => e instanceof NavigationStart)
+    ).subscribe((e: any) => {
+      if (e.navigationTrigger === 'imperative') {
+        sessionStorage.removeItem(this.STATE_KEY);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -81,13 +83,30 @@ export class AssembledPcsComponent implements OnInit {
       this.availableCores = [...new Set(data.map(p => p.cpu.cores))].sort((a, b) => a - b);
       this.availableCoolingTypes = [...new Set(data.map(p => p.cooler.coolingType))].sort();
 
-      this.minPrice        = Math.floor(Math.min(...data.map(p => p.price)));
-      this.maxPrice        = Math.ceil(Math.max(...data.map(p => p.price)));
-      this.currentMinPrice = this.minPrice;
-      this.currentMaxPrice = this.maxPrice;
+      this.minPrice = Math.floor(Math.min(...data.map(p => p.price)));
+      this.maxPrice = Math.ceil(Math.max(...data.map(p => p.price)));
+
+      // Опитай да възстановиш state
+      if (!this.restoreState()) {
+        this.currentMinPrice = this.minPrice;
+        this.currentMaxPrice = this.maxPrice;
+      }
 
       this.applyAll();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
+  }
+
+  protected addToCart(pc: PC): void {
+    this.cart.add(pc, this.getQty(pc.id));
+  }
+
+  protected goToCart(pc: PC): void {
+    this.cart.add(pc, this.getQty(pc.id));
+    this.router.navigate(['/cart']);
   }
 
   protected toggleSocket(s: string): void {
@@ -151,22 +170,6 @@ export class AssembledPcsComponent implements OnInit {
     this.applyAll();
   }
 
-  protected clearFilters(): void {
-    this.selectedSockets  = [];
-    this.selectedRamTypes = [];
-    this.selectedBoxFormFactors = [];
-    this.selectedPsuEfficiency  = [];
-    this.selectedRamSizes       = [];
-    this.selectedCores          = [];
-    this.selectedHasGpu   = null;
-    this.selectedHasRgbRam = null;
-    this.selectedCoolingTypes = [];
-    this.currentMinPrice  = this.minPrice;
-    this.currentMaxPrice  = this.maxPrice;
-    this.currentPage      = 1;
-    this.applyAll();
-  }
-
   get hasActiveFilters(): boolean {
     return this.selectedSockets.length > 0
       || this.selectedRamTypes.length > 0
@@ -222,6 +225,8 @@ export class AssembledPcsComponent implements OnInit {
 
     const start = (this.currentPage - 1) * this.pageSize;
     this.displayedPcs = result.slice(start, start + this.pageSize);
+
+    this.saveState();
   }
 
   private toggle<T>(arr: T[], val: T): void {
@@ -237,5 +242,67 @@ export class AssembledPcsComponent implements OnInit {
     const next = (this.quantities.get(id) ?? 1) + delta;
     if (next < 1 || next > max) return;
     this.quantities.set(id, next);
+  }
+
+  private saveState(): void {
+    const state = {
+      sortBy: this.sortBy,
+      pageSize: this.pageSize,
+      currentPage: this.currentPage,
+      currentMinPrice: this.currentMinPrice,
+      currentMaxPrice: this.currentMaxPrice,
+      selectedSockets: this.selectedSockets,
+      selectedRamTypes: this.selectedRamTypes,
+      selectedHasGpu: this.selectedHasGpu,
+      selectedHasRgbRam: this.selectedHasRgbRam,
+      selectedBoxFormFactors: this.selectedBoxFormFactors,
+      selectedPsuEfficiency: this.selectedPsuEfficiency,
+      selectedRamSizes: this.selectedRamSizes,
+      selectedCores: this.selectedCores,
+      selectedCoolingTypes: this.selectedCoolingTypes,
+    };
+    sessionStorage.setItem(this.STATE_KEY, JSON.stringify(state));
+  }
+
+  private restoreState(): boolean {
+    const raw = sessionStorage.getItem(this.STATE_KEY);
+    if (!raw) return false;
+    try {
+      const s = JSON.parse(raw);
+      this.sortBy = s.sortBy ?? 'rating';
+      this.pageSize = s.pageSize ?? 6;
+      this.currentPage = s.currentPage ?? 1;
+      this.currentMinPrice = s.currentMinPrice ?? this.minPrice;
+      this.currentMaxPrice = s.currentMaxPrice ?? this.maxPrice;
+      this.selectedSockets = s.selectedSockets ?? [];
+      this.selectedRamTypes = s.selectedRamTypes ?? [];
+      this.selectedHasGpu = s.selectedHasGpu ?? null;
+      this.selectedHasRgbRam = s.selectedHasRgbRam ?? null;
+      this.selectedBoxFormFactors = s.selectedBoxFormFactors ?? [];
+      this.selectedPsuEfficiency = s.selectedPsuEfficiency ?? [];
+      this.selectedRamSizes = s.selectedRamSizes ?? [];
+      this.selectedCores = s.selectedCores ?? [];
+      this.selectedCoolingTypes = s.selectedCoolingTypes ?? [];
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  protected clearFilters(): void {
+    this.selectedSockets      = [];
+    this.selectedRamTypes     = [];
+    this.selectedBoxFormFactors = [];
+    this.selectedPsuEfficiency  = [];
+    this.selectedRamSizes       = [];
+    this.selectedCores          = [];
+    this.selectedHasGpu         = null;
+    this.selectedHasRgbRam      = null;
+    this.selectedCoolingTypes   = [];
+    this.currentMinPrice        = this.minPrice;
+    this.currentMaxPrice        = this.maxPrice;
+    this.currentPage            = 1;
+    sessionStorage.removeItem(this.STATE_KEY); // ← добави
+    this.applyAll();
   }
 }
