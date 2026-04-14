@@ -62,31 +62,37 @@ export class AssembledPcsComponent implements OnInit, OnDestroy {
     private cart: CartService,
     private router: Router
   ) {
-    this.routerSub = this.router.events.pipe(
-      filter(e => e instanceof NavigationStart)
-    ).subscribe((e: any) => {
-      if (e.navigationTrigger === 'imperative') {
-        sessionStorage.removeItem(this.STATE_KEY);
-      }
-    });
+    // this.routerSub = this.router.events.pipe(
+    //   filter(e => e instanceof NavigationStart)
+    // ).subscribe((e: any) => {
+    //   if (e.navigationTrigger === 'imperative') {
+    //     sessionStorage.removeItem(this.STATE_KEY);
+    //   }
+    // });
   }
 
   ngOnInit(): void {
+    // Изтрий state само ако сме дошли тук по imperative навигация
+    // (т.е. от менюто), не при back navigation
+    const nav = this.router.getCurrentNavigation();
+    if (nav?.trigger === 'imperative') {
+      sessionStorage.removeItem(this.STATE_KEY);
+    }
+
     this.service.getAll().subscribe(data => {
       this.allPcs = data;
 
-      this.availableSockets = [...new Set(data.map(p => p.cpu.socket.name))].sort();
-      this.availableRamTypes = [...new Set(data.map(p => p.ram.type))].sort();
+      this.availableSockets        = [...new Set(data.map(p => p.cpu.socket.name))].sort();
+      this.availableRamTypes       = [...new Set(data.map(p => p.ram.type))].sort();
       this.availableBoxFormFactors = [...new Set(data.map(p => p.box.boxFormFactor))].sort();
-      this.availablePsuEfficiency = [...new Set(data.map(p => p.psu.efficiency))].sort();
-      this.availableRamSizes = [...new Set(data.map(p => p.ram.memorySizeGB))].sort((a, b) => a - b);
-      this.availableCores = [...new Set(data.map(p => p.cpu.cores))].sort((a, b) => a - b);
-      this.availableCoolingTypes = [...new Set(data.map(p => p.cooler.coolingType))].sort();
+      this.availablePsuEfficiency  = [...new Set(data.map(p => p.psu.efficiency))].sort();
+      this.availableRamSizes       = [...new Set(data.map(p => p.ram.memorySizeGB))].sort((a,b) => a - b);
+      this.availableCores          = [...new Set(data.map(p => p.cpu.cores))].sort((a,b) => a - b);
+      this.availableCoolingTypes   = [...new Set(data.map(p => p.cooler.coolingType))].sort();
 
       this.minPrice = Math.floor(Math.min(...data.map(p => p.price)));
       this.maxPrice = Math.ceil(Math.max(...data.map(p => p.price)));
 
-      // Опитай да възстановиш state
       if (!this.restoreState()) {
         this.currentMinPrice = this.minPrice;
         this.currentMaxPrice = this.maxPrice;
