@@ -560,7 +560,7 @@
                     }
                   }
 
-                  <!-- Keyboard в add формата -->
+                  <!-- Keyboard -->
                   @if (addCategory === 'Keyboard') {
                     <div class="edit-field">
                       <label>Интерфейс</label>
@@ -584,7 +584,7 @@
                     </div>
                   }
 
-                  <!-- Mouse в add формата -->
+                  <!-- Mouse -->
                   @if (addCategory === 'Mouse') {
                     <div class="edit-field"><label>Свързване</label><input [(ngModel)]="addForm.connectionType" /></div>
                     <div class="edit-field"><label>Макс. DPI</label><input type="number" [(ngModel)]="addForm.maxDpi" /></div>
@@ -602,7 +602,7 @@
                     </div>
                   }
 
-                  <!-- Monitor в add формата -->
+                  <!-- Monitor -->
                   @if (addCategory === 'Monitor') {
                     <div class="edit-field"><label>Размер (")</label><input type="number" step="0.1" [(ngModel)]="addForm.panelSizeInch" /></div>
                     <div class="edit-field"><label>Съотношение</label><input [(ngModel)]="addForm.aspectRatio" placeholder="16:9" /></div>
@@ -611,6 +611,97 @@
                     <div class="edit-field"><label>Реакция (ms)</label><input type="number" [(ngModel)]="addForm.responseTimeMs" /></div>
                     <div class="edit-field"><label>Тип панел</label><input [(ngModel)]="addForm.panelType" placeholder="IPS" /></div>
                     <div class="edit-field"><label>Яркост (nits)</label><input type="number" [(ngModel)]="addForm.brightnessNits" /></div>
+                  }
+
+                  @if (addCategory === 'PC') {
+                    <div class="edit-field">
+                      <label>Процесор *</label>
+                      <select class="status-select" [(ngModel)]="addForm.cpuId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (c of pcCpus; track c.id) { <option [ngValue]="c.id">{{ c.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Охлаждане *</label>
+                      <select class="status-select" [(ngModel)]="addForm.coolerId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (c of pcCoolers; track c.id) { <option [ngValue]="c.id">{{ c.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Дънна платка *</label>
+                      <select class="status-select" [(ngModel)]="addForm.motherboardId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (m of pcMotherboards; track m.id) { <option [ngValue]="m.id">{{ m.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Оперативна памет *</label>
+                      <select class="status-select" [(ngModel)]="addForm.ramId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (r of pcRams; track r.id) { <option [ngValue]="r.id">{{ r.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Диск *</label>
+                      <select class="status-select" [(ngModel)]="addForm.romId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (r of pcRoms; track r.id) { <option [ngValue]="r.id">{{ r.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Втори диск</label>
+                      <select class="status-select" [(ngModel)]="addForm.rom2Id">
+                        <option [ngValue]="null">Без</option>
+                        @for (r of pcRoms; track r.id) { <option [ngValue]="r.id">{{ r.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Видеокарта</label>
+                      <select class="status-select" [(ngModel)]="addForm.gpuId">
+                        <option [ngValue]="null">Без</option>
+                        @for (g of pcGpus; track g.id) { <option [ngValue]="g.id">{{ g.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Захранване *</label>
+                      <select class="status-select" [(ngModel)]="addForm.psuId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (p of pcPsus; track p.id) { <option [ngValue]="p.id">{{ p.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Операционна система</label>
+                      <select class="status-select" [(ngModel)]="addForm.osId">
+                        <option [ngValue]="null">Без</option>
+                        @for (o of pcOss; track o.id) { <option [ngValue]="o.id">{{ o.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Кутия *</label>
+                      <select class="status-select" [(ngModel)]="addForm.boxId">
+                        <option [ngValue]="null">-- Избери --</option>
+                        @for (b of pcBoxes; track b.id) { <option [ngValue]="b.id">{{ b.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Аксесоар 1</label>
+                      <select class="status-select" [(ngModel)]="addForm.accessory1Id">
+                        <option [ngValue]="null">Без</option>
+                        @for (a of pcAccessories; track a.id) { <option [ngValue]="a.id">{{ a.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field">
+                      <label>Аксесоар 2</label>
+                      <select class="status-select" [(ngModel)]="addForm.accessory2Id">
+                        <option [ngValue]="null">Без</option>
+                        @for (a of pcAccessories; track a.id) { <option [ngValue]="a.id">{{ a.name }}</option> }
+                      </select>
+                    </div>
+                    <div class="edit-field edit-field--full">
+                      <label>Коментар</label>
+                      <textarea [(ngModel)]="addForm.comment" rows="2"></textarea>
+                    </div>
                   }
 
                 </div>

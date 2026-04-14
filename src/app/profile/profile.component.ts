@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
   readonly CATEGORIES = [
     'CPU', 'GPU', 'RAM', 'ROM', 'Motherboard',
     'Cooler', 'PSU', 'Box', 'OS', 'Accessory', 'Peripheral',
-    'Keyboard', 'Mouse', 'Monitor'
+    'Keyboard', 'Mouse', 'Monitor', 'PC'
   ];
   readonly ORDER_STATUSES = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
 
