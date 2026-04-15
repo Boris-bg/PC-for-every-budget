@@ -30,6 +30,10 @@
           @for (product of section.items; track product.id) {
             <a [routerLink]="['/product', product.id]" class="product-card">
 
+              @if (product.discountPrice) {
+                <div class="promo-ribbon">-{{ discountPercent(product) }}%</div>
+              }
+
               <div class="card-image">
                 @if (product.imageUrl) {
                   <img [src]="product.imageUrl" [alt]="product.imageAltText" loading="lazy" />

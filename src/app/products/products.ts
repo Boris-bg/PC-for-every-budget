@@ -107,4 +107,9 @@ export class Products implements OnInit {
     event.preventDefault();
     this.cart.add(product, 1);
   }
+
+  discountPercent(product: Product): number {
+    if (!product.discountPrice) return 0;
+    return Math.round((1 - product.discountPrice / product.price) * 100);
+  }
 }

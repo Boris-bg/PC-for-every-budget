@@ -53,7 +53,7 @@
                 @for (star of [1,2,3,4,5]; track star) {
                   <span class="star" [class.filled]="star <= product.rating">★</span>
                 }
-                <span class="rating-val">{{ product.rating?.toFixed(1) }}</span>
+                <span class="rating-val">{{ product.rating.toFixed(1) }}</span>
               </div>
 
               <div class="card-prices">
