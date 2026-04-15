@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Check;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "products")
+@Check(constraints = "price > 0 AND (discount_price IS NULL OR discount_price > 0)")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter

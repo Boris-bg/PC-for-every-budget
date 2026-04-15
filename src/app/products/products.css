@@ -259,6 +259,19 @@
   z-index: 1;
 }
 
+.price-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.card-price-original {
+  color: #9aa6b2;
+  text-decoration: line-through;
+  font-size: 0.82rem;
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Responsive */

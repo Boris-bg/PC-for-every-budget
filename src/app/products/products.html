@@ -54,7 +54,14 @@
                 </div>
 
                 <div class="card-footer">
-                  <span class="card-price">{{ product.price }} €</span>
+                  <div class="price-info">
+                    @if (product.discountPrice) {
+                      <span class="card-price" style="color: #4ade80">{{ product.discountPrice.toFixed(2) }} €</span>
+                      <span class="card-price-original">{{ product.price.toFixed(2) }} €</span>
+                    } @else {
+                      <span class="card-price">{{ product.price }} €</span>
+                    }
+                  </div>
                   <button class="btn-cart"
                           [disabled]="product.availability === 0"
                           (click)="addToCart(product, $event)">
