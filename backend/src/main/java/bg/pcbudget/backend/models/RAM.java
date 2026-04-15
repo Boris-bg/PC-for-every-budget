@@ -14,7 +14,7 @@ import lombok.Setter;
 public class RAM extends Product {
 
   private Integer memorySizeGB;
-  private String type;       // DDR4, DDR5...
+  private String type;
   private Integer speedMHz;
   private Boolean isKIT;
   private Boolean isRGB;
