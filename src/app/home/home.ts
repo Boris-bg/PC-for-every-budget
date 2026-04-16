@@ -12,11 +12,11 @@ import {Carousel, CarouselModule, CarouselResponsiveOptions} from 'primeng/carou
 })
 export class Home {
   images = [
-    'img_slider/image1.jpg',
-    'img_slider/image2.jpg',
-    'img_slider/image3.jpg',
-    'img_slider/image4.jpg',
-    'img_slider/image5.jpg'
+    'img_slider/image1.png',
+    'img_slider/image2.png',
+    'img_slider/image3.png',
+    'img_slider/image4.png',
+    'img_slider/image5.png'
   ];
   responsiveOptions: CarouselResponsiveOptions[] | undefined;
 }
