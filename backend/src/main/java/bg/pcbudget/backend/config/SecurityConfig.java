@@ -31,6 +31,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/sockets/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/interfaces/**").permitAll()
         .requestMatchers("/**").permitAll()   // static Angular files
+//        .requestMatchers("/products/**").permitAll()  // it is supposed to wotk without it
         // Authenticated users
         .requestMatchers("/api/orders/**").authenticated()
         .requestMatchers("/api/users/me/**").authenticated()
