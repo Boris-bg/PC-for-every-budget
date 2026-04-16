@@ -230,6 +230,17 @@ export class ProfileComponent implements OnInit {
     this.expandedAdminOrderId = this.expandedAdminOrderId === id ? null : id;
   }
 
+  toggleInterface(form: any, id: number, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (!form.interfaceIds) form.interfaceIds = [];
+    if (checked) {
+      if (!form.interfaceIds.includes(id))
+        form.interfaceIds.push(id);
+    } else {
+      form.interfaceIds = form.interfaceIds.filter((i: number) => i !== id);
+    }
+  }
+
   loadAdminProducts(): void {
     this.productsLoading = true;
     this.adminService.getAllProducts().subscribe({
@@ -363,6 +374,8 @@ export class ProfileComponent implements OnInit {
       accessory1Id: p.accessory1?.id ?? null,
       accessory2Id: p.accessory2?.id ?? null,
       comment: p.comment ?? '',
+      // Monitor / Motherboard interfaces
+      interfaceIds: p.interfaces?.map((i: any) => i.id) ?? [],
     };
   }
 

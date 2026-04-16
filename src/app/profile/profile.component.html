@@ -506,6 +506,19 @@
                       </select>
                     </div>
                     <div class="edit-field"><label>Портове</label><input [(ngModel)]="addForm.ports" /></div>
+                    <div class="edit-field edit-field--full">
+                      <label>Интерфейси</label>
+                      <div class="checkbox-group">
+                        @for (i of interfaces; track i.id) {
+                          <label class="checkbox-item">
+                            <input type="checkbox"
+                                   [checked]="addForm.interfaceIds?.includes(i.id)"
+                                   (change)="toggleInterface(addForm, i.id, $event)" />
+                            {{ i.name }}
+                          </label>
+                        }
+                      </div>
+                    </div>
                   }
 
                   <!-- Cooler -->
@@ -611,6 +624,20 @@
                     <div class="edit-field"><label>Реакция (ms)</label><input type="number" [(ngModel)]="addForm.responseTimeMs" /></div>
                     <div class="edit-field"><label>Тип панел</label><input [(ngModel)]="addForm.panelType" placeholder="IPS" /></div>
                     <div class="edit-field"><label>Яркост (nits)</label><input type="number" [(ngModel)]="addForm.brightnessNits" /></div>
+
+                    <div class="edit-field edit-field--full">
+                      <label>Интерфейси</label>
+                      <div class="checkbox-group">
+                        @for (i of interfaces; track i.id) {
+                          <label class="checkbox-item">
+                            <input type="checkbox"
+                                   [checked]="addForm.interfaceIds?.includes(i.id)"
+                                   (change)="toggleInterface(addForm, i.id, $event)" />
+                            {{ i.name }}
+                          </label>
+                        }
+                      </div>
+                    </div>
                   }
 
                   @if (addCategory === 'PC') {
@@ -840,6 +867,19 @@
                     </select>
                   </div>
                   <div class="edit-field"><label>Портове</label><input [(ngModel)]="editForm.ports" /></div>
+                  <div class="edit-field edit-field--full">
+                    <label>Интерфейси</label>
+                    <div class="checkbox-group">
+                      @for (i of interfaces; track i.id) {
+                        <label class="checkbox-item">
+                          <input type="checkbox"
+                                 [checked]="editForm.interfaceIds?.includes(i.id)"
+                                 (change)="toggleInterface(editForm, i.id, $event)" />
+                          {{ i.name }}
+                        </label>
+                      }
+                    </div>
+                  </div>
                 }
 
                 <!-- Cooler -->
@@ -947,6 +987,19 @@
                   <div class="edit-field"><label>Реакция (ms)</label><input type="number" [(ngModel)]="editForm.responseTimeMs" /></div>
                   <div class="edit-field"><label>Тип панел</label><input [(ngModel)]="editForm.panelType" placeholder="IPS" /></div>
                   <div class="edit-field"><label>Яркост (nits)</label><input type="number" [(ngModel)]="editForm.brightnessNits" /></div>
+                  <div class="edit-field edit-field--full">
+                    <label>Интерфейси</label>
+                    <div class="checkbox-group">
+                      @for (i of interfaces; track i.id) {
+                        <label class="checkbox-item">
+                          <input type="checkbox"
+                                 [checked]="editForm.interfaceIds?.includes(i.id)"
+                                 (change)="toggleInterface(editForm, i.id, $event)" />
+                          {{ i.name }}
+                        </label>
+                      }
+                    </div>
+                  </div>
                 }
 
                 @if (editCategory === 'PC') {

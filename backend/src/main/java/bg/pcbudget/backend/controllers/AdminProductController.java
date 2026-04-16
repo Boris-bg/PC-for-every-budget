@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -237,6 +239,8 @@ public class AdminProductController {
     p.setHasBuiltInWifi((Boolean) b.getOrDefault("hasBuiltInWifi", false));
     p.setHasBuiltInBluetooth((Boolean) b.getOrDefault("hasBuiltInBluetooth", false));
     p.setPorts((String) b.getOrDefault("ports", ""));
+    if (b.containsKey("interfaceIds"))
+      p.setInterfaces(getInterfaces(b.get("interfaceIds")));
     return motherboardRepository.save(p);
   }
 
@@ -338,6 +342,8 @@ public class AdminProductController {
     p.setResponseTimeMs(toInt(b.get("responseTimeMs")));
     p.setPanelType((String) b.get("panelType"));
     p.setBrightnessNits(toInt(b.get("brightnessNits")));
+    if (b.containsKey("interfaceIds"))
+      p.setInterfaces(getInterfaces(b.get("interfaceIds")));
     return monitorRepository.save(p);
   }
 
@@ -394,6 +400,16 @@ public class AdminProductController {
   private ItemInterface getInterface(Object id) {
     return interfaceRepository.findById(toLong(id))
       .orElseThrow(() -> new RuntimeException("Interface not found"));
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<ItemInterface> getInterfaces(Object ids) {
+    if (ids == null) return new ArrayList<>();
+    List<Object> list = (List<Object>) ids;
+    return list.stream()
+      .map(id -> interfaceRepository.findById(toLong(id))
+        .orElseThrow(() -> new RuntimeException("Interface not found: " + id)))
+      .collect(java.util.stream.Collectors.toList());
   }
 
   private double toDouble(Object v) {
@@ -473,6 +489,7 @@ public class AdminProductController {
     p.setHasBuiltInWifi((Boolean) b.getOrDefault("hasBuiltInWifi", false));
     p.setHasBuiltInBluetooth((Boolean) b.getOrDefault("hasBuiltInBluetooth", false));
     p.setPorts((String) b.getOrDefault("ports", ""));
+    p.setInterfaces(getInterfaces(b.get("interfaceIds")));
     return motherboardRepository.save(p);
   }
 
@@ -566,6 +583,7 @@ public class AdminProductController {
     p.setResponseTimeMs(toInt(b.get("responseTimeMs")));
     p.setPanelType((String) b.get("panelType"));
     p.setBrightnessNits(toInt(b.get("brightnessNits")));
+    p.setInterfaces(getInterfaces(b.get("interfaceIds")));
     return monitorRepository.save(p);
   }
 
